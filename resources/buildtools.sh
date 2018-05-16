@@ -13,7 +13,7 @@ if [ ! -f "$CROSSCOMPILE"gcc ]; then # $CROSSCOMPILE = Defined path of CrossComp
                                      # build the kernel
   echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
   echo -e "   Check ./resources/paths.sh file!"
-  export CERROR=1 # Tell the function buildkernel to cancel the opetarion
+  export CERROR=1 # Tell the function buildkernel to cancel the operation
 else
   echo -e "$WHITE - Cross Compiler Found!"
   export CERROR=0 # Initialize CrossCompilerERROR Variable

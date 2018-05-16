@@ -7,9 +7,13 @@ megacheck () {
 echo -e "$GREEN - Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed
-  echo -e "$RED - MegaTools is not installed, Built zips will not be uploaded!$RATT"
+  echo -e "$RED - MegaTools is not installed!$WHITE"  
   export NOUP=1 # Export NoUpload, this will cancel megaupload function
                 # because MEGATools isn't installed
+  read -p "   Install MEGATools Now? (It'll take some time depending of your connection) [Y/N]: " IMT
+  if [ "$IMT" = Y ] || [ "$IMT" = y ]; then
+    installmega
+  fi
 else
   export NOUP=0
   echo -e "$WHITE   MegaTools found!"

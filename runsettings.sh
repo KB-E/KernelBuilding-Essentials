@@ -5,8 +5,11 @@
 if [ ! -f ./resources/other/firstrun ]; then
 touch ./resources/other/firstrun
 echo " "
-echo -e "$GREEN - It seems that you're running this program for the first time!"
-echo -e "   So... let's begin with some initial configuration..."
+echo -e "$GREEN - It seems that you're running this program for the first time"
+echo -e "   Lets install some necessaty stuff..."
+installtools
+echo -e "   Done, let's begin with some initial configuration..."
+
 # Generate enviroment folders
 checkfolders
 checkenvironment
@@ -57,25 +60,51 @@ echo " "
 echo -e "$GREEN - Please, enter the necessary data for this session...$WHITE"
 echo " "
 read -p "   Kernel Name: " KERNELNAME; export KERNELNAME
-read -p "   Target Android: " TARGETANDROID; export TARGETANDROID
-read -p "   Variant: " VARIANT; export VARIANT
+read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID
 read -p "   Version: " VERSION; export VERSION
+read -p "   Variant: " VARIANT; export VARIANT
 read -p "   Debug Kernel Building? [y/n]: " KKDEBUG
 if [ $KKDEBUG = y ] || [ $KKDEBUG = Y ]; then
   export KDEBUG=1
 fi
-until [ "$BLDTYPE" = A ] || [ "$BLDTYPE" = K ]; do
-  read -p "   Enter Build Type (A = AROMA; K = AnyKernel): " BLDTYPE
-  if [ $BLDTYPE != A ] && [ $BLDTYPE != K ]; then
+
+#until [ "$BLDTYPE" = A ] || [ "$BLDTYPE" = K ]; do
+#  read -p "   Enter Build Type (A = AROMA; K = AnyKernel): " BLDTYPE
+#  if [ $BLDTYPE != A ] && [ $BLDTYPE != K ]; then
+#    echo " "
+#    echo -e "$RED - Error, invalid option, try again..."
+#    echo -e "$WHITE"
+#  fi
+#done
+BLDTYPE=K # Aroma is still not availible
+
+# Get the ARCH Type
+echo -e "$GREEN - Choose ARCH Type (arm for 32bits and arm64 for 64bits Devices)"
+until [ "$ARMT" = 1 ] || [ "$ARMT" = 2 ]; do
+  echo " "
+  read -p "   Your option [1/2]: " AKBO
+  if [ $ARMT != 1 ] && [ $ARMT != 2 ]; then
     echo " "
     echo -e "$RED - Error, invalid option, try again..."
     echo -e "$WHITE"
   fi
 done
+if [ "$ARMT" = 1 ]; then
+  export ARCH=arm
+elif [ "$ARMT" = arm64 ]; then
+  export ARCH=arm64
+fi
+
+# This will export the correspondent CrossCompiler for the ARCH Type
+if [ "$ARCH" = arm ]; then
+  CROSSCOMPILE=$CDF/resources/crosscompiler/arm/arm-eabi-4.8/bin/arm-eabi- # arm CrossCompiler
+elif [ "$ARCH" = arm64 ]; then
+  CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
+fi
 
 if [ "$BLDTYPE" = K ]; then
   BTYPE=AnyKernel
-
+echo " "
 echo -e "$GREEN - Choose an option for $BTYPE Installer: "
 echo -e "$WHITE   1) Use local $BTYPE Template"
 echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
@@ -98,14 +127,16 @@ if [ $AKBO = 2 ]; then
   export DLZIPS=1
   zipmegapath
 fi
+fi
 
 echo " "
 echo -e "$GREEN - Select a Kernel Source folder...$WHITE"
 cd source
 select d in */; do test -n "$d" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-echo -e "   (If you think that this isn't the Kernel Source folder, run this script again)"
+echo -e "   (If you think that this isn't the Kernel Source folder, run this script again"
+echo -e "    or define the source path in 'P' variable"
 cd $CDF
-echo -e "$WHITE"
+ -e "$WHITE"
 P=$CDF/source/$d
 
 read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB

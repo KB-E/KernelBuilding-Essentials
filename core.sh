@@ -45,6 +45,7 @@ sleep 1 # your'll cpu will burn in hell, take a breath of this heavy tittle... j
 . resources/other/folders.sh
 . resources/paths.sh
 . resources/buildtools.sh
+. resources/setuptools.sh
 . resources/megaconfig.sh
 . resources/other/help.sh
 . scripts/buildkernel.sh

@@ -1,11 +1,6 @@
 # All Paths used for the Program facility
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
-# CrossCompiler and ARCH Type
-ARMCROSSCOMPILE=$CDF/resources/crosscompiler/arm/arm-eabi-4.8/bin/arm-eabi- # arm CrossCompiler
-ARM64CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
-ARCH=arm # You've to specify the arch type here
-
 # Local Folders Paths
 ZIN=$CDF/"out/zImagesNew/" # Recently built zImages
 ZI=$CDF/"out/zImages/" # Last Built zImages
