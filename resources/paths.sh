@@ -32,7 +32,7 @@ DTB=$CDF/"resources/dtb/dtbToolLineage"
 OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
 
 # Help fle path
-HFP=$CDF/help.txt
+HFP=$CDF/README.md
 
 # All set
 echo -e "$GREEN$BLD * Loaded Program Paths$RATT"
