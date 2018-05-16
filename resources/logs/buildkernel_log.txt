@@ -1,0 +1,102 @@
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
+arch/arm/configs/lineageos_d851_defconfig:542:warning: override: reassigning to symbol MSM_DCVS
+#
+# configuration written to .config
+#
+scripts/kconfig/conf --silentoldconfig Kconfig
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: 'include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  Kernel: arch/arm/boot/Image is ready
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
+  CAT     arch/arm/boot/zImage-dtb
+  Kernel: arch/arm/boot/zImage-dtb is ready
+make[1]: Nothing to be done for 'arch/arm/boot/dtbs'.
