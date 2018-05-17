@@ -2,7 +2,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # AnyKernel extract
-templates_config () {
+templatesconfig () {
   echo -e "$GREEN - Setting AnyKernel files into '$FILES2' ..."
   echo " "
   if [ ! -f $FILES2/anykernel.sh ]; then

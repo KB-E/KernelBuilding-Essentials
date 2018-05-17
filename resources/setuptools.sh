@@ -42,7 +42,7 @@ installmega () {
 
 downloadcc () {
   echo " "
-  echo -e "$GREEN - Downloading the $ARCH CrossCompiler..."
+  echo -e "$GREEN - Downloading the $ARCH CrossCompiler... $WHITE"
   if [ "$ARCH" = arm64 ]; then
     git clone https://github.com/KB-E/gcc-arm64 $CDF/resources/crosscompiler/arm64/
     echo -e "$WHITE   Done"

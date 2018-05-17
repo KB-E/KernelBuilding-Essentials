@@ -34,7 +34,6 @@ if [ "$NODTB" = 1 ]; then
   echo -e "$RED - dtbToolLineage not found... this is is beacuse its corrupt or the user "
   echo -e "   deleted it, please, download it again or re-download this program"
 fi
-
 echo -e "$WHITE - Your Kernel source goes in the ./source folder, you can download there all the"
 echo -e "   kernel sources you want, this program will prompt you which one you're "
 echo -e "   going to build every session"
@@ -54,7 +53,8 @@ fi
 
 # Clear Variables (Just in case)
 unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
-unset BLDTYPE; unset P; unset; unset CLR
+unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
+unset BTYPE; unset AKBO;
 
 # Prompt for data
 echo " "
@@ -100,14 +100,14 @@ if [ "$ARCH" = "arm" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
+    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE)"
     downloadcc
   fi
 elif [ "$ARCH" = "arm64" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
+    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) $WHITE"
     downloadcc
   fi
 fi
@@ -129,7 +129,8 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
 done
 
 if [ "$AKBO" = "1" ]; then
-  templates_config
+  checkfolders
+  templatesconfig
 fi
 
 if [ "$AKBO" = "2" ]; then
