@@ -38,7 +38,7 @@ echo -e "              ╚══════╝╚══════╝╚══
 echo " "
 echo -e "$GREEN$BLD  - Initializing...$RATT"
 echo " "
-sleep 1 # your'll cpu will burn in hell, take a breath of this heavy tittle... jk
+sleep 1 # your cpu will burn in hell, take a breath of this heavy tittle... jk
 
 # Initialize KB-E Resources and Functions
 . resources/other/colors.sh

@@ -19,10 +19,9 @@ megacheck
 # because it's the first run, but, if it's configured before the first run
 # then, there's no need for help
 if [ "$CERROR" =  1 ]; then
-  echo -e "$WHITE - Because it's your first run, you've to manually move or download the CrossCompiler"
-  echo -e "   inside the 'crosscompiler' folder or wherever you want and then, specify the  "
-  echo -e "   path in: ./resources/paths.sh "
-  echo -e "$GREEN   After that, run the commnad 'checkenviroment' to check it"
+  echo -e "$WHITE - There's no CrossCompiler available for the KernelBuilding process"
+  echo -e "   But don't worry, this program will prompt to you which one you want"
+  echo -e "   to download (arm or arm64) for your future buildings!"
   echo " "
 fi
 
@@ -76,7 +75,7 @@ fi
 #    echo -e "$WHITE"
 #  fi
 #done
-BLDTYPE=K # Aroma is still not availible
+BLDTYPE=K # Aroma is still not available
 
 # Get the ARCH Type
 echo -e "$GREEN - Choose ARCH Type (arm for 32bits and arm64 for 64bits Devices)"
@@ -97,9 +96,19 @@ fi
 
 # This will export the correspondent CrossCompiler for the ARCH Type
 if [ "$ARCH" = arm ]; then
-  CROSSCOMPILE=$CDF/resources/crosscompiler/arm/arm-eabi-4.8/bin/arm-eabi- # arm CrossCompiler
+  CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
+  # Check
+  if [ ! -f "$CROSSCOMPILE"gcc ]; then
+    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
+    downloadcc
+  fi
 elif [ "$ARCH" = arm64 ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
+  # Check 
+  if [ ! -f "$CROSSCOMPILE"gcc ]; then
+    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
+    downloadcc
+  fi
 fi
 
 if [ "$BLDTYPE" = K ]; then

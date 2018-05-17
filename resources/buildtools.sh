@@ -7,13 +7,9 @@ echo -e "$GREEN - Checking Eviroment..."
 
 
 # CROSS_COMPILER
-if [ ! -f "$CROSSCOMPILE"gcc ]; then # $CROSSCOMPILE = Defined path of CrossCompiler
-                                     # in config.sh make sure the path is correct
-                                     # because without this you'll not be able to
-                                     # build the kernel
+if [ ! -f "$CROSSCOMPILE"gcc ]; then
   echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
-  echo -e "   Check ./resources/paths.sh file!"
-  export CERROR=1 # Tell the function buildkernel to cancel the operation
+  export CERROR=1 # Tell to the program that the CrossCompiler isn't availible
 else
   echo -e "$WHITE - Cross Compiler Found!"
   export CERROR=0 # Initialize CrossCompilerERROR Variable

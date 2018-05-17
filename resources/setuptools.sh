@@ -39,3 +39,16 @@ installmega () {
   megacheck
   unset NOUP
 }
+
+downloadcc () {
+  echo " "
+  echo -e "$GREEN - Downloading the $ARCH CrossCompiler..."
+  if [ "$ARCH" = arm64 ]; then
+    git clone https://github.com/KB-E/gcc-arm64 $CDF/resources/crosscompiler/arm64/
+    echo -e "$WHITE   Done"
+  fi
+  if [ "$ARCH" = arm ]; then
+    git clone https://github.com/KB-E/gcc-arm $CDF/resources/crosscompiler/arm/
+    echo -e "$WHITE   Done"
+  fi
+}
