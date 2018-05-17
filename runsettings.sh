@@ -146,7 +146,7 @@ select d in */; do test -n "$d" && break; echo " "; echo -e "$RED>>> Invalid Sel
 echo -e "   (If you think that this isn't the Kernel Source folder, run this script again"
 echo -e "    or define the source path in 'P' variable"
 cd $CDF
- -e "$WHITE"
+echo -e "$WHITE"
 P=$CDF/source/$d
 
 read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
