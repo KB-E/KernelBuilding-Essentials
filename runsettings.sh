@@ -161,6 +161,6 @@ fi
 
 echo " "
 echo -e "$GREEN - Config Done, now you can start Building! $WHITE"
-echo -e "   If you need help run 'kbhelp' or see './help.txt' file for more information"
+echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
 echo " "
 read -p "Press enter to continue..."
