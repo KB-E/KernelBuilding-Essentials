@@ -6,9 +6,10 @@ if [ ! -f ./resources/other/firstrun ]; then
 touch ./resources/other/firstrun
 echo " "
 echo -e "$GREEN - It seems that you're running this program for the first time"
-echo -e "   Lets install some necessaty stuff..."
+echo -e "   Lets install some necessaty stuff... $WHITE"
 installtools
 echo -e "   Done, let's begin with some initial configuration..."
+sleep 1
 
 # Generate enviroment folders
 checkfolders

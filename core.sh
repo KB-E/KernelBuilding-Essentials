@@ -6,6 +6,7 @@ CDF=$(pwd)
 
 # Start
 clear # Clear user UI
+. resources/other/colors.sh
 
 # Tittle with style
 echo -e "$WHITE"
@@ -41,7 +42,7 @@ echo " "
 sleep 1 # your cpu will burn in hell, take a breath of this heavy tittle... jk
 
 # Initialize KB-E Resources and Functions
-. resources/other/colors.sh
+#. resources/other/colors.sh
 . resources/other/folders.sh
 . resources/paths.sh
 . resources/buildtools.sh
