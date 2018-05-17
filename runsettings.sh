@@ -82,7 +82,7 @@ BLDTYPE=K # Aroma is still not available
 # Get the ARCH Type
 echo -e "$GREEN - Choose ARCH Type (1 = 32Bits Devices; 2 =  64Bits Devices)"
 until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
-  read -p "   Your option [1/2]: " AKBO
+  read -p "   Your option [1/2]: " ARMT
   if [ "$ARMT" != "1" ] && [ "$ARMT" != "2" ]; then
     echo " "
     echo -e "$RED - Error, invalid option, try again..."
