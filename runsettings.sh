@@ -20,6 +20,7 @@ megacheck
 # because it's the first run, but, if it's configured before the first run
 # then, there's no need for help
 if [ "$CERROR" =  1 ]; then
+  echo " "
   echo -e "$WHITE - There's no CrossCompiler available for the KernelBuilding process"
   echo -e "   But don't worry, this program will prompt to you which one you want"
   echo -e "   to download (arm or arm64) for your future buildings!"
@@ -79,31 +80,30 @@ fi
 BLDTYPE=K # Aroma is still not available
 
 # Get the ARCH Type
-echo -e "$GREEN - Choose ARCH Type (arm for 32bits and arm64 for 64bits Devices)"
-until [ "$ARMT" = 1 ] || [ "$ARMT" = 2 ]; do
-  echo " "
+echo -e "$GREEN - Choose ARCH Type (1 = 32Bits Devices; 2 =  64Bits Devices)"
+until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
   read -p "   Your option [1/2]: " AKBO
-  if [ $ARMT != 1 ] && [ $ARMT != 2 ]; then
+  if [ "$ARMT" != "1" ] && [ "$ARMT" != "2" ]; then
     echo " "
     echo -e "$RED - Error, invalid option, try again..."
     echo -e "$WHITE"
   fi
 done
-if [ "$ARMT" = 1 ]; then
+if [ "$ARMT" = "1" ]; then
   export ARCH=arm
-elif [ "$ARMT" = arm64 ]; then
+elif [ "$ARMT" = "2" ]; then
   export ARCH=arm64
 fi
 
 # This will export the correspondent CrossCompiler for the ARCH Type
-if [ "$ARCH" = arm ]; then
+if [ "$ARCH" = "arm" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
     echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
     downloadcc
   fi
-elif [ "$ARCH" = arm64 ]; then
+elif [ "$ARCH" = "arm64" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
@@ -112,28 +112,27 @@ elif [ "$ARCH" = arm64 ]; then
   fi
 fi
 
-if [ "$BLDTYPE" = K ]; then
+if [ "$BLDTYPE" = "K" ]; then
   BTYPE=AnyKernel
 echo " "
 echo -e "$GREEN - Choose an option for $BTYPE Installer: "
 echo -e "$WHITE   1) Use local $BTYPE Template"
 echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
 echo -e "      this will initialize a 'megacheck' command)"
-until [ "$AKBO" = 1 ] || [ "$AKBO" = 2 ]; do
-  echo " "
+until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
   read -p "   Your option [1/2]: " AKBO
-  if [ $AKBO != 1 ] && [ $AKBO != 2 ]; then
+  if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ]; then
     echo " "
     echo -e "$RED - Error, invalid option, try again..."
     echo -e "$WHITE"
   fi
 done
 
-if [ $AKBO = 1 ]; then
+if [ "$AKBO" = "1" ]; then
   templates_config
 fi
 
-if [ $AKBO = 2 ]; then
+if [ "$AKBO" = "2" ]; then
   export DLZIPS=1
   zipmegapath
 fi
@@ -150,12 +149,12 @@ cd $CDF
 P=$CDF/source/$d
 
 read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
-if [ $MKDTB = y ] || [ $MKDTB = Y ]; then
+if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
   export MAKEDTB=1
 fi
 
 read -p "   Clear Source on every Build? [y/n]: " CLRS
-if [ $CLRS = y ] || [ $CLRS = Y ]; then
+if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
   export CLR=1
 fi
 
