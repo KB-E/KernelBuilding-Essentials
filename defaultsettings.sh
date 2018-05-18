@@ -6,7 +6,7 @@
 #  your preferences from here instead of prompting
 #  you in each run
 
-DSENABLED=0 # (defaultsettings enable switch, 1 = Enabled; 0 = Disabled)
+DSENABLED=1 # (defaultsettings enable switch, 1 = Enabled; 0 = Disabled)
 
 # Force the execution of runsettings.sh for the first run, don't touch this
 if [ ! -f ./resources/other/firstrun ]; then
@@ -48,7 +48,6 @@ if [ "$DLTO" = "1" ]; then
 # we have to extract a new one into ./out/aktemplates
 if [ ! -f $AKT/anykernel.sh ]; then
 templatesconfig
-else
 fi
 # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
 export TF=$AKT

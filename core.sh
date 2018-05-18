@@ -1,3 +1,5 @@
+sudo chmod 755 -R ./
+sudo -R chown $USER:users *
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
@@ -7,6 +9,7 @@ CDF=$(pwd)
 # Start
 clear # Clear user UI
 . resources/other/colors.sh
+unset CWK
 
 # Tittle with style
 echo -e "$WHITE"
@@ -58,6 +61,10 @@ sleep 1 # your cpu will burn in hell, take a breath of this heavy tittle... jk
 . defaultsettings.sh
 if [ $AUSETTINGS = 1 ]; then
   . runsettings.sh
+fi
+
+if [ "$CWK" = y ] || [ "$CWK" = Y ]; then
+  return 1
 fi
 echo " "
 

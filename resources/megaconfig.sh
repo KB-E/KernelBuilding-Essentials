@@ -19,11 +19,12 @@ else
   echo -e "$WHITE   MegaTools found!"
   if [ ! -f ~/.megarc ]; then # If MEGATools is intalled but megarc is missing
                               # we'll create it (necessary for automatic uploads)
+    sudo chown $USER:users ~/.megarc
     echo " "
     echo -e "$LRED - File megarc is not configured yet! Please enter your email and password for uploads$WHITE"
-    echo ~/.megarc > "[Login]"
-    read -p " * Email: " MEGAE; echo ~/.megarc >> "Username = $MEGAE"
-    read -sp " * Password: " MEGAP; echo ~/.megarc >> "Password = $MEGAP"
+    sudo echo "[Login]" > ~/.megarc
+    read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc
+    read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
     echo " "
     echo " "
     echo -e "$GREEN - MEGA Config Done!$RATT"
@@ -38,12 +39,13 @@ fi
 # then initialize megarc configuration again
 if [ "$1" = "--reconfigure" ]; then
   export NOUP=0
+  sudo chown $USER:users ~/.megarc
   echo " "
   echo -e "$GREEN - Re-Configuring megarc File...$WHITE"
   echo " "
-  echo ~/.megarc > "[Login]"
-  read -p " * Email: " MEGAE; echo ~/.megarc >> "Username = $MEGAE"
-  read -sp " * Password: " MEGAP; echo ~/.megarc >> "Password = $MEGAP"
+  sudo echo "[Login]" > ~/.megarc
+  read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc
+  read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
   echo " "
   echo " "
   echo -e "$GREEN - MEGA Config Done!$RATT"

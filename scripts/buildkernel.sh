@@ -54,7 +54,7 @@ make lineageos_"$VARIANT"_defconfig &>> $LOGF/buildkernel_log.txt
 
 # Start compiling kernel
 echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y $1 &>> $LOGF/buildkernel_log.txt # Store logs
+make CONFIG_NO_ERROR_ON_MISMATCH=y -j$NJOBS &>> $LOGF/buildkernel_log.txt # Store logs
 echo " Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 
@@ -101,6 +101,7 @@ buildkernel_debug () {
     echo -e "$RED$BLD - Stopping Kernel Building..."
     return 1
   fi
+  checkenvironment
   echo " "
   echo -e "$LCYAN$BLD  ## $KERNELNAME Kernel Building Script ##"
   echo -e "$LCYAN$BLD  ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
@@ -147,7 +148,7 @@ make lineageos_"$VARIANT"_defconfig
 
 # Start compiling kernel
 echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y $1
+make CONFIG_NO_ERROR_ON_MISMATCH=y -j$NJOBS
 echo " Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 
