@@ -40,6 +40,7 @@ installmega () {
   unset NOUP
 }
 
+# Download the correspondent crosscompiler
 downloadcc () {
   echo " "
   echo -e "$GREEN - Downloading the $ARCH CrossCompiler... $WHITE"
@@ -52,4 +53,12 @@ downloadcc () {
     git clone https://github.com/KB-E/gcc-arm $CDF/resources/crosscompiler/arm/
     echo -e "$WHITE   Done"
   fi
+}
+
+# AnyKernel extract
+templatesconfig () {
+  echo -e " "
+  cp -rf $AKTF/* $AKT
+  echo -e "$GREEN - AnyKernel Extract Done"
+  export AKED=1
 }

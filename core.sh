@@ -48,7 +48,7 @@ sleep 1 # your cpu will burn in hell, take a breath of this heavy tittle... jk
 . resources/buildtools.sh
 . resources/setuptools.sh
 . resources/megaconfig.sh
-. resources/configtemplates.sh
+. resources/megadlt
 . resources/other/help.sh
 . scripts/buildkernel.sh
 . scripts/makedtb.sh

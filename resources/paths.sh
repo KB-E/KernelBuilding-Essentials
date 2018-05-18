@@ -4,15 +4,10 @@
 # Local Folders Paths
 ZIN=$CDF/"out/zImagesNew/" # Recently built zImages
 ZI=$CDF/"out/zImages/" # Last Built zImages
-TMP=$CDF/"out/temp/" # Temp folder (Used for unzipping AROMA files)
-TMP2=$CDF/"out/temp2/" # Temp folder 2 (Used for unzipping AnyKernel and other files)
 NZIPS=$CDF/"out/newzips/" # New Zips built output folder (AROMA/AnyKernel/Others)
-ZIPS=$CDF/"out/aroma/" # Base Zips for new kernel installer builds (AROMA)
-ZIPS2=$CDF/"out/anykernel/" # Base Zips for new kernel installer builds (AnyKernel)
-FILES=$CDF/"out/aromafiles/" # Files to be updated in the new AROMA Installer Build
-FILES2=$CDF/"out/anykernelfiles/" # Files to be updated in the new AnyKernel Installer Build
-RAMDISKF=$CDF/"out/anykernelfiles/ramdisk/" # Ramdisk files folder,
-                                            # all files here will be added to anykernel zip
+AKT=$CDF/"out/aktemplate/" # AnyKernel source will be extracted here and used has template
+MAKT=$CDF/"out/mega_aktemplate/" # AnyKernel source downloaded from mega will be extracted
+                                  # here and used as template
 DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
 
 # Resources folder

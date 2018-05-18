@@ -36,7 +36,7 @@ fi
 
 # If user runs megacheck with --reconfigure flag (megacheck --reconfigure)
 # then initialize megarc configuration again
-if [ $1 = "--reconfigure" ] &> /dev/null; then
+if [ "$1" = "--reconfigure" ]; then
   export NOUP=0
   echo " "
   echo -e "$GREEN - Re-Configuring megarc File...$WHITE"
@@ -56,14 +56,3 @@ fi
 
 # Done here
 echo -e "$WHITE * Function 'megacheck' Loaded$RATT"
-
-zipmegapath () {
-# Path to upload built kernel installer to MEGA
-MEGAPATH1="/Root/ArtxDevelopment/ArtxUltraOreo/AROMA/"
-#MEGAPATHK="/Root/Sync/"
-MEGAPATH2="/Root/ArtxDevelopment/ArtxUltraOreo/AnyKernel/"
-# Path to download base AROMA Zips
-MEGAAROMA=/Root/zips/
-#Path to download base AnyKernel Zips
-MEGAAK=/Root/zips2/
-}

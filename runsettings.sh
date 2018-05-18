@@ -112,6 +112,7 @@ elif [ "$ARCH" = "arm64" ]; then
   fi
 fi
 
+# AnyKernel Source Select
 if [ "$BLDTYPE" = "K" ]; then
   BTYPE=AnyKernel
 echo " "
@@ -119,9 +120,10 @@ echo -e "$GREEN - Choose an option for $BTYPE Installer: "
 echo -e "$WHITE   1) Use local $BTYPE Template"
 echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
 echo -e "      this will initialize a 'megacheck' command)"
-until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
-  read -p "   Your option [1/2]: " AKBO
-  if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ]; then
+echo -e "   3) Let me manually set my template"
+until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ] || [ "$AKBO" = "3" ]; do
+  read -p "   Your option [1/2/3]: " AKBO
+  if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ] && [ "$AKBO" != "3" ]; then
     echo " "
     echo -e "$RED - Error, invalid option, try again..."
     echo -e "$WHITE"
@@ -129,14 +131,22 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
 done
 
 if [ "$AKBO" = "1" ]; then
+  # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
+  export TF=$AKT
   checkfolders
   templatesconfig
 fi
 
 if [ "$AKBO" = "2" ]; then
-  export DLZIPS=1
-  zipmegapath
+  # Tell the makeanykernel script to use the "./out/mega_aktemplates folder for anykernel building"
+  export TF=$MAKT
+  megadlt
 fi
+fi
+
+if [ "$AKBO" = "3" ]; then
+  # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
+  export TF=$AKT
 fi
 
 echo " "
