@@ -54,7 +54,7 @@ make lineageos_"$VARIANT"_defconfig &>> $LOGF/buildkernel_log.txt
 
 # Start compiling kernel
 echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y -j$NJOBS &>> $LOGF/buildkernel_log.txt # Store logs
+make CONFIG_NO_ERROR_ON_MISMATCH=y -j4 &>> $LOGF/buildkernel_log.txt # Store logs
 echo " Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 
@@ -148,7 +148,7 @@ make lineageos_"$VARIANT"_defconfig
 
 # Start compiling kernel
 echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y -j$NJOBS
+make CONFIG_NO_ERROR_ON_MISMATCH=y -j4
 echo " Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 

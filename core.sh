@@ -63,7 +63,7 @@ if [ $AUSETTINGS = 1 ]; then
   . runsettings.sh
 fi
 
-if [ "$CWK" = y ] || [ "$CWK" = Y ]; then
+if [ "$CWK" = "n" ] && [ "$CWK" = "N" ]; then
   return 1
 fi
 echo " "

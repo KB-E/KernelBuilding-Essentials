@@ -6,7 +6,7 @@
 #  your preferences from here instead of prompting
 #  you in each run
 
-DSENABLED=1 # (defaultsettings enable switch, 1 = Enabled; 0 = Disabled)
+DSENABLED=0 # (defaultsettings enable switch, 1 = Enabled; 0 = Disabled)
 
 # Force the execution of runsettings.sh for the first run, don't touch this
 if [ ! -f ./resources/other/firstrun ]; then

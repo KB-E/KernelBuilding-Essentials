@@ -57,9 +57,11 @@ unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
 unset BTYPE; unset AKBO;
 
 if [ ! -d ./source/* ]; then
+echo " "
 echo -e "$RED - No Kernel Source Found... Continue without it? [Y/N]: "
-read CWK
-if [ "$CWK" = y ] || [ "$CWK" = Y ]; then
+read -p "   " CWK
+fi
+if [ "$CWK" = "n" ] && [ "$CWK" = "N" ]; then
 echo -e "$WHITE   Aborting..."
 echo -e "$RATT"
 return 1
@@ -73,7 +75,7 @@ read -p "   Kernel Name: " KERNELNAME; export KERNELNAME
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID
 read -p "   Version: " VERSION; export VERSION
 read -p "   Variant: " VARIANT; export VARIANT
-read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
+#read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
 read -p "   Debug Kernel Building? [y/n]: " KKDEBUG
 if [ $KKDEBUG = y ] || [ $KKDEBUG = Y ]; then
   export KDEBUG=1

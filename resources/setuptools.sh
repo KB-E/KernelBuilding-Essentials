@@ -19,7 +19,7 @@ installmega () {
     return 1
   fi
   echo " "
-  echo -e "$GREEN - Installing MEGATools..."
+  echo -e "$GREEN - Installing MEGATools...$WHITE"
   # Make temp folder for installation
   mkdir megatemp
   cd megatemp
