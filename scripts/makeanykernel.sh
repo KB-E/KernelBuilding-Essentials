@@ -33,21 +33,14 @@ echo " "
 
 # Starting the real process!
 echo -e "$GREEN$BLD Initializing Flasheable zip Build...$RATT$WHITE"
-echo " "
-
 # -----------------------
-echo -e "$GREEN$BLD Updating Flasheable Zip contents for $VARIANT...$RATT$WHITE"
-echo " "
-echo "  - Temp folder cleared"
-echo " "
-
+cd $TF
 # Kernel Update
-if [ -f $ZI/$VARIANT ]; then
+if [ -f $ZIN/$VARIANT ]; then
   echo " "
   echo -e "$GREEN$BLD Updating Kernel...$RATT$WHITE"
-  cd $AKCDF
   echo " "
-  cp $ZI/$VARIANT $AKCDF/zImage
+  cp $ZIN/$VARIANT $TF/zImage
   echo -e "$WHITE$BLD - Kernel Updated"
   if [ $MAKEDTB = 1 ]; then cp $DT/$VARIANT $AKCDF/dtb; echo -e "$WHITE$BLD - DTB Updated"; fi
   echo -e " Done"
