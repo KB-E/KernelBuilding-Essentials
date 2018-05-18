@@ -20,7 +20,7 @@ megadlt () {
   # Start Downloading the template
   megaget $MTP --path $MAKT
   # Check if the process was done sucessfully
-  if [ ! -f $MAKT/"$TN".zip ]; then # In the template failed promt the user
+  if [ ! -f $MAKT/"$TN" ]; then # In the template failed promt the user
                                     # to try again or use local template
     echo -e "$RED   Error downloading $VARIANT Base Zip, check the path$WHITE"
     read -p " - Try again? [Y/N]: " DTA

@@ -57,7 +57,6 @@ downloadcc () {
 
 # AnyKernel extract
 templatesconfig () {
-  echo -e " "
   cp -rf $AKTF/* $AKT
   echo -e "$GREEN - AnyKernel Extract Done"
   export AKED=1

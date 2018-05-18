@@ -80,7 +80,8 @@ fi
 BLDTYPE=K # Aroma is still not available
 
 # Get the ARCH Type
-echo -e "$GREEN - Choose ARCH Type (1 = 32Bits Devices; 2 =  64Bits Devices)"
+echo " "
+echo -e "$GREEN - Choose ARCH Type (1 = 32Bits Devices; 2 =  64Bits Devices) $WHITE"
 until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
   read -p "   Your option [1/2]: " ARMT
   if [ "$ARMT" != "1" ] && [ "$ARMT" != "2" ]; then
@@ -117,10 +118,12 @@ if [ "$BLDTYPE" = "K" ]; then
   BTYPE=AnyKernel
 echo " "
 echo -e "$GREEN - Choose an option for $BTYPE Installer: "
+echo " "
 echo -e "$WHITE   1) Use local $BTYPE Template"
 echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
 echo -e "      this will initialize a 'megacheck' command)"
 echo -e "   3) Let me manually set my template"
+echo " "
 until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ] || [ "$AKBO" = "3" ]; do
   read -p "   Your option [1/2/3]: " AKBO
   if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ] && [ "$AKBO" != "3" ]; then
@@ -133,14 +136,20 @@ done
 if [ "$AKBO" = "1" ]; then
   # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
   export TF=$AKT
+  # If this file is missing we can assume that we need to restore this template
+  if [ ! -f $AKT/anykernel.sh ]; then
   checkfolders
   templatesconfig
+  fi
 fi
 
 if [ "$AKBO" = "2" ]; then
   # Tell the makeanykernel script to use the "./out/mega_aktemplates folder for anykernel building"
   export TF=$MAKT
-  megadlt
+  # If this file is missing we can assume that we need to restore this template
+  if [ ! -f $MAKT/anykernel.sh ]; then
+    megadlt
+  fi
 fi
 fi
 

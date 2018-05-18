@@ -1,9 +1,9 @@
-# Generate Environment Necessary Folders
+# Generate Enviroment Necessary Folders
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 checkfolders () {
   echo " "
-  echo -e "$GREEN$BLD - Checking Environment Folders..."
+  echo -e "$GREEN$BLD - Checking Enviroment Folders..."
   sleep 0.5
   folder () {
     if [ ! -d $FD ]; then
@@ -14,16 +14,11 @@ checkfolders () {
   FD=out; folder
   FD=out/zImagesNew; folder
   FD=out/zImages; folder
-  FD=out/aroma; folder
-  FD=out/anykernel; folder
-  FD=out/temp; folder
-  FD=out/temp2; folder
-  FD=out/files; folder
-  FD=out/files2; folder
+  FD=out/aktemplate; folder
+  FD=out/mega_aktemplate; folder
   FD=out/newzips; folder
   FD=out/dt; folder
   FD=source; folder
-  FD=crosscompiler; folder
   FD=resources/logs; folder
   #echo " "
   echo -e "$GREEN$BLD   Done$RATT"
