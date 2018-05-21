@@ -14,22 +14,23 @@ if [ "$NOUP" = 1 ]; then
   return 1
 fi
 echo -e "$BOLD$GREEN Initializing Kernel(s) upload...$RATT$WHITE"
+megacheck
 export DATE=`date +%Y-%m-%d`
 echo -e " DATE: $DATE"
 echo " "
   # Optional
   if [ $BLDTYPE = A ]; then
-    megarm $MEGAPATH1/$VARIANT/$KERNELNAME-v"$VERSION"U-AROMA_"$DATE"_"$VARIANT".zip &> /dev/null
+    megarm $KERNELNAME-v"$VERSION"U-AROMA_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
   elif [ $BLDTYPE = K ]; then
-    megarm $MEGAPATH2/$VARIANT/$KERNELNAME-v"$VERSION"U-AnyKernel_"$DATE"_"$VARIANT".zip &> /dev/null
+    megarm $KERNELNAME-v"$VERSION"U-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
   fi
   # --------
   # Upload the Kernel Installer(s)
   echo " Uploading Zip for $VARIANT to MEGA..."
   if [ $BLDTYPE = A ]; then
-    megaput --path $MEGAPATH1 $NZIPS/$KERNELNAME-v"$VERSION"-$TARGETANDROID-AROMA_"$DATE"_"$VARIANT".zip
+    megaput $NZIPS/$KERNELNAME-v"$VERSION"-$TARGETANDROID-AROMA_"$DATE"_"$VARIANT"_KBE$KBV.zip
   elif [ $BLDTYPE = K ]; then
-    megaput --path $MEGAPATH2 $NZIPS/$KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT".zip
+    megaput $NZIPS/$KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip
   fi
   echo -e " Done$RATT"
   echo " "

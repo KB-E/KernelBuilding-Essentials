@@ -42,15 +42,15 @@ if [ -f $ZIN/$VARIANT ]; then
   echo " "
   cp $ZIN/$VARIANT $TF/zImage
   echo -e "$WHITE$BLD - Kernel Updated"
-  if [ $MAKEDTB = 1 ]; then cp $DT/$VARIANT $AKCDF/dtb; echo -e "$WHITE$BLD - DTB Updated"; fi
+  if [ $MAKEDTB = 1 ]; then cp $DT/$VARIANT $TF/dtb; echo -e "$WHITE$BLD - DTB Updated"; fi
   echo -e " Done"
 fi
 echo " "
 
 # Make the kernel installer zip
 echo -e "$LBLUE$BLD - Building Flasheable zip for $VARIANT...$RATT$WHITE"
-zip -r9 $KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT".zip * &> /dev/null
-mv $KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT".zip $NZIPS/
+zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip * &> /dev/null
+mv $KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip $NZIPS/
 cd $CDF
 echo -e "$LCYAN$BLD ## Flasheable zip for $VARIANT Ready! ##$RATT"
 echo " "

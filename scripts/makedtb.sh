@@ -22,17 +22,17 @@ fi
 
 # Verify dt.img
 if [ ! -f $P/arch/arm/boot/dt.img ]; then
-  echo -e "$RED$BLD   Create dt.img failed!$RATT$WHITE"
-  read -p "   Read build-dtb_log? [y/n]: " RDDTB
+  echo -e "$RED   Create dt.img failed!$RATT$WHITE"
+  read -p "$WHITE   Read build-dtb_log? [y/n]: " RDDTB
   if [ $RDDTB = y ] || [ $RDDTB = Y ]; then
     nano $LOGF/build-dtb_log.txt
   fi
   echo " "
   return 1
 else
-  mv $P/arch/arm/boot/dt.img $DT
+  mv $P/arch/arm/boot/dt.img $DT/$VARIANT
   echo " "
-  echo -e "$GREEN$BLD - Sucessufully generated dt.img $RATT$WHITE"
+  echo -e "$GREEN$BLD - Sucessufully generated dt.img $RATT"
   echo " "
 fi
 }

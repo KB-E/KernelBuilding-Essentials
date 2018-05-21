@@ -54,7 +54,7 @@ fi
 # Clear Variables (Just in case)
 unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
 unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
-unset BTYPE; unset AKBO;
+unset BTYPE; unset AKBO; unset KDEBUG
 
 if [ ! -d ./source/* ]; then
 echo " "
@@ -71,13 +71,13 @@ fi
 echo " "
 echo -e "$GREEN - Please, enter the necessary data for this session...$WHITE"
 echo " "
-read -p "   Kernel Name: " KERNELNAME; export KERNELNAME
-read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID
-read -p "   Version: " VERSION; export VERSION
-read -p "   Variant: " VARIANT; export VARIANT
+read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; if [ "$KERNELNAME" = "" ]; then return 1; fi
+read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
+read -p "   Version: " VERSION; export VERSION;  if [ "$VERSION" = "" ]; then return 1; fi
+read -p "   Variant: " VARIANT; export VARIANT;  if [ "$VARIANT" = "" ]; then return 1; fi
 #read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
-read -p "   Debug Kernel Building? [y/n]: " KKDEBUG
-if [ $KKDEBUG = y ] || [ $KKDEBUG = Y ]; then
+read -p "   Debug Kernel Building? [y/n]: " KDEBUG
+if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
   export KDEBUG=1
 fi
 
@@ -191,6 +191,7 @@ if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
 fi
 
 echo " "
+export RD=1
 echo -e "$GREEN - Config Done, now you can start Building! $WHITE"
 echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
 echo " "

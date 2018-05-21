@@ -1,14 +1,56 @@
-sudo chmod 755 -R ./
-sudo -R chown $USER:users *
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
+
+if [ ! -f ./resources/other/firstrun ]; then
+  echo " "
+  echo -e " - Disclaimer: "
+  echo " "
+  echo -e "   This Software will ask for sudo to download the required programs"
+  echo -e "   and tools, also, to chmod and chown neccesary files for the"
+  echo -e "   correct functioning of all the code, I'm not responsable if this"
+  echo -e "   program breaks your PC (which it shouldn't be able). We'll now"
+  echo -e "   proceed to the first run of this program after your authorization..."
+  echo " "
+  read -p " - Do you agree the above disclaimer and continue? [Y/N]: " DAG
+  echo " "
+  if [ "$DAG" != "y" ] && [ "$DAG" != "Y" ]; then
+    return 1
+  fi
+  read -p "   Thanks and good luck with your builds! Press enter to continue..."
+  echo " "
+fi
+
+sudo chmod 755 -R ./
+sudo chown -R $USER:users *
+
+# Load Colors
+. resources/other/colors.sh
+
+# If 'firstrun' file is missing perform a clean of this program environment
+if [ ! -f ./resources/other/firstrun ]; then
+  echo -e "$GREEN$BLD - Perfoming a Cleaning...$WHITE"
+  rm ./defaultsettings.sh
+  cp ./resources/other/defaultsettings.sh ./
+  if [ -d ./resources/crosscompiler/ ]; then
+    rm -rf ./resources/crosscompiler/
+  fi
+  if [ -d ./out/ ]; then
+    rm -rf ./out/
+  fi
+  if [ -f ./resources/logs/* ]; then
+    rm ./resources/logs/*
+  fi
+  echo -e "   Done"
+sleep 1.5
+fi
 
 # Current Directory
 CDF=$(pwd)
 
 # Start
+# KB-E Version
+KBV=1.0
 clear # Clear user UI
-. resources/other/colors.sh
 unset CWK
 
 # Tittle with style
@@ -31,13 +73,13 @@ echo -e "              ███████╗███████╗███
 sleep 0.1
 echo -e "              ██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██║██╔══██╗██║     ██╔════╝        "
 sleep 0.1
-echo -e "              █████╗  ███████╗███████╗█████╗  ██╔██╗ ██║   ██║   ██║███████║██║     ███████╗        "
+echo -e "              █████╗  ███████╗███████╗█████╗  ██╔██╗ ██║   ██║   ██║███████║██║     ███████╗    KB-E v$KBV"
 sleep 0.1
-echo -e "              ██╔══╝  ╚════██║╚════██║██╔══╝  ██║╚██╗██║   ██║   ██║██╔══██║██║     ╚════██║        "
+echo -e "              ██╔══╝  ╚════██║╚════██║██╔══╝  ██║╚██╗██║   ██║   ██║██╔══██║██║     ╚════██║     By Artx"
 sleep 0.1
-echo -e "              ███████╗███████║███████║███████╗██║ ╚████║   ██║   ██║██║  ██║███████╗███████║         "
+echo -e "              ███████╗███████║███████║███████╗██║ ╚████║   ██║   ██║██║  ██║███████╗███████║   "
 sleep 0.1
-echo -e "              ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝          "
+echo -e "              ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝    "
 # Gay tittle end
 echo " "
 echo -e "$GREEN$BLD  - Initializing...$RATT"
@@ -108,7 +150,11 @@ essentials () {
 }
 
 # Done
-if [ "$FRF" != "1" ]; then
-echo -e "$GREEN - Kernel-Building Essentials it's ready!$RATT"
-echo " "
+if [ "$RD" = "1" ]; then
+  echo -e "$GREEN - Kernel-Building Essentials it's ready!$RATT"
+  echo " "
+else
+  echo -e "$RED - Session cancelled by user$RATT"
+  echo " "
 fi
+
