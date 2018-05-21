@@ -49,7 +49,7 @@ CDF=$(pwd)
 
 # Start
 # KB-E Version
-KBV=1.0
+KBV=0.9
 clear # Clear user UI
 unset CWK
 

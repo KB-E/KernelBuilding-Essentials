@@ -50,7 +50,7 @@ echo " "
 # Make the kernel installer zip
 echo -e "$LBLUE$BLD - Building Flasheable zip for $VARIANT...$RATT$WHITE"
 zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip * &> /dev/null
-mv $KERNELNAME-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip $NZIPS/
+mv "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip $NZIPS/
 cd $CDF
 echo -e "$LCYAN$BLD ## Flasheable zip for $VARIANT Ready! ##$RATT"
 echo " "
