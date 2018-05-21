@@ -7,6 +7,7 @@ build_dtb () {
     echo -e "$RED$BLD - Stopping dtb Building..."
     return 1
   fi
+echo -e "$LCYAN$BLD   ## Build DTB Script ##"
 # Remove old dt.img from kernel source
 if [ -f $P/arch/arm/boot/dt.img ]; then
 rm $P/arch/arm/boot/dt.img &> /dev/null
@@ -15,6 +16,7 @@ fi
 # Build with Lineage dtbTool
 if [ -f $DTB ]; then
   chmod 777 $DTB
+  echo " "
   echo -e "$GREEN$BLD - Building DTB with dtbToolLineage...$RATT$WHITE"
   $DTB -2 -o $P/arch/arm/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/arm/boot/ &> $LOGF/build-dtb_log.txt
   echo -e "   Done"
@@ -32,7 +34,7 @@ if [ ! -f $P/arch/arm/boot/dt.img ]; then
 else
   mv $P/arch/arm/boot/dt.img $DT/$VARIANT
   echo " "
-  echo -e "$GREEN$BLD - Sucessufully generated dt.img $RATT"
+  echo -e "$LCYAN$BLD - Sucessufully generated dt.img $RATT"
   echo " "
 fi
 }

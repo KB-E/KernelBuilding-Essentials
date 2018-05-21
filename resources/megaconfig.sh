@@ -4,6 +4,7 @@
 # MEGA
 
 megacheck () {
+echo " "
 echo -e "$GREEN - Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed

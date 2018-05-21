@@ -16,13 +16,13 @@ fi
 echo -e "$BOLD$GREEN Initializing Kernel(s) upload...$RATT$WHITE"
 megacheck
 export DATE=`date +%Y-%m-%d`
-echo -e " DATE: $DATE"
+echo -e "   DATE: $DATE"
 echo " "
   # Optional
   if [ $BLDTYPE = A ]; then
-    megarm $KERNELNAME-v"$VERSION"U-AROMA_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
+    megarm "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AROMA_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
   elif [ $BLDTYPE = K ]; then
-    megarm $KERNELNAME-v"$VERSION"U-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
+    megarm "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip &> /dev/null
   fi
   # --------
   # Upload the Kernel Installer(s)

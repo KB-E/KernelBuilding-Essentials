@@ -2,34 +2,33 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 checkenvironment () {
-
-echo -e "$GREEN - Checking Eviroment..."
-
-
+echo " "
+echo -e "$LCYAN$BLD - Checking Evironment..."
+echo " "
 # CROSS_COMPILER
 if [ ! -f "$CROSSCOMPILE"gcc ]; then
-  echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) "
+  echo -e "$RED   Cross Compiler not found ($CROSSCOMPILE) "
   export CERROR=1 # Tell to the program that the CrossCompiler isn't availible
 else
-  echo -e "$WHITE - Cross Compiler Found!"
+  echo -e "$WHITE   Cross Compiler Found!"
   export CERROR=0 # Initialize CrossCompilerERROR Variable
 fi
 
 # Check DTB tool
 if [ ! -f $DTB ]; then # Check local dtbTool
-  echo -e "$BOLD$RED - DTB Tool not found, continuing without it...$RATT$WHITE"
+  echo -e "$BOLD$RED   DTB Tool not found, continuing without it...$RATT$WHITE"
   NODTB=1
 else
   # If you didn't removed it, dtb is fine
-  echo -e "$WHITE - DTB Tool found (It'll be generated if it is enabled by user)"
+  echo -e "$WHITE   DTB Tool found (It'll be generated if it is enabled by user)"
 fi
 
 # Check Zip Tool
 if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
                                       # sudo apt-get install zip
-  echo -e "$RED - Zip is not installed, Kernel installer Zip will not be build!$WHITE"
+  echo -e "$RED   Zip is not installed, Kernel installer Zip will not be build!$WHITE"
   echo " "
-  read -p " Install Zip Tool? [y/n]: " INSZIP
+  read -p "   Install Zip Tool? [y/n]: " INSZIP
   if [ $INSZIP = Y ] || [ $INSZIP = y ]; then
     sudo apt-get install zip
   else
@@ -39,9 +38,12 @@ if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
   fi
 else
   export NOBZ=0 # Well, you had it, nice!
-  echo -e " - Zip Tool Found! $RATT"
+  echo -e "   Zip Tool Found! $RATT"
   echo " "
 fi
+
+echo -e "$LCYAN$BLD   Done$RATT"
+
 }
 
 # Done
