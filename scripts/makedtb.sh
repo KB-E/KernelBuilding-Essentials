@@ -2,11 +2,6 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 build_dtb () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping dtb Building..."
-    return 1
-  fi
 echo -e "$LCYAN$BLD   ## Build DTB Script ##"
 # Remove old dt.img from kernel source
 if [ -f $P/arch/arm/boot/dt.img ]; then

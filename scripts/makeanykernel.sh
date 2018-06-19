@@ -2,11 +2,6 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 make_anykernel () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping AnyKernel Installer Creation..."
-    return 1
-  fi
 # Tittle
 echo -e "$LCYAN$BLD   ## AnyKernel Installer Building Script (AnyKernel) ##$RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
@@ -14,22 +9,6 @@ echo -e "   DATE: $DATE"
 
 # Get the folder that we're going to use to build our AnyKernel Installer
 AKCDF=$TF
-
-# Start
-echo " "
-echo -e "$GREEN$BLD - Checking out folder...$RAT$WHITE"
-
-if [ ! -d $CDF/out ]; then
-echo " "
-echo -e "$RED   Error, theres no 'out' folder! Please run 'checkenviroment' command and try again.$RATT"
-export STOP=1
-return 1
-fi
-
-# If you're here, theres nothing blocking the AnyKernel Zip Building, congrats ;)
-echo -e "$WHITE   Checking done"
-echo " "
-# -------------------------------------------------------------------------------
 
 # Starting the real process!
 echo -e "$GREEN$BLD - Initializing Flasheable zip Build...$RATT$WHITE"

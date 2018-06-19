@@ -2,11 +2,6 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 buildkernel () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping Kernel Building..."
-    return 1
-  fi
   checkenvironment
   echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script ##"
   echo -e "$LCYAN$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
@@ -94,11 +89,6 @@ cd $CDF
 }
 
 buildkernel_debug () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping Kernel Building..."
-    return 1
-  fi
   checkenvironment
   echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script ##"
   echo -e "$LCYAN$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
@@ -145,7 +135,7 @@ make lineageos_"$VARIANT"_defconfig
 
 # Start compiling kernel
 echo -e "$GREEN$BLD - Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y -j4
+make -j4
 echo "   Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 

@@ -3,11 +3,6 @@
 
 
 make_aroma () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping upload..."
-    return 1
-  fi
 # Tittle
 echo -e "$GREEN$BLD Installer Zips Building Script (AROMA)$RATT$WHITE"
 export DATE=`date +%Y-%m-%d`

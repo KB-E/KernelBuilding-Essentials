@@ -128,7 +128,12 @@ essentials () {
 
   # If user defined --make_anykernel flag, Build AnyKernel Installer
   if [ "$1" = "--anykernel" ] || [ "$2" = "--anykernel" ] || [ "$3" = "--anykernel" ] || [ "$4" = "--anykernel" ]; then
+    X=1
+    while [ VARIANT"$X" != "" ]; do
+    export VARIANT=VARIANT"$X"
     make_anykernel
+    VARIANT"$X"=(( VARIANT"$X" + 1 ))
+    done
   fi
 
   # If user defined --upload flag, Upload the last built Installer

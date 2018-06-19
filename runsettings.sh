@@ -74,7 +74,7 @@ echo " "
 read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; if [ "$KERNELNAME" = "" ]; then return 1; fi
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
 read -p "   Version: " VERSION; export VERSION;  if [ "$VERSION" = "" ]; then return 1; fi
-read -p "   Variant: " VARIANT; export VARIANT;  if [ "$VARIANT" = "" ]; then return 1; fi
+
 #read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
 read -p "   Debug Kernel Building? [y/n]: " KDEBUG
 if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
@@ -179,6 +179,49 @@ echo -e "    or define the source path in 'P' variable"
 cd $CDF
 echo -e "$WHITE"
 P=$CDF/source/$d
+
+# Variant and Defconfig 
+if [ -f $OTHERF/variants.sh ]; then
+  read -p "   Use lastest defined variants? [y/n]: " UDF
+  if [ "$UDF" = y ] || [ "$UDF" = Y ]; then
+    echo -e "   Using lastest defined variants..."
+    UDF=1
+  fi
+fi
+if [ "$UDF" != "1" ]; then
+  read -p "   Variant: " VARIANT1; export VARIANT1
+  read -p "   Add more Variants? [y/n]: " ADDMV
+  if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
+    X=1
+    VF=$OTHERF/variants.sh
+    if [ ! -f $VF ]; then
+      touch $VF
+      echo "export VARIANT$X=$VARIANT1" > $VF
+      select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+      echo "export DEFCONFIG$X=$defcofig" >> $VF
+    else
+      rm $VF
+      touch $VF
+      echo "export VARIANT$X=$VARIANT1" > $VF
+      select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+      echo "export DEFCONFIG$X=$defcofig" >> $VF
+    fi
+    bool=true
+    while [ "$bool" = true ]; do
+      X=$((X+1))
+      read -p "   Variant $X: " VV
+      if [ "$VV" = "" ]; then
+        export bool=false
+      else
+        export VARIANT$X=$VV
+        echo "export VARIANT$X=$VV" >> $VF
+        read -p "   Choose a defconfig:"
+        select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+        echo "export DEFCONFIG$X=$defcofig" >> $VF
+      fi
+    done
+  fi
+fi
 
 read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
 if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then

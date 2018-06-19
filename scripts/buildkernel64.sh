@@ -2,11 +2,6 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 buildkernel () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping Kernel Building..."
-    return 1
-  fi
   checkenvironment
   echo " "
   echo -e "$LCYAN$BLD  ## $KERNELNAME Kernel Building Script ##"
@@ -96,11 +91,6 @@ cd $CDF
 }
 
 buildkernel_debug () {
-  if [ "$STOP" = 1 ]; then
-    export STOP=0
-    echo -e "$RED$BLD - Stopping Kernel Building..."
-    return 1
-  fi
   echo " "
   echo -e "$LCYAN$BLD  ## $KERNELNAME Kernel Building Script ##"
   echo -e "$LCYAN$BLD  ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"

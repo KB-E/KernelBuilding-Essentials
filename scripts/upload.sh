@@ -3,11 +3,6 @@
 
 megaupload () {
 # Start
-if [ "$STOP" = 1 ]; then
-  export STOP=0
-  echo -e "$RED$BLD - Stopping upload..."
-  return 1
-fi
 if [ "$NOUP" = 1 ]; then
   export NOUP=0
   echo -e "$RED - Upload is disabled, Run 'megacheck' Command to Re-Configure MEGA"
