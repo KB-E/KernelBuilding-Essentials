@@ -54,7 +54,7 @@ fi
 # Clear Variables (Just in case)
 unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
 unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
-unset BTYPE; unset AKBO; unset KDEBUG
+unset BTYPE; unset AKBO; unset KDEBUG; unset RD
 
 if [ ! -d ./source/* ]; then
 echo " "
@@ -190,6 +190,11 @@ if [ -f $OTHERF/variants.sh ]; then
 fi
 if [ "$UDF" != "1" ]; then
   read -p "   Variant: " VARIANT1; export VARIANT1
+  echo -e "   Choose a defconfig: "
+  cd $P/arch/$ARCH/configs/
+  select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+  cd $CDF
+  export DEFCONFIG1=$DEF
   read -p "   Add more Variants? [y/n]: " ADDMV
   if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
     X=1
@@ -197,14 +202,12 @@ if [ "$UDF" != "1" ]; then
     if [ ! -f $VF ]; then
       touch $VF
       echo "export VARIANT$X=$VARIANT1" > $VF
-      select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-      echo "export DEFCONFIG$X=$defcofig" >> $VF
+      echo "export DEFCONFIG$X=$DEF" >> $VF
     else
       rm $VF
       touch $VF
       echo "export VARIANT$X=$VARIANT1" > $VF
-      select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-      echo "export DEFCONFIG$X=$defcofig" >> $VF
+      echo "export DEFCONFIG$X=$DEF" >> $VF
     fi
     bool=true
     while [ "$bool" = true ]; do
@@ -215,9 +218,11 @@ if [ "$UDF" != "1" ]; then
       else
         export VARIANT$X=$VV
         echo "export VARIANT$X=$VV" >> $VF
-        read -p "   Choose a defconfig:"
-        select defconfig in $P/arch/$ARCH/configs/*; do test -n "$defconfig" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-        echo "export DEFCONFIG$X=$defcofig" >> $VF
+        echo -e "   Choose a defconfig:"
+        cd $P/arch/$ARCH/configs/
+        select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+        cd $CDF
+        echo "export DEFCONFIG$X=$DEF" >> $VF
       fi
     done
   fi
