@@ -98,47 +98,95 @@ if [ "$CWK" = "n" ] && [ "$CWK" = "N" ]; then
 fi
 echo " "
 
+# Clear some variables
+unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X
+
 # Main command, you'll tell here to the program what to do
 essentials () {
   # If user defined --kernel flag, Build kernel
   if [ "$1" = "--kernel" ] || [ "$2" = "--kernel" ] || [ "$3" = "--kernel" ] || [ "$4" = "--kernel" ]; then
     if [ $KDEBUG = 1 ]; then
-      buildkernel_debug
+      i=1
+      while var=VARIANT$((i++)); [[ ${!var} ]]; do
+        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+        DEFCONFIG=${!def}
+        VARIANT=${!var}
+        buildkernel_debug
+      done
     else
-      buildkernel
+      i=1
+      while var=VARIANT$((i++)); [[ ${!var} ]]; do
+        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+        DEFCONFIG=${!def}
+        VARIANT=${!var}
+        buildkernel
+      done
     fi
   fi
 
   # If user defined --dtb flag, Build dtb (dt.img (Device Tree Image))
   if [ "$1" = "--dtb" ] || [ "$2" = "--dtb" ] || [ "$3" = "--dtb" ] || [ "$4" = "--dtb" ]; then
-    build_dtb
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      VARIANT=${!var}
+      build_dtb
+    done
   fi
 
   # If user defined --make_anykernel flag, Build AnyKernel Installer
   if [ "$1" = "--anykernel" ] || [ "$2" = "--anykernel" ] || [ "$3" = "--anykernel" ] || [ "$4" = "--anykernel" ]; then
-#    X=1
-#    while [ VARIANT"$X" != "" ]; do
-#    export VARIANT=VARIANT"$X"
-    make_anykernel
-#    VARIANT"$X"=(( VARIANT"$X" + 1 ))
-#    done
-  fi
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+      DEFCONFIG=${!def}
+      VARIANT=${!var}
+      make_anykernel
+    done
+  fi  
 
   # If user defined --upload flag, Upload the last built Installer
   if [ "$1" = "--upload" ] || [ "$2" = "--upload" ] || [ "$3" = "--upload" ] || [ "$4" = "--upload" ]; then
-    megaupload
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      VARIANT=${!var}
+      megaupload
+    done
   fi
 
   # If user defined --all flag, do everything automatically
   if [ "$1" = "--all" ]; then
     if [ $KDEBUG = 1 ]; then
-      buildkernel_debug
+      i=1
+      while var=VARIANT$((i++)); [[ ${!var} ]]; do
+        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+        DEFCONFIG=${!def}
+        VARIANT=${!var}
+        buildkernel_debug
+      done
     else
-      buildkernel
+      i=1
+      while var=VARIANT$((i++)); [[ ${!var} ]]; do
+        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+        DEFCONFIG=${!def}
+        VARIANT=${!var}
+        buildkernel
+      done
     fi
-    build_dtb
-    make_anykernel
-    megaupload
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      VARIANT=${!var}
+      build_dtb
+    done
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      VARIANT=${!var}
+      make_anykernel
+    done
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      VARIANT=${!var}
+      megaupload
+    done
   fi
 }
 

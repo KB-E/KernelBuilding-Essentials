@@ -185,6 +185,7 @@ if [ -f $OTHERF/variants.sh ]; then
   read -p "   Use lastest defined variants? [y/n]: " UDF
   if [ "$UDF" = y ] || [ "$UDF" = Y ]; then
     echo -e "   Using lastest defined variants..."
+    . $OTHERF/variants.sh
     UDF=1
   fi
 fi
@@ -222,6 +223,7 @@ if [ "$UDF" != "1" ]; then
         cd $P/arch/$ARCH/configs/
         select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
         cd $CDF
+        export DEFCONFIG$X=$DEF
         echo "export DEFCONFIG$X=$DEF" >> $VF
       fi
     done
