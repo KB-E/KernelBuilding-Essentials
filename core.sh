@@ -29,8 +29,12 @@ sudo chown -R $USER:users *
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f ./resources/other/firstrun ]; then
   echo -e "$GREEN$BLD - Perfoming a Cleaning...$WHITE"
-  rm ./defaultsettings.sh
-  cp ./resources/other/defaultsettings.sh ./
+  if [ -f $CDF/defaultsettings.sh ]; then
+  rm $CDF/defaultsettings.sh
+  fi
+  if [ ! -f $CDF/defaultsettings.sh ]; then
+  cp $CDF/resources/other/defaultsettings.sh ./
+  fi
   if [ -d ./resources/crosscompiler/ ]; then
     rm -rf ./resources/crosscompiler/
   fi
@@ -46,6 +50,33 @@ fi
 
 # Current Directory
 CDF=$(pwd)
+
+# Function to clear KB-E Environment
+kbeclear () {
+echo -e "$GREEN$BLD - Performing a Cleaning...$WHITE"
+if [ -f $CDF/defaultsettings.sh ]; then
+  rm $CDF/defaultsettings.sh
+fi
+if [ -d $CDF/resources/crosscompiler/ ]; then
+  rm -rf $CDF/resources/crosscompiler/
+fi
+if [ -d $CDF/out/ ]; then
+  rm -rf $CDF/out/
+fi
+if [ -d $CDF/resources/logs/* ]; then
+  rm $CDF/resources/logs/*
+fi
+if [ -f $CDF/resources/other/firstrun ]; then
+  rm $CDF/resources/other/firstrun
+fi
+if [ -d $CDF/source/ ]; then
+  mv $CDF/source/ ../
+fi
+if [ -f $CDF/resources/other/variants.sh ]; then
+  rm $CDF/resources/other/variants.sh
+fi
+echo -e "   Done"
+}
 
 # Start
 # KB-E Version

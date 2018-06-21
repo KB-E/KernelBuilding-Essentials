@@ -28,7 +28,6 @@ sleep 0.5
 KERNELNAME=
 TARGETANDROID=
 VERSION=
-VARIANT=
 
 # Debug Kernel Building?
 KDEBUG=
@@ -91,6 +90,15 @@ elif [ "$ARCH" = "arm64" ]; then
     downloadcc
   fi
 fi
+
+# Variants 
+# (You can add more variants with his respective defconfig)
+export VARIANT1= # <---- Here goes the variant name
+export DEFCONFIG1= # <---- Here goes the defconfig name
+export VARIANT2= # <---- You can define more variants with VARIANT#
+export DEFCONFIG2= # <---- Remember to add his proper defconfig!
+export VARIANT3=
+export DEFCONFIG3=
 
 # Clean Source on each compiling process?
 CLR=
