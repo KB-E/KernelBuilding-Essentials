@@ -5,7 +5,7 @@
 installtools () {
   echo " "
   sudo apt-get update
-  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev ccache
+  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev
   echo " "
 }
 
@@ -19,7 +19,7 @@ installmega () {
     return 1
   fi
   echo " "
-  echo -e "$GREEN - Installing MEGATools...$WHITE"
+  echo -e "$GREEN$BLD - Installing MEGATools...$WHITE"
   # Make temp folder for installation
   mkdir megatemp
   cd megatemp

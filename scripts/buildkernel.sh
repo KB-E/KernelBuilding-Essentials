@@ -3,8 +3,8 @@
 
 buildkernel () {
   checkenvironment
-  echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script ##"
-  echo -e "$LCYAN$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
+  echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script ($VARIANT) ##"
+  echo -e "$LCYAn$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
   echo " "
 if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                          # were not found and we cannot compile the kernel
@@ -43,7 +43,7 @@ rm arch/arm/boot/zImage &> /dev/null
 echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
 echo " "
 # Load $VARIANT defconfig
-make lineageos_"$VARIANT"_defconfig &>> $LOGF/buildkernel_log.txt
+make $DEFCONFIG &>> $LOGF/buildkernel_log.txt
 # -----------------------
 
 # Start compiling kernel
@@ -65,6 +65,7 @@ if [ ! -f ./arch/arm/boot/zImage ]; then # If theres no zImage built then there 
   read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
   if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
     nano $LOGF/buildkernel_log.txt
+    unset READBL
   fi
 fi
 
@@ -130,7 +131,7 @@ rm arch/arm/boot/zImage &> /dev/null
 echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
 echo " "
 # Load $VARIANT defconfig
-make lineageos_"$VARIANT"_defconfig
+make $DEFCONFIG
 # -----------------------
 
 # Start compiling kernel

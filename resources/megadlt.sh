@@ -8,7 +8,7 @@ megadlt () {
   # Clear some variables
   unset TFP; unset TN; unset DTA; unset ZIPERROR
   echo " "
-  echo -e "$GREEN - You'll have to fill some data in order to download your template"
+  echo -e "$GREEN$BLD - You'll have to fill some data in order to download your template"
   echo -e "$WHITE   Please, enter the information correctly (the file must be .zip):"
   echo " "
   read -p " - Path to the folder in your MEGA that contains the Template: " TFP
@@ -42,7 +42,7 @@ fi
 
 # Extract the files inside ./out/mega_aktemplate/
 cd $MAKT
-echo -e "$GREEN - Extracting $TN files..." 
+echo -e "$GREEN$BLD - Extracting $TN files..." 
 unzip $TN &> /dev/null
 rm $TN
 echo -e "$WHITE   Done"

@@ -5,10 +5,10 @@
 
 megacheck () {
 echo " "
-echo -e "$GREEN - Configuring MEGA...$RATT"
+echo -e "$GREEN$BLD - Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed
-  echo -e "$RED - MegaTools is not installed!$WHITE"  
+  echo -e "$RED - MegaTools is not installed!$WHITE"
   export NOUP=1 # Export NoUpload, this will cancel megaupload function
                 # because MEGATools isn't installed
   read -p "   Install MEGATools Now? (It'll take some time depending of your connection) [Y/N]: " IMT
@@ -28,7 +28,7 @@ else
     read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
     echo " "
     echo " "
-    echo -e "$GREEN - MEGA Config Done!$RATT"
+    echo -e "$GREEN$BLD - MEGA Config Done!$RATT"
     # Unset Email and Password variables (Erase them)
     unset MEGAE
     unset MEGAP
@@ -42,14 +42,14 @@ if [ "$1" = "--reconfigure" ]; then
   export NOUP=0
   sudo chown $USER:users ~/.megarc
   echo " "
-  echo -e "$GREEN - Re-Configuring megarc File...$WHITE"
+  echo -e "$GREEN$BLD - Re-Configuring megarc File...$WHITE"
   echo " "
   sudo echo "[Login]" > ~/.megarc
   read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc
   read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
   echo " "
   echo " "
-  echo -e "$GREEN - MEGA Config Done!$RATT"
+  echo -e "$GREEN$BLD - MEGA Config Done!$RATT"
   # Unset Email and Password variables (Erase them)
   unset MEGAE
   unset MEGAP

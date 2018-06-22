@@ -5,12 +5,11 @@ make_anykernel () {
 # Tittle
 echo -e "$LCYAN$BLD   ## AnyKernel Installer Building Script (AnyKernel) ##$RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
-echo -e "   DATE: $DATE"
-
-# Get the folder that we're going to use to build our AnyKernel Installer
-AKCDF=$TF
+echo -e "   KERNEL: $KERNELNAME; VARIANT: $VARIANT; DATE: $DATE"
+unset DATE
 
 # Starting the real process!
+echo " "
 echo -e "$GREEN$BLD - Initializing Flasheable zip Build...$RATT$WHITE"
 # -----------------------
 cd $TF
@@ -28,8 +27,8 @@ echo " "
 
 # Make the kernel installer zip
 echo -e "$LBLUE$BLD - Building Flasheable zip for $VARIANT...$RATT$WHITE"
-zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip * &> /dev/null
-mv "$KERNELNAME"Kernel-v"$VERSION"-$TARGETANDROID-AnyKernel_"$DATE"_"$VARIANT"_KBE$KBV.zip $NZIPS/
+zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip * &> /dev/null
+mv "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip $NZIPS/
 cd $CDF
 echo -e "$LCYAN$BLD   ## AnyKernel Installer for $VARIANT Ready! ##$RATT"
 echo " "
