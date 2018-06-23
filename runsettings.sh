@@ -61,7 +61,7 @@ echo " "
 echo -e "$RED - No Kernel Source Found... Continue without it? [Y/N]: "
 read -p "   " CWK
 fi
-if [ "$CWK" = "n" ] && [ "$CWK" = "N" ]; then
+if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
 echo -e "$WHITE   Aborting..."
 echo -e "$RATT"
 return 1
@@ -76,10 +76,6 @@ read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TA
 read -p "   Version: " VERSION; export VERSION;  if [ "$VERSION" = "" ]; then return 1; fi
 
 #read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
-read -p "   Debug Kernel Building? [y/n]: " KDEBUG
-if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
-  export KDEBUG=1
-fi
 
 #until [ "$BLDTYPE" = A ] || [ "$BLDTYPE" = K ]; do
 #  read -p "   Enter Build Type (A = AROMA; K = AnyKernel): " BLDTYPE
@@ -176,9 +172,30 @@ cd source
 select d in */; do test -n "$d" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
 echo -e "   (If you think that this isn't the Kernel Source folder, run this script again"
 echo -e "    or define the source path in 'P' variable"
+if [ $ARCH = arm64 ] && [ ! -d $CDF/source/$d/arch/$ARCH/ ]; then
+  echo " "
+  echo -e "$RED$BLD - This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"
+  echo " "
+  cd $CDF
+  export CWK=n
+  return 1
+fi
+if [ $ARCH = arm ] && [ ! -d $CDF/source/$d/arch/$ARCH/ ]; then
+  echo " "
+  echo -e "$RED$BLD - This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"
+  echo " "
+  cd $CDF
+  export CWK=n
+  return 1
+fi
 cd $CDF
 echo -e "$WHITE"
 P=$CDF/source/$d
+read -p "   Debug Kernel Building? [y/n]: " KDEBUG
+if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
+  export KDEBUG=1
+fi
+echo " "
 
 # Variant and Defconfig 
 if [ -f $OTHERF/variants.sh ]; then
@@ -190,8 +207,8 @@ if [ -f $OTHERF/variants.sh ]; then
   fi
 fi
 if [ "$UDF" != "1" ]; then
-  read -p "   Variant: " VARIANT1; export VARIANT1
-  echo -e "   Choose a defconfig: "
+  read -p "   Device Variant: " VARIANT1; export VARIANT1
+  echo -e "   Select a Defconfig: " 
   cd $P/arch/$ARCH/configs/
   select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
   cd $CDF
@@ -230,9 +247,12 @@ if [ "$UDF" != "1" ]; then
   fi
 fi
 
-read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
-if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
-  export MAKEDTB=1
+echo " "
+if [ $ARCH = arm ]; then
+  read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
+  if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
+    export MAKEDTB=1
+  fi
 fi
 
 read -p "   Clear Source on every Build? [y/n]: " CLRS

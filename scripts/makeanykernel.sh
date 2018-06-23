@@ -6,7 +6,6 @@ make_anykernel () {
 echo -e "$LCYAN$BLD   ## AnyKernel Installer Building Script (AnyKernel) ##$RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
 echo -e "   KERNEL: $KERNELNAME; VARIANT: $VARIANT; DATE: $DATE"
-unset DATE
 
 # Starting the real process!
 echo " "
@@ -18,9 +17,15 @@ if [ -f $ZIN/$VARIANT ]; then
   echo " "
   echo -e "$GREEN$BLD - Updating Kernel...$RATT$WHITE"
   echo " "
-  cp $ZIN/$VARIANT $TF/zImage
+  if [ $ARCH = arm ]; then
+    cp $ZIN/$VARIANT $TF/zImage
+  elif [ $ARCH = arm64 ]; then
+    cp $ZIN/$VARIANT $TF/Image.gz-dtb
+  fi
   echo -e "$WHITE$BLD   Kernel Updated"
-  if [ $MAKEDTB = 1 ]; then cp $DT/$VARIANT $TF/dtb; echo -e "$WHITE$BLD   DTB Updated"; fi
+  if [ $ARCH = arm ]; then
+    if [ $MAKEDTB = 1 ]; then cp $DT/$VARIANT $TF/dtb; echo -e "$WHITE$BLD   DTB Updated"; fi
+  fi
   echo -e "   Done"
 fi
 echo " "

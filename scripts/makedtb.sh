@@ -2,7 +2,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 build_dtb () {
-echo -e "$LCYAN$BLD   ## Build DTB Script ##"
+echo -e "$LCYAN$BLD   ## Build DTB Script for $VARIANT ##"
 # Remove old dt.img from kernel source
 if [ -f $P/arch/arm/boot/dt.img ]; then
   rm $P/arch/arm/boot/dt.img &> /dev/null
@@ -28,8 +28,7 @@ if [ ! -f $P/arch/arm/boot/dt.img ]; then
   return 1
 else
   mv $P/arch/arm/boot/dt.img $DT/$VARIANT
-  echo " "
-  echo -e "$LCYAN$BLD - Sucessufully generated dt.img $RATT"
+  echo -e "$GREEN$BLD - Sucessufully generated dt.img $RATT"
   echo " "
 fi
 }

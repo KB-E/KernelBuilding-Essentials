@@ -83,6 +83,11 @@ echo -e "   Done"
 KBV=0.9
 clear # Clear user UI
 unset CWK
+X=0
+until [ $X = 21 ]; do
+  X=$((X+1))
+  unset VARIANT$X
+done
 
 # Tittle with style
 echo -e "$WHITE"
@@ -122,13 +127,13 @@ if [ $AUSETTINGS = 1 ]; then
   . runsettings.sh
 fi
 
-if [ "$CWK" = "n" ] && [ "$CWK" = "N" ]; then
+if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
 fi
 echo " "
 
 # Clear some variables
-unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X
+unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentials
 
 # Main command, you'll tell here to the program what to do
 essentials () {
@@ -226,5 +231,6 @@ if [ "$RD" = "1" ]; then
 else
   echo -e "$RED - Session cancelled$RATT"
   echo " "
+  unset -f essentials
 fi
 

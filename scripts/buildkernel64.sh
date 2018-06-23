@@ -3,9 +3,8 @@
 
 buildkernel () {
   checkenvironment
-  echo " "
-  echo -e "$LCYAN$BLD  ## $KERNELNAME Kernel Building Script ##"
-  echo -e "$LCYAN$BLD  ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
+  echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script x64 ($VARIANT) ##"
+  echo -e "$LCYAn$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
   echo " "
 if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                          # were not found and we cannot compile the kernel
@@ -37,35 +36,36 @@ export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
 if [ "$CLR" = 1 ]; then make clean; echo " "; fi # Clean Kernel source, this variable
                                                # is defined in config.sh
 # To avoid a false sucessfull build
-rm arch/arm/boot/zImage &> /dev/null
+rm arch/arm64/boot/Image.gz-dtb &> /dev/null
 # ---------------------------------
 
 # Load defconfig
-echo -e "$GREEN$BLD Loading Defconfig for $VARIANT...$RATT$WHITE"
+echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
 echo " "
 # Load $VARIANT defconfig
-make lineageos_"$VARIANT"_defconfig &>> $LOGF/buildkernel_log.txt
+make $DEFCONFIG &>> $LOGF/buildkernel64_log.txt
 # -----------------------
 
 # Start compiling kernel
-echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y $1 &>> $LOGF/buildkernel_log.txt # Store logs
-echo " Done"                       # $NJOBS = Number of processor cores
+echo -e "$GREEN$BLD - Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+make CONFIG_NO_ERROR_ON_MISMATCH=y -j4 &>> $LOGF/buildkernel64_log.txt # Store logs
+echo "   Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 
 # Verify if the kernel were built
 KERROR=0
-if [ ! -f ./arch/arm/boot/zImage ]; then # If theres no zImage built then there was
+if [ ! -f ./arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
   export KERROR=1                          # an error compiling the kernel
        # KERROR will alert other scripts
        # that the kernel build failed
   echo " "
   echo -e "$RED$BLD ## Build for $VARIANT Failed, Opening buildkernel_log.txt For Details... ## $WHITE"
-  echo " " &>> $LOGF/buildkernel_log.txt
-  echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel_log.txt
+  echo " " &>> $LOGF/buildkernel64_log.txt
+  echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel64_log.txt
   read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
   if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
-    nano $LOGF/buildkernel_log.txt
+    nano $LOGF/buildkernel64_log.txt
+    unset READBL
   fi
 fi
 
@@ -74,26 +74,25 @@ fi
 if [ "$KERROR" != 1 ]; then
   if [ -f $ZIN/$VARIANT ]; then
     mv $ZIN/$VARIANT $ZI/$VARIANT
-    echo -e "$BLUE$BLD - Moved old $VARIANT Kernel to $ZI"
-    echo " "
+    echo -e "$RED$BLD - Moved old $VARIANT Kernel to $ZI"
   fi
-  cp arch/arm/boot/zImage $ZIN/$VARIANT
+  cp arch/arm/boot/Image.gz-dtb $ZIN/$VARIANT
   echo -e "$WHITE$BLD - New Kernel Copied to $ZIN"
   echo " "
-  echo -e "$GREEN ## Kernel for $VARIANT done ##$RATT"
+  echo -e "$LCYAN$BLD   ## Kernel for $VARIANT done ##$RATT"
   echo " "
 else # Else, finish the function with a kernel building failed!
   echo " "
-  echo -e "$RED ## Kernel Building Failed ##$RATT"
+  echo -e "$RED   ## Kernel Building Failed ##$RATT"
   echo " "
 fi
 cd $CDF
 }
 
 buildkernel_debug () {
-  echo " "
-  echo -e "$LCYAN$BLD  ## $KERNELNAME Kernel Building Script ##"
-  echo -e "$LCYAN$BLD  ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
+  checkenvironment
+  echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script x64 ($VARIANT) ##"
+  echo -e "$LCYAN$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
   echo " "
 if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                            # were not found and we cannot compile the kernel
@@ -125,25 +124,25 @@ export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
 if [ "$CLR" = 1 ]; then make clean; echo " "; fi # Clean Kernel source, this variable
                                                # is defined in config.sh
 # To avoid a false sucessfull build
-rm arch/arm/boot/zImage &> /dev/null
+rm arch/arm64/boot/Image.gz-dtb &> /dev/null
 # ---------------------------------
 
 # Load defconfig
-echo -e "$GREEN$BLD Loading Defconfig for $VARIANT...$RATT$WHITE"
+echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
 echo " "
 # Load $VARIANT defconfig
-make lineageos_"$VARIANT"_defconfig
+make $DEFCONFIG
 # -----------------------
 
 # Start compiling kernel
-echo -e "$GREEN$BLD Compiling... This may take a while...$RATT$WHITE"
-make CONFIG_NO_ERROR_ON_MISMATCH=y $1
-echo " Done"                       # $NJOBS = Number of processor cores
+echo -e "$GREEN$BLD - Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$$RATT$WHITE"
+make -j4
+echo "   Done"                       # $NJOBS = Number of processor cores
 echo " "                           # defined in config.sh
 
 # Verify if the kernel were built
 KERROR=0
-if [ ! -f ./arch/arm/boot/zImage ]; then # If theres no zImage built then there was
+if [ ! -f ./arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
   export KERROR=1                          # an error compiling the kernel
        # KERROR will alert other scripts
        # that the kernel build failed
@@ -154,17 +153,16 @@ fi
 if [ "$KERROR" != 1 ]; then
   if [ -f $ZIN/$VARIANT ]; then
     mv $ZIN/$VARIANT $ZI/$VARIANT
-    echo -e "$BLUE$BLD - Moved old $VARIANT Kernel to $ZI"
-    echo " "
+    echo -e "$RED$BLD - Moved old $VARIANT Kernel to $ZI"
   fi
-  cp arch/arm/boot/zImage $ZIN/$VARIANT
+  cp arch/arm64/boot/Image.gz-dtb $ZIN/$VARIANT
   echo -e "$WHITE$BLD - New Kernel Copied to $ZIN"
   echo " "
-  echo -e "$GREEN ## Kernel for $VARIANT done ##$RATT"
+  echo -e "$LCYAN$BLD   ## Kernel for $VARIANT done ##$RATT"
   echo " "
 else # Else, finish the function with a kernel building failed!
   echo " "
-  echo -e "$RED ## Kernel Building Failed ##$RATT"
+  echo -e "$RED   ## Kernel Building Failed ##$RATT"
   echo " "
 fi
 cd $CDF
