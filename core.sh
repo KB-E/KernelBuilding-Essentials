@@ -44,8 +44,8 @@ if [ ! -f $CDF/resources/other/firstrun ]; then
   if [ -d $CDF/out/ ]; then
     rm -rf $CDF/out/
   fi
-  if [ -f $CDF/resources/logs/* ]; then
-    rm $CDF/resources/logs/*
+  if [ -d $CDF/resources/logs/ ]; then
+    rm -rf $CDF/resources/logs/
   fi
   echo -e "   Done"
 sleep 1.5
@@ -63,13 +63,13 @@ fi
 if [ -d $CDF/out/ ]; then
   rm -rf $CDF/out/
 fi
-if [ -d $CDF/resources/logs/* ]; then
-  rm $CDF/resources/logs/*
+if [ -d $CDF/resources/logs/ ]; then
+  rm -rf $CDF/resources/logs/
 fi
 if [ -f $CDF/resources/other/firstrun ]; then
   rm $CDF/resources/other/firstrun
 fi
-if [ -d $CDF/source/ ]; then
+if [ -d $CDF/source/ ] && [ ! -d ../source ]; then
   mv $CDF/source/ ../
 fi
 if [ -f $CDF/resources/other/variants.sh ]; then

@@ -198,6 +198,7 @@ fi
 echo " "
 
 # Variant and Defconfig 
+unset UDF
 if [ -f $OTHERF/variants.sh ]; then
   read -p "   Use lastest defined variants? [y/n]: " UDF
   if [ "$UDF" = y ] || [ "$UDF" = Y ]; then

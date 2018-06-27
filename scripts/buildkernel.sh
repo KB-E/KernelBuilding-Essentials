@@ -40,10 +40,8 @@ rm arch/arm/boot/zImage &> /dev/null
 # ---------------------------------
 
 # Load defconfig
-echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
+echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE $(make $DEFCONFIG &>> $LOGF/buildkernel_log.txt)Done"
 echo " "
-# Load $VARIANT defconfig
-make $DEFCONFIG &>> $LOGF/buildkernel_log.txt
 # -----------------------
 
 # Start compiling kernel
