@@ -22,7 +22,7 @@ echo " "
   # --------
   # Upload the Kernel Installer(s)
   US=0
-  echo -e "$GREEN$BLD - Uploading Zip for $VARIANT to MEGA..."
+  echo -e "$GREEN$BLD - Uploading Zip for $VARIANT to MEGA...$WHITE"
   if [ "$BLDTYPE" = "A" ]; then
     megaput $NZIPS/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AROMA_"$DATE"_"$VARIANT"_KB-E"$KBV".zip
     echo -e "   Done$RATT"

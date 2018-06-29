@@ -43,6 +43,7 @@ else
 fi
 
 echo -e "$LCYAN$BLD   Done$RATT"
+echo " "
 
 }
 
