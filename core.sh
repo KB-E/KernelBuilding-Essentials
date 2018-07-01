@@ -80,7 +80,7 @@ echo -e "   Done"
 
 # Start
 # KB-E Version
-KBV=0.9
+KBV=1.0
 clear # Clear user UI
 unset CWK
 X=0
