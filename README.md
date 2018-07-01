@@ -13,7 +13,7 @@ crosscompiler is downloaded automatically).
 
 --------------------------------------------------------------------------------
 
-## INDEX: ##
+# INDEX: #
 
 Line 26: Program and 'essentials' explanation
 Line 104: Other program commands (Functions)
@@ -23,7 +23,7 @@ Line 247: That's all
 
 --------------------------------------------------------------------------------
 
-# Let's talk about the program: #
+## Let's talk about the program: ##
 
 In order to run this program, you have to run "core.sh", this is the main script,
 to execute it, run ". core.sh" has a command and the program will initialize, after
@@ -33,13 +33,13 @@ you'll be into the first run and once it's finished, you can execute this progra
 again to start the config process where this program will prompt you for the session
 needed information
 
-## 'essentials' Command ##
+# 'essentials' Command #
 
 Here is where you start once you finish setting all the configs, 'essentials' is the 
 main command of this program, but it only works with flags, otherwise it'll display
 the flags information that I'm gonna explain right now:
 
-# '--kernel' Flag: #
+## '--kernel' Flag: ##
 
 This flag added to the command 'essentials' (essentials --kernel) is going to build
 your kernel automatically using the data that you entered previously, you don't have
@@ -56,7 +56,7 @@ kernel for the same device and variant, then your old kernel will be moved to
 './out/zImages/' and the new one to './out/zImagesNew/'. The kernel name is the
 same has device variant name.
 
-# '--dtb' Flag #
+## '--dtb' Flag ##
 
 This flag added to the command 'essentials' (essentials --dtb) is going to build the
 variant dtb (Device tree) image for your specific device and variant, this only applies
@@ -65,7 +65,7 @@ tree image for the kernel that you're going to build
 
 The dtb image built is going to be stored into './out/dt/'.
 
-# '--anykernel' Flag # 
+## '--anykernel' Flag ## 
 
 This flag added to the command 'essentials' (essentials --anynerel) is going to build 
 the installer for your variant using AnyKernel by osm0sis, during the configuration this
@@ -83,13 +83,13 @@ dont have MEGATools installed, this software is going download and install it
 
 3) Manually set your own template into './out/aktemplate/' folder, that's it.
 
-# '--upload' Flag #
+## '--upload' Flag ##
 
 This flag added to the command 'essentials' (essentials --upload) is going to upload your
 recently AnyKernel installer to your MEGA Account, if you don't have MEGA Installed this
 software is going to download and install it
 
-# '--all' Flag #
+## '--all' Flag ##
 
 This flag added to the command 'essentials' (essentials --all) will do everything the above
 flags do, in order. Very useful if you want to do automatically all the processes from 
@@ -101,7 +101,7 @@ all the functions are going to be done in order to prevent an error (For example
 
 --------------------------------------------------------------------------------
 
-## Other program commands (Functions) ##
+# Other program commands (Functions) #
 
 You can manually execute the functions of this program, there's a lot of them used by this
 software and I'll explain here some of them:
@@ -118,7 +118,7 @@ software and I'll explain here some of them:
 
 I'll explain each one:
 
-# checkfolders #
+## checkfolders ##
 
 This command will check in there's all folders needed to start working in your
 environment, to be more specific, it creates an "out" folder and inside it other
@@ -132,7 +132,7 @@ out/aktemplate: Base Zips for new kernel installer builds (AnyKernel)
 out/mega_aktemplate: Base Zips for new kernel installer builds from MEGA (AnyKernel)
 out/dt: New Device Tree Images for each variants (dtb)
 
-# checkenvironment #
+## checkenvironment ##
 
 This command will check for the path of your crosscompiler,  Also, it'll check 
 the DTB tool that you shouldn't worry about because it's included in ./resources/dtb/dtbToolLineage, it'll check also check for the Zip Tool to re-pack
@@ -142,7 +142,7 @@ Note that, if this program doesn't detect the crosscompiler path, kernel
 building process will be cancelled (In which case it would be extremely rare because
 this software auto-downloads the correspondent crosscompiler).
 
-# megacheck #
+## megacheck ##
 
 This command will check if MEGA is installed, if it is, it's going the check for
 the ~/.megarc configuration file for automatic login and uploads (This file is
@@ -153,7 +153,7 @@ You can also run this program with --reconfigure flag (megacheck --reconfigure)
 to re-configure megarc file, I mean, to change the email, password or both in
 case of an error or you just want to use another account
 
-# buildkernel #
+## buildkernel ##
 
 This is the command to initialize Kernel Building, if your crosscompiler path is
 set correctly, this will build the kernel on the source that you previously
@@ -163,7 +163,7 @@ where you can see what went wrong in the process. After a successful build, the
 old kernel built (it theres one) will be moved to "./out/zImages" and new Kernel
 will be copied to "./out/zImagesNew".
 
-# buildkernel_debug #
+## buildkernel_debug ##
 
 This is the same script as above with two differences:
 
@@ -172,13 +172,13 @@ This is the same script as above with two differences:
 2) buildkernel_log.txt isn't gonna be used here because you'll see all the
 process
 
-# build_dtb #
+## build_dtb ##
 
 This command will generate the dt.img (Device Tree Image) using the
 dtbToolLineage inside './resources/dtb/', the file will be renamed to the variant
 name specified for your phone and moved to './out/dtb'.
 
-# make_anykernel #
+## make_anykernel ##
 
 This command will work depending on which option you selected during the
 configuration phase of this software, if you selected to use the local template
@@ -190,12 +190,12 @@ If you selected to download and extract the template from MEGA, then this
 command will do the same but using the './out/mega_aktemplate' folder instead 
 to make a new installer.
 
-# megaupload #
+## megaupload ##
 
 No, I'm not talking about old megaupload.com, this command will upload your 
 new kernel installer into the root of your MEGA Account, that's all :)
 
-# kbeclear #
+## kbeclear ##
 
 This command will make a full cleaning of your KB-E folder, if you break 
 something or this software isn't working as expected you can always try to
@@ -204,14 +204,14 @@ your source folder.
 
 ---
 
-# IMPORTANT #
+## IMPORTANT ##
 
 Don't use these commands when you're building anything for multi-variants, 
 rather use the essentials command, this will only work the first variant
 
 --------------------------------------------------------------------------------
 
-## defaultsettings.sh ##
+# defaultsettings.sh #
 
 As I said before, this program will prompt to you for data that'll be used
 during all the processes, but, here comes the "./defaultsettings.sh".
@@ -225,7 +225,7 @@ faster and automatized session of this program.
 
 --------------------------------------------------------------------------------
 
-## Variables ##
+# Variables #
 
 This program uses a lot of variables, but, some of them can be changed during 
 the a session, it could be very useful if you want to quickly change a config
@@ -244,7 +244,7 @@ some variables that you might need to know are these:
 
 --------------------------------------------------------------------------------
 
-## That's all ##
+# That's all #
 
 This program, can run on every Linux machine and it's fully portable, you can
 extract it anywhere you want but you must cd (enter this directory), to run
