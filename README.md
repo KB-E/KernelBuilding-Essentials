@@ -15,11 +15,11 @@ crosscompiler is downloaded automatically).
 
 # INDEX: #
 
-Line 26: Program and 'essentials' explanation
-Line 104: Other program commands (Functions)
-Line 214: The 'defaultsettings.sh' config file
-Line 228: Program Variables
-Line 247: That's all
+- Line 26: Program and 'essentials' explanation
+- Line 104: Other program commands (Functions)
+- Line 214: The 'defaultsettings.sh' config file
+- Line 228: Program Variables
+- Line 247: That's all
 
 --------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ you'll be into the first run and once it's finished, you can execute this progra
 again to start the config process where this program will prompt you for the session
 needed information
 
-# 'essentials' Command #
+# Command: 'essentials' #
 
 Here is where you start once you finish setting all the configs, 'essentials' is the 
 main command of this program, but it only works with flags, otherwise it'll display
@@ -124,13 +124,13 @@ This command will check in there's all folders needed to start working in your
 environment, to be more specific, it creates an "out" folder and inside it other
 sub-folders that I'll explain:
 
-out: Main output folder
-out/zImagesNew: Recently built zImages
-out/zImages: Last Built zImages
-out/newzips: New Zips built output folder (AROMA/AnyKernel/Others)
-out/aktemplate: Base Zips for new kernel installer builds (AnyKernel)
-out/mega_aktemplate: Base Zips for new kernel installer builds from MEGA (AnyKernel)
-out/dt: New Device Tree Images for each variants (dtb)
+- out: Main output folder
+- out/zImagesNew: Recently built zImages
+- out/zImages: Last Built zImages
+- out/newzips: New Zips built output folder
+- out/aktemplate: Base Zips for new kernel installer builds (AnyKernel)
+- out/mega_aktemplate: Base Zips for new kernel installer builds from MEGA (AnyKernel)
+- out/dt: New Device Tree Images for each variants (dtb)
 
 ## checkenvironment ##
 
