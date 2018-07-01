@@ -19,7 +19,7 @@ installmega () {
     return 1
   fi
   echo " "
-  echo -e "$GREEN$BLD - Installing MEGATools...$WHITE"
+  echo -e "$GREEN$BLD   Installing MEGATools...$WHITE"
   # Make temp folder for installation
   mkdir megatemp
   cd megatemp
@@ -31,7 +31,7 @@ installmega () {
   ./configure
   make
   sudo make install
-  cd ../
+  cd ../../
   # Clean temp folder
   rm -rf megatemp
   echo -e "$WHITE   Done"
@@ -40,24 +40,9 @@ installmega () {
   unset NOUP
 }
 
-# Download the correspondent crosscompiler
-downloadcc () {
-  echo " "
-  echo -e "$GREEN - Downloading the $ARCH CrossCompiler... $WHITE"
-  echo " "
-  if [ "$ARCH" = arm64 ]; then
-    git clone https://github.com/KB-E/gcc-arm64 $CDF/resources/crosscompiler/arm64/
-    echo -e "$WHITE   Done"
-  fi
-  if [ "$ARCH" = arm ]; then
-    git clone https://github.com/KB-E/gcc-arm $CDF/resources/crosscompiler/arm/
-    echo -e "$WHITE   Done"
-  fi
-}
-
 # AnyKernel extract
 templatesconfig () {
   cp -rf $AKTF/* $AKT
-  echo -e "$GREEN - AnyKernel Extract Done"
+  echo -e "$GREEN   AnyKernel Extract Done"
   export AKED=1
 }

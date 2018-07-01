@@ -8,7 +8,8 @@ echo " "
 echo -e "$GREEN$BLD - Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed
-  echo -e "$RED - MegaTools is not installed!$WHITE"
+  echo " "
+  echo -e "$RED   MegaTools is not installed!$WHITE"
   export NOUP=1 # Export NoUpload, this will cancel megaupload function
                 # because MEGATools isn't installed
   read -p "   Install MEGATools Now? (It'll take some time depending of your connection) [Y/N]: " IMT
@@ -19,10 +20,10 @@ else
   export NOUP=0
   echo -e "$WHITE   MegaTools found!"
   if [ ! -f ~/.megarc ]; then # If MEGATools is intalled but megarc is missing
-                              # we'll create it (necessary for automatic uploads)
-    sudo chown $USER:users ~/.megarc
+                              # we'll create it (necessary for automatic upload)
     echo " "
-    echo -e "$LRED - File megarc is not configured yet! Please enter your email and password for uploads$WHITE"
+    echo -e "$RED$BLD - File megarc is not configured yet! Please enter your email and password for uploads$WHITE"
+    echo " "
     sudo echo "[Login]" > ~/.megarc
     read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc
     read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
@@ -33,6 +34,9 @@ else
     unset MEGAE
     unset MEGAP
     # ----------------------------------
+    if [ -f ~/.megarc ]; then
+      sudo chown $USER:users ~/.megarc
+    fi
   fi
 fi
 
@@ -42,7 +46,7 @@ if [ "$1" = "--reconfigure" ]; then
   export NOUP=0
   sudo chown $USER:users ~/.megarc
   echo " "
-  echo -e "$GREEN$BLD - Re-Configuring megarc File...$WHITE"
+  echo -e "$GREEN$BLD   Re-Configuring megarc File...$WHITE"
   echo " "
   sudo echo "[Login]" > ~/.megarc
   read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc

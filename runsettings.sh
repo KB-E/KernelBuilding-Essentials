@@ -31,21 +31,21 @@ fi
 # this time, the user deleted it or its corrupt, if that's the case, the user must
 # download dtbToolLineage again or re-download this script
 if [ "$NODTB" = 1 ]; then
-  echo -e "$RED - dtbToolLineage not found... this is is beacuse its corrupt or the user "
+  echo -e "$RED   dtbToolLineage not found... this is is beacuse its corrupt or the user "
   echo -e "   deleted it, please, download it again or re-download this program"
 fi
-echo -e "$WHITE - Your Kernel source goes in the ./source folder, you can download there all the"
+echo -e "$WHITE   Your Kernel source goes in the ./source folder, you can download there all the"
 echo -e "   kernel sources you want, this program will prompt you which one you're "
 echo -e "   going to build every session"
 echo " "
-echo -e " - Also, every session this program will prompt to you things like the kernel name, version,"
+echo -e "   Also, every session this program will prompt to you things like the kernel name, version,"
 echo -e "   target android, build type, etc... You can skip all of this by enabling the variable "
 echo -e "   'DSENABLED' in ./defaultsettings.sh and configuring it at your please, this program has"
 echo -e "   been made to make everything you need automatically."
 echo -e "$GREEN"
-read -p "Press enter to continue..."
+read -p "   Press enter to continue..."
 echo " "
-echo -e "$WHITE - First run is done, run the command 'kbhelp' for more information and run this"
+echo -e "$WHITE   First run is done, run the command 'kbhelp' for more information and run this"
 echo -e "   program again!"
 export FRF=1
 return 1
@@ -58,18 +58,15 @@ unset BTYPE; unset AKBO; unset KDEBUG; unset RD
 
 if [ ! -d ./source/* ]; then
 echo " "
-echo -e "$RED - No Kernel Source Found... Continue without it? [Y/N]: "
-read -p "   " CWK
-fi
-if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
-echo -e "$WHITE   Aborting..."
-echo -e "$RATT"
+echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
+CWK=n
+echo " "
 return 1
 fi
 
 # Prompt for data
 echo " "
-echo -e "$GREEN - Please, enter the necessary data for this session...$WHITE"
+echo -e "$GREEN$BLD - Please, enter the necessary data for this session...$WHITE"
 echo " "
 read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; if [ "$KERNELNAME" = "" ]; then return 1; fi
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
@@ -89,12 +86,12 @@ BLDTYPE=K # Aroma is still not available
 
 # Get the ARCH Type
 echo " "
-echo -e "$GREEN - Choose ARCH Type (1 = 32Bits Devices; 2 =  64Bits Devices) $WHITE"
+echo -e "$GREEN$BLD - Choose ARCH Type ($WHITE 1 = 32Bits Devices; 2 =  64Bits Devices $GREEN$BLD) $WHITE"
 until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
   read -p "   Your option [1/2]: " ARMT
   if [ "$ARMT" != "1" ] && [ "$ARMT" != "2" ]; then
     echo " "
-    echo -e "$RED - Error, invalid option, try again..."
+    echo -e "$RED$BLD - Error, invalid option, try again..."
     echo -e "$WHITE"
   fi
 done
@@ -109,15 +106,19 @@ if [ "$ARCH" = "arm" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE)"
-    downloadcc
+  echo " "
+  echo -ne "$GREEN$BLD - Downloading the $ARCH CrossCompiler..."
+  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+  echo -e "$WHITE Done"
   fi
 elif [ "$ARCH" = "arm64" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-    echo -e "$RED - Cross Compiler not found ($CROSSCOMPILE) $WHITE"
-    downloadcc
+  echo " "
+  echo -ne "$GREEN$BLD - Downloading the $ARCH CrossCompiler..."
+  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+  echo -e "$WHITE Done"
   fi
 fi
 
@@ -125,9 +126,9 @@ fi
 if [ "$BLDTYPE" = "K" ]; then
   BTYPE=AnyKernel
 echo " "
-echo -e "$GREEN - Choose an option for $BTYPE Installer: "
+echo -e "$GREEN$BLD - Choose an option for $BTYPE Installer: "
 echo " "
-echo -e "$WHITE   1) Use local $BTYPE Template"
+echo -e "$WHITE   1) Use local $GREEN$BLD$BTYPE$WHITE Template"
 echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
 echo -e "      this will initialize a 'megacheck' command)"
 echo -e "   3) Let me manually set my template"
@@ -136,7 +137,7 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ] || [ "$AKBO" = "3" ]; do
   read -p "   Your option [1/2/3]: " AKBO
   if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ] && [ "$AKBO" != "3" ]; then
     echo " "
-    echo -e "$RED - Error, invalid option, try again..."
+    echo -e "$RED$BLD - Error, invalid option, try again..."
     echo -e "$WHITE"
   fi
 done
@@ -167,11 +168,9 @@ if [ "$AKBO" = "3" ]; then
 fi
 
 echo " "
-echo -e "$GREEN - Select a Kernel Source folder...$WHITE"
+echo -e "$GREEN$BLD - Select a Kernel Source folder...$WHITE"
 cd source
-select d in */; do test -n "$d" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-echo -e "   (If you think that this isn't the Kernel Source folder, run this script again"
-echo -e "    or define the source path in 'P' variable"
+select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
 if [ $ARCH = arm64 ] && [ ! -d $CDF/source/$d/arch/$ARCH/ ]; then
   echo " "
   echo -e "$RED$BLD - This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"
@@ -211,9 +210,10 @@ if [ "$UDF" != "1" ]; then
   read -p "   Device Variant: " VARIANT1; export VARIANT1
   echo -e "   Select a Defconfig: " 
   cd $P/arch/$ARCH/configs/
-  select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
+  select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
   cd $CDF
   export DEFCONFIG1=$DEF
+  echo " "
   read -p "   Add more Variants? [y/n]: " ADDMV
   if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
     X=1
@@ -263,7 +263,7 @@ fi
 
 echo " "
 export RD=1
-echo -e "$GREEN - Config Done, now you can start Building! $WHITE"
+echo -e "$GREEN$BLD - Config Done, now you can start Building! $WHITE"
 echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
 echo " "
-read -p "Press enter to continue..."
+read -p "   Press enter to continue..."
