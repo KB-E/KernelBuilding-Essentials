@@ -139,23 +139,13 @@ unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentia
 essentials () {
   # If user defined --kernel flag, Build kernel
   if [ "$1" = "--kernel" ] || [ "$2" = "--kernel" ] || [ "$3" = "--kernel" ] || [ "$4" = "--kernel" ]; then
-    if [ $KDEBUG = 1 ]; then
-      i=1
-      while var=VARIANT$((i++)); [[ ${!var} ]]; do
-        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-        DEFCONFIG=${!def}
-        VARIANT=${!var}
-        buildkernel_debug
-      done
-    else
-      i=1
-      while var=VARIANT$((i++)); [[ ${!var} ]]; do
-        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-        DEFCONFIG=${!def}
-        VARIANT=${!var}
-        buildkernel
-      done
-    fi
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+      DEFCONFIG=${!def}
+      VARIANT=${!var}
+      buildkernel
+    done
   fi
 
   # If user defined --dtb flag, Build dtb (dt.img (Device Tree Image))
