@@ -179,23 +179,13 @@ essentials () {
 
   # If user defined --all flag, do everything automatically
   if [ "$1" = "--all" ]; then
-    if [ $KDEBUG = 1 ]; then
-      i=1
-      while var=VARIANT$((i++)); [[ ${!var} ]]; do
-        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-        DEFCONFIG=${!def}
-        VARIANT=${!var}
-        buildkernel_debug
-      done
-    else
-      i=1
-      while var=VARIANT$((i++)); [[ ${!var} ]]; do
-        def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-        DEFCONFIG=${!def}
-        VARIANT=${!var}
-        buildkernel
-      done
-    fi
+    i=1
+    while var=VARIANT$((i++)); [[ ${!var} ]]; do
+      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+      DEFCONFIG=${!def}
+      VARIANT=${!var}
+      buildkernel
+    done
     i=1
     while var=VARIANT$((i++)); [[ ${!var} ]]; do
       VARIANT=${!var}
