@@ -7,6 +7,12 @@ touch ./resources/other/firstrun
 echo " "
 echo -e "$GREEN - It seems that you're running this program for the first time"
 echo -e "   Lets install some necessaty stuff... $WHITE"
+# Load auto.sh function into .bashrc
+echo "# Load auto.sh fuction and path"
+echo "CDF=$CDF" >> ~/.bashrc
+echo ". $CDF/auto.sh" >> ~/.bashrc
+. $CDF/auto.sh
+# Install necessary stuff
 installtools
 echo -e "   Done, let's begin with some initial configuration..."
 sleep 1
