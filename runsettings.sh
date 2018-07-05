@@ -8,10 +8,15 @@ echo " "
 echo -e "$GREEN - It seems that you're running this program for the first time"
 echo -e "   Lets install some necessaty stuff... $WHITE"
 # Load auto.sh function into .bashrc
-echo "# Load auto.sh fuction and path"
+echo " "
+echo -ne "$GREEN$BLD - Loading auto.sh fuction and path...$WHITE"
+echo "# Load auto.sh function and path" >> ~/.bashrc
 echo "CDF=$CDF" >> ~/.bashrc
+echo ". $CDF/resources/other/colors.sh" >> ~/.bashrc
 echo ". $CDF/auto.sh" >> ~/.bashrc
 . $CDF/auto.sh
+echo -e " Done"
+echo " "
 # Install necessary stuff
 installtools
 echo -e "   Done, let's begin with some initial configuration..."

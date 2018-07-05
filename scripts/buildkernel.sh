@@ -33,14 +33,15 @@ export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
 #echo -e "   Exported $CROSSCOMPILE"
 
 #Start Building Process
-if [ "$CLR" = 1 ]; then make clean; echo " "; fi # Clean Kernel source, this variable
-                                               # is defined in config.sh
+if [ "$CLR" = "1" ]; then make clean; echo " "; fi # Clean Kernel source
 # To avoid a false sucessfull build
-rm arch/arm/boot/zImage &> /dev/null
+rm $P/arch/arm/boot/zImage &> /dev/null
 # ---------------------------------
 
 # Load defconfig
-echo -e "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE $(make $DEFCONFIG &>> $LOGF/buildkernel_log.txt)Done"
+echo -ne "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
+make $DEFCONFIG &>> $LOGF/buildkernel_log.txt
+echo -e " Done"
 echo " "
 # -----------------------
 

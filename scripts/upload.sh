@@ -15,9 +15,11 @@ megacheck
 echo " "
   # Optional
   if [ "$BLDTYPE" = "A" ]; then
-    megarm "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AROMA_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
+    megarm /Root/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AROMA_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
+    megals --reload &> /dev/null
   elif [ "$BLDTYPE" = "K" ]; then
-    megarm "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
+    megarm /Root/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
+    megals --reload &> /dev/null
   fi
   # --------
   # Upload the Kernel Installer(s)

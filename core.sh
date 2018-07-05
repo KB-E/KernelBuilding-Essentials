@@ -23,7 +23,7 @@ fi
 sudo chmod 755 -R ./
 sudo chown -R $USER:users *
 
-# Current Directory
+# Program Directory Path
 CDF=$(pwd)
 
 # Load Colors
@@ -202,6 +202,7 @@ essentials () {
       megaupload
     done
   fi
+  cd $CURF
 }
 
 # Done
