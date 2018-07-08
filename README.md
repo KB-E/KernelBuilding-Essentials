@@ -99,6 +99,7 @@ building the kernel to uploading it ready to install.
 *NOTE* that all the above flags except '--all' can be combined, no matter in which order,
 all the functions are going to be done in order to prevent an error (For example: 
 'essentials --anykernel --kernel' will build the kernel and then build the installer)
+
 --------------------------------------------------------------------------------
 
 # Command: 'auto (device)' #
