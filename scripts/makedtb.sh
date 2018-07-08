@@ -2,7 +2,14 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 build_dtb () {
-echo -e "$LCYAN$BLD   ## Build DTB Script for $VARIANT ##"
+echo -ne "$GREEN$BLD"
+echo -e "   ___ _____ ___  " 
+echo -e "  |   \_   _| _ ) "
+echo -e "  | |) || | | _ \ "
+echo -e "  |___/ |_| |___/ "
+echo " "
+echo " "
+echo -e "$GREEN$BLD - Build DTB Script for $VARIANT "
 # Remove old dt.img from kernel source
 if [ -f $P/arch/arm/boot/dt.img ]; then
   rm $P/arch/arm/boot/dt.img &> /dev/null
@@ -12,13 +19,13 @@ fi
 if [ -f $DTB ]; then
   chmod 777 $DTB
   echo " "
-  echo -e "$GREEN$BLD - Building DTB with dtbToolLineage...$RATT$WHITE"
+  echo -ne "$WHITE   Building DTB with dtbToolLineage...$RATT$WHITE"
   $DTB -2 -o $P/arch/arm/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/arm/boot/ &> $LOGF/build-dtb_log.txt
 fi
 
 # Verify dt.img
 if [ ! -f $P/arch/arm/boot/dt.img ]; then
-  echo -e "$RED   Create dt.img failed!$RATT$WHITE"
+  echo -e "$RED Create dt.img failed!$RATT$WHITE"
   read -p "   Read build-dtb_log? [y/n]: " RDDTB
   if [ $RDDTB = y ] || [ $RDDTB = Y ]; then
     nano $LOGF/build-dtb_log.txt
@@ -28,7 +35,7 @@ if [ ! -f $P/arch/arm/boot/dt.img ]; then
   return 1
 else
   mv $P/arch/arm/boot/dt.img $DT/$VARIANT
-  echo -e "$GREEN$BLD - Sucessufully generated dt.img $RATT"
+  echo -e "$GREEN$BLD Done$RATT"
   echo " "
 fi
 }

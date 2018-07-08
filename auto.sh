@@ -52,7 +52,7 @@ auto () {
       . $CDF/resources/megaconfig.sh
       . $CDF/resources/other/folders.sh
       echo " "
-      echo -ne "$GREEN$BLD   Checking environment folders..."
+      echo -ne "$GREEN$BLD   Checking folders..."
       checkfolders &> /dev/null
       echo -e "$WHITE Done"
       . $CDF/resources/writesettings.sh

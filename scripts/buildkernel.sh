@@ -1,10 +1,18 @@
+
 # Kernel building script methods
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 buildkernel () {
-  checkenvironment
-  echo -e "$LCYAN$BLD   ## $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH) ##"
-  echo -e "$LCYAN$BLD   ## Version: $VERSION for $TARGETANDROID ROM's ## $RATT$WHITE"
+  checkenvironment &> /dev/null
+echo -ne "$GREEN$BLD"
+echo -e "   _  __                 _ "
+echo -e "  | |/ /___ _ _ _ _  ___| |  "
+echo -e "  | ' </ -_) '_| ' \/ -_) |     "
+echo -e "  |_|\_\___|_| |_||_\___|_| "
+echo " "
+echo " "
+  echo -e "$GREEN$BLD - $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH)$RATT"
+  echo -e "$WHITE   Version: $VERSION for $TARGETANDROID ROM's $RATT$WHITE"
   echo " "
 if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                          # were not found and we cannot compile the kernel
@@ -17,7 +25,7 @@ fi
 if [ -d $P ]; then # P = Path for Kernel defined by the user
                    # in the process or defaultsettings.sh
   cd $P
-  echo -e "$GREEN$BLD - Entered in $WHITE'$P' $GREEN$BLDSucessfully"
+  echo -e "$GREEN$BLD   Entered in $WHITE'$P' $GREEN$BLDSucessfully"
   echo " "
 else # If it doesnt exist it means that we don't have nothing to do
   echo -e "$RED   Path doesn't exist!"
@@ -39,14 +47,14 @@ rm $P/arch/arm/boot/zImage &> /dev/null
 # ---------------------------------
 
 # Load defconfig
-echo -ne "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
+echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
 make $DEFCONFIG &> $LOGF/buildkernel_log.txt
 echo -e " Done"
 echo " "
 # -----------------------
 
 # Start compiling kernel
-echo -e "$GREEN$BLD - Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+echo -e "$GREEN$BLD   Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$RATT$WHITE"
 if [ $ARCH = arm ]; then
   if [ "$KDEBUG" != "1" ]; then 
     make CONFIG_NO_ERROR_ON_MISMATCH=y -j4 &>> $LOGF/buildkernel_log.txt # Store logs
@@ -102,16 +110,16 @@ fi
 if [ "$KERROR" != 1 ]; then
   if [ -f $ZIN/$VARIANT ]; then
     mv $ZIN/$VARIANT $ZI/$VARIANT
-    echo -e "$RED$BLD - Moved old $VARIANT Kernel to $ZI"
+    echo -e "$GREEN$BLD   Moved old $VARIANT Kernel to$WHITE '$ZI'"
   fi
   if [ $ARCH = arm ]; then
     cp arch/arm/boot/zImage $ZIN/$VARIANT
   elif [ $ARCH = arm64 ]; then
     cp arch/arm/boot/Image.gz-dtb $ZIN/$VARIANT
   fi
-  echo -e "$WHITE$BLD - New Kernel Copied to $ZIN"
+  echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZIN'"
   echo " "
-  echo -e "$LCYAN$BLD   ## Kernel for $VARIANT done ##$RATT"
+  echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
   echo " "
 else # Else, finish the function with a kernel building failed!
   echo " "
