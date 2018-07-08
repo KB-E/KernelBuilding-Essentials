@@ -16,7 +16,7 @@ crosscompiler is downloaded automatically).
 # INDEX: #
 
 - Line 26: Program and Command: 'essentials' explanation
-- Line 104: Command: 'auto <device>' explanation
+- Line 104: Command: 'auto (device)' explanation
 - Line 122: Other program commands (Functions)
 - Line 232: The 'defaultsettings.sh' config file
 - Line 246: Program Variables
@@ -101,7 +101,7 @@ all the functions are going to be done in order to prevent an error (For example
 'essentials --anykernel --kernel' will build the kernel and then build the installer)
 --------------------------------------------------------------------------------
 
-# Command: 'auto <device>' #
+# Command: 'auto (device)' #
 
 This command allows you to make pre-configured files for a specified device, it requires that you have executed the program core.sh for the first time because it stores some config in your
 ~/.bashrc file, then, you can turn on or restart your machine and this command will still be 
@@ -114,7 +114,7 @@ promt to you all the data required for kernel, dtb (if applies), anykernel and u
 Once you have configured your device it'll be stored and when you run again the command 'auto'
 followed by the device name you configured before, (for example: auto oneplus) it'll load that device config file and build everything automatically (Kernel, dtb if applies, anykernel and upload if its enabled)
 
-You can also, edit a device file with 'auto <device> --edit' or remove it with '--remove'. As I 
+You can also, edit a device file with 'auto (device) --edit' or remove it with '--remove'. As I 
 said before, this command always works and can be executed anywhere.
 
 --------------------------------------------------------------------------------
