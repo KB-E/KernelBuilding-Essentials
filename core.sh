@@ -139,16 +139,17 @@ unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentia
 essentials () {
   # Instructions
   if [ "$1" = "" ]; then
-  echo " "
-  echo "Usage: essentials --kernel (Builds the kernel)                   | "
-  echo "                  --dtb (Builds device tree image)               | These flags "
-  echo "                  --anykernel (Builds the kernel installer)      | can be combined"
-  echo "                  --upload (Upload the kernel installer to MEGA) |"
-  echo "                                                                   "
-  echo "                  --all (Does everything mentioned above)        | Work alone "
-  echo " "
-  echo "For more information use 'kbhelp' command"
-  echo " "
+    echo " "
+    echo "Usage: essentials --kernel (Builds the kernel)                   | "
+    echo "                  --dtb (Builds device tree image)               | These flags "
+    echo "                  --anykernel (Builds the kernel installer)      | can be combined"
+    echo "                  --upload (Upload the kernel installer to MEGA) | "
+    echo "                                                                   "
+    echo "                  --all (Does everything mentioned above)        | Work alone "
+    echo " "
+    echo "For more information use 'kbhelp' command"
+    echo " "
+  fi
   # If user defined --kernel flag, Build kernel
   if [ "$1" = "--kernel" ] || [ "$2" = "--kernel" ] || [ "$3" = "--kernel" ] || [ "$4" = "--kernel" ]; then
     i=1
