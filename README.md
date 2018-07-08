@@ -1,5 +1,5 @@
  ## Guide for KB-E (Kernel Building - Essentials) ##
-   ## By Artx/Stayn <jesusgabriel.91@gmail.com> ##
+   ### By Artx/Stayn <jesusgabriel.91@gmail.com> ###
 
 This Guide is going to tell you all the basics and functionality of this
 program made for automatic building of all your Kernel related process as
@@ -15,11 +15,12 @@ crosscompiler is downloaded automatically).
 
 # INDEX: #
 
-- Line 26: Program and 'essentials' explanation
-- Line 104: Other program commands (Functions)
-- Line 214: The 'defaultsettings.sh' config file
-- Line 228: Program Variables
-- Line 247: That's all
+- Line 26: Program and Command: 'essentials' explanation
+- Line 104: Command: 'auto <device>' explanation
+- Line 122: Other program commands (Functions)
+- Line 232: The 'defaultsettings.sh' config file
+- Line 246: Program Variables
+- Line 265: That's all
 
 --------------------------------------------------------------------------------
 
@@ -98,6 +99,23 @@ building the kernel to uploading it ready to install.
 *NOTE* that all the above flags except '--all' can be combined, no matter in which order,
 all the functions are going to be done in order to prevent an error (For example: 
 'essentials --anykernel --kernel' will build the kernel and then build the installer)
+--------------------------------------------------------------------------------
+
+# Command: 'auto <device>' #
+
+This command allows you to make pre-configured files for a specified device, it requires that you have executed the program core.sh for the first time because it stores some config in your
+~/.bashrc file, then, you can turn on or restart your machine and this command will still be 
+available for it's use
+
+When you run 'auto' and next to it you specify the device (for example: auto oneplus), if the 
+device (oneplus) doesn't exist in the device database (./resources/devices/) then, it'll 
+promt to you all the data required for kernel, dtb (if applies), anykernel and upload process
+
+Once you have configured your device it'll be stored and when you run again the command 'auto'
+followed by the device name you configured before, (for example: auto oneplus) it'll load that device config file and build everything automatically (Kernel, dtb if applies, anykernel and upload if its enabled)
+
+You can also, edit a device file with 'auto <device> --edit' or remove it with '--remove'. As I 
+said before, this command always works and can be executed anywhere.
 
 --------------------------------------------------------------------------------
 
@@ -228,7 +246,7 @@ faster and automatized session of this program.
 # Variables #
 
 This program uses a lot of variables, but, some of them can be changed during 
-the a session, it could be very useful if you want to quickly change a config
+a session, it could be very useful if you want to quickly change a config
 some variables that you might need to know are these: 
 
 - KERNELNAME - This variable contains the kernel name
