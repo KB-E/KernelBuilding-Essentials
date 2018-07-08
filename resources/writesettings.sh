@@ -28,6 +28,7 @@ echo " "
 read -p "   Kernel Name: " KERNELNAME; echo "export KERNELNAME=$KERNELNAME" >> $FILE
 read -p "   Target Android OS: " TARGETANDROID; echo "export TARGETANDROID=$TARGETANDROID" >> $FILE
 read -p "   Version: " VERSION; echo "export VERSION=$VERSION" >> $FILE
+read -p "   Upload Installer to MEGA? [y/n]: " UIM; echo "export UIM=$UIM" >> $FILE
 
 #read -p "   Number of Compiling Jobs: " NJOBS; export NJOBS
 

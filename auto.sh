@@ -87,7 +87,9 @@ auto () {
     buildkernel
     build_dtb
     make_anykernel
-    megaupload
+    if [ "$UIM" = y ] || [ "$UIM" = Y ]; then
+      megaupload
+    fi
     echo -e "$GREEN$BLD - $1$WHITE Done!$RATT"
     # Clear Variables
     unset CURF;
