@@ -53,19 +53,22 @@ echo -e " Done"
 echo " "
 # -----------------------
 
+# Get the number of CPU Cores
+JOBS=$(grep -c ^processor /proc/cpuinfo)
+
 # Start compiling kernel
-echo -e "$GREEN$BLD   Compiling... This may take a while... $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+echo -e "$GREEN$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
 if [ $ARCH = arm ]; then
   if [ "$KDEBUG" != "1" ]; then 
-    make CONFIG_NO_ERROR_ON_MISMATCH=y -j4 &>> $LOGF/buildkernel_log.txt # Store logs
+    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS &>> $LOGF/buildkernel_log.txt # Store logs
   else
-    make CONFIG_NO_ERROR_ON_MISMATCH=y -j4
+    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS 
   fi
 elif [ $ARCH = arm64 ]; then
   if [ "$KDEBUG" != "1" ]; then 
-    make -j4 &>> $LOGF/buildkernel64_log.txt # Store logs
+    make -j$JOBS  &>> $LOGF/buildkernel64_log.txt # Store logs
   else
-    make -j4
+    make -j$JOBS 
   fi
 fi
 echo "   Done"
