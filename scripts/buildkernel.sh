@@ -40,7 +40,7 @@ rm $P/arch/arm/boot/zImage &> /dev/null
 
 # Load defconfig
 echo -ne "$GREEN$BLD   Loading Defconfig for $VARIANT...$RATT$WHITE"
-make $DEFCONFIG &>> $LOGF/buildkernel_log.txt
+make $DEFCONFIG &> $LOGF/buildkernel_log.txt
 echo -e " Done"
 echo " "
 # -----------------------

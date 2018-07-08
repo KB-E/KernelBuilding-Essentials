@@ -6,8 +6,8 @@ checkfolders () {
   echo -e "$GREEN$BLD - Checking Enviroment Folders..."
   sleep 0.5
   folder () {
-    if [ ! -d $FD ]; then
-      mkdir $FD
+    if [ ! -d $CDF/$FD ]; then
+      mkdir $CDF/$FD
       echo -e "$WHITE   Generated $FD folder$RATT"
     fi
   }
@@ -20,6 +20,7 @@ checkfolders () {
   FD=out/dt; folder
   FD=source; folder
   FD=resources/logs; folder
+  FD=resources/devices; folder
   #echo " "
   echo -e "$GREEN$BLD   Done$RATT"
   echo " "

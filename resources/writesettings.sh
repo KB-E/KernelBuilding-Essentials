@@ -15,6 +15,7 @@ echo " " >> $FILE
 if [ ! -d $CDF/source/* ]; then
 echo " "
 echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
+rm $CDF/resources/devices/$DEVICE
 CWK=n
 echo " "
 return 1
@@ -139,7 +140,7 @@ echo -e "   Select a Defconfig: "
 cd $P/arch/$ARCH/configs/
 select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
 cd $CURF
-echo "export DEFCONFIG1=$DEF" >> $FILE
+echo "export DEFCONFIG=$DEF" >> $FILE
 echo " "
 
 # Device Tree Image

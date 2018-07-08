@@ -75,7 +75,7 @@ fi
 if [ -f $CDF/resources/other/variants.sh ]; then
   rm $CDF/resources/other/variants.sh
 fi
-echo -e "   Done"
+echo -e "   Done$RATT"
 }
 
 # Start
