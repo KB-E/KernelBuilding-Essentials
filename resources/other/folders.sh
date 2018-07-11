@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Generate Enviroment Necessary Folders
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Check Building Tools
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

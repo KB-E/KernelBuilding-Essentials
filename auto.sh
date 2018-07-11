@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Load predefined Device configuration file and work on it
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

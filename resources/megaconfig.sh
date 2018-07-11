@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # MEGA Config file for New Releases Sharing
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

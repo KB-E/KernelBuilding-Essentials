@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Help command
 
 kbhelp () {

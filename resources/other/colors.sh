@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Colors and Formats facility
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

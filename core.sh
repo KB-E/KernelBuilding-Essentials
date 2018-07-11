@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

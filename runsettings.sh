@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Session settings
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

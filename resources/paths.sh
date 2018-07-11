@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # All Paths used for the Program facility
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

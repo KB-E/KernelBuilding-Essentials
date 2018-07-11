@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Predefined config for KB-E
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 

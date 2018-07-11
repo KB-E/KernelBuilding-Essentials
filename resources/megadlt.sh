@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # MEGA AnyKernel Zip Download Facility
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
