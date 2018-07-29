@@ -99,14 +99,16 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "3" ]; do
     echo -e "$WHITE"
   fi
   if [ "$AKBO" = "2" ]; then
-    if [ ! -d $UTF/*/anykernel.sh ]; then
+    if [ ! -f $UTF/*/anykernel.sh ]; then
+      echo " "
       echo -e "$RED$BLD There isn't any template inside 'templates' folder, choose other option$RATT"
+      echo " "
     else
       CURR=$(pwd)
       cd $UTF
       select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
       cd $CURR; unset CURR
-      echo "export TF=$d" >> $FILE
+      echo "export TF=$UTF/$d" >> $FILE
       break
     fi
   fi

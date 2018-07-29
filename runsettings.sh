@@ -142,8 +142,7 @@ echo " "
 echo -e "$GREEN$BLD - Choose an option for $BTYPE Installer: "
 echo " "
 echo -e "$WHITE   1) Use local $GREEN$BLD$BTYPE$WHITE Template"
-echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
-echo -e "      this will initialize a 'megacheck' command)"
+echo -e "   2) Select a template from your 'templates' folder"
 echo -e "   3) Let me manually set my template"
 echo " "
 until [ "$AKBO" = "1" ] || [ "$AKBO" = "3" ]; do
@@ -154,14 +153,16 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "3" ]; do
     echo -e "$WHITE"
   fi
   if [ "$AKBO" = "2" ]; then
-    if [ ! -d $UTF/*/anykernel.sh ]; then
+    if [ ! -f $UTF/*/anykernel.sh ]; then
+      echo " "
       echo -e "$RED$BLD There isn't any template inside 'templates' folder, choose other option$RATT"
+      echo " "
     else
       CURR=$(pwd)
       cd $UTF
       select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
       cd $CURR; unset CURR
-      export TF=$d
+      export TF=$UTF/$d
       break
     fi
   fi

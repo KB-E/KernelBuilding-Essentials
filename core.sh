@@ -115,9 +115,9 @@ sleep 0.5
 . resources/other/folders.sh
 . resources/paths.sh
 . resources/buildtools.sh
-. resources/setuptools.sh
+. resources/programtools.sh
 . resources/megaconfig.sh
-. resources/megadlt.sh
+#. resources/megadlt.sh
 . resources/other/help.sh
 . scripts/buildkernel.sh
 . scripts/makedtb.sh
