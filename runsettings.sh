@@ -146,12 +146,24 @@ echo -e "   2) Download a Template from your MEGA (If MEGA isn't configured"
 echo -e "      this will initialize a 'megacheck' command)"
 echo -e "   3) Let me manually set my template"
 echo " "
-until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ] || [ "$AKBO" = "3" ]; do
+until [ "$AKBO" = "1" ] || [ "$AKBO" = "3" ]; do
   read -p "   Your option [1/2/3]: " AKBO
   if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ] && [ "$AKBO" != "3" ]; then
     echo " "
     echo -e "$RED$BLD - Error, invalid option, try again..."
     echo -e "$WHITE"
+  fi
+  if [ "$AKBO" = "2" ]; then
+    if [ ! -d $UTF/*/anykernel.sh ]; then
+      echo -e "$RED$BLD There isn't any template inside 'templates' folder, choose other option$RATT"
+    else
+      CURR=$(pwd)
+      cd $UTF
+      select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
+      cd $CURR; unset CURR
+      export TF=$d
+      break
+    fi
   fi
 done
 
@@ -165,19 +177,10 @@ if [ "$AKBO" = "1" ]; then
   fi
 fi
 
-if [ "$AKBO" = "2" ]; then
-  # Tell the makeanykernel script to use the "./out/mega_aktemplates folder for anykernel building"
-  export TF=$MAKT
-  # If this file is missing we can assume that we need to restore this template
-  if [ ! -f $MAKT/anykernel.sh ]; then
-    megadlt
-  fi
-fi
-fi
-
 if [ "$AKBO" = "3" ]; then
   # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
   export TF=$AKT
+fi
 fi
 
 echo " "

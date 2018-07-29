@@ -17,10 +17,10 @@ checkfolders () {
   FD=out/zImagesNew; folder
   FD=out/zImages; folder
   FD=out/aktemplate; folder
-  FD=out/mega_aktemplate; folder
   FD=out/newzips; folder
   FD=out/dt; folder
   FD=source; folder
+  FD=templates; folder
   FD=resources/logs; folder
   FD=resources/devices; folder
   #echo " "

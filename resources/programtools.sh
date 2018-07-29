@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Download all Tools needed by this whole program
+# Program tools functions
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Install Building Tools
@@ -45,6 +45,6 @@ installmega () {
 # AnyKernel extract
 templatesconfig () {
   cp -rf $AKTF/* $AKT
-  echo -e "$GREEN   AnyKernel Extract Done"
+  echo -e "$GREEN$BLD   AnyKernel Extract Done"
   export AKED=1
 }
