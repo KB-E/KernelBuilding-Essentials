@@ -120,8 +120,8 @@ if [ "$ARCH" = "arm" ]; then
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
   echo " "
-  echo -ne "$GREEN$BLD - Downloading the $ARCH CrossCompiler..."
-  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+  echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
+  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
   echo -e "$WHITE Done"
   fi
 elif [ "$ARCH" = "arm64" ]; then
@@ -129,8 +129,8 @@ elif [ "$ARCH" = "arm64" ]; then
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
   echo " "
-  echo -ne "$GREEN$BLD - Downloading the $ARCH CrossCompiler..."
-  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+  echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
+  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
   echo -e "$WHITE Done"
   fi
 fi
