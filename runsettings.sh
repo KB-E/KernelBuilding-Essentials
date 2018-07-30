@@ -224,7 +224,14 @@ if [ -f $OTHERF/variants.sh ]; then
   fi
 fi
 if [ "$UDF" != "1" ]; then
-  read -p "   Device Variant: " VARIANT1; export VARIANT1
+  until [ "$VARIANT1" != "" ]; do
+    read -p "   Device Variant: " VARIANT1; export VARIANT1
+    if [ "$VARIANT1" = "" ]; then
+      echo " "
+      echo -e "$RED$BLD   Please write device variant (Device codename or device name)$WHITE"
+      echo " "
+    fi
+  done
   echo -e "   Select a Defconfig: " 
   cd $P/arch/$ARCH/configs/
   select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
