@@ -143,8 +143,15 @@ if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
 fi
 echo " "
 
-# Variant and Defconfig 
-read -p "   Device Variant: " VARIANT; echo "export VARIANT=$VARIANT" >> $FILE
+# Variant and Defconfig
+until [ "$VARIANT1" != "" ]; do
+  read -p "   Device Variant: " VARIANT1; echo "export VARIANT=$VARIANT1" >> $FILE
+  if [ "$VARIANT1" = "" ]; then
+    echo " "
+    echo -e "$RED$BLD   Please write device variant (Device codename or device name)$WHITE"
+    echo " "
+  fi
+done
 echo -e "   Select a Defconfig: " 
 cd $P/arch/$ARCH/configs/
 select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
