@@ -80,7 +80,7 @@ auto () {
     . $CDF/scripts/makedtb.sh
     . $CDF/scripts/upload.sh
     . $CDF/resources/other/folders.sh
-    . $CDF/resources/setuptools.sh
+    . $CDF/resources/programtools.sh
     echo " "
     echo -ne "$GREEN$BLD   Checking environment folders..."
     checkfolders &> /dev/null

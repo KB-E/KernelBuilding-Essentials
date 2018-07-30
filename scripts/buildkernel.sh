@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Kernel building script methods
 # By Artx/Stayn <jesusgabriel.91@gmail.com>

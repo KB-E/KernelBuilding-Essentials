@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Installer zips building solution (AnyKernel)
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
