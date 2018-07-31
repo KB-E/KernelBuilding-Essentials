@@ -55,7 +55,8 @@ everything will be logged into './resources/logs/' folder
 The Kernel built is going to be stored into './out/zImagesNew/'. If you build a new
 kernel for the same device and variant, then your old kernel will be moved to 
 './out/zImages/' and the new one to './out/zImagesNew/'. The kernel name is the
-same has device variant name.
+same has device variant name you set before (It can be anything, but you better put
+your device codename there).
 
 ## '--dtb' Flag ##
 
