@@ -139,6 +139,8 @@ unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentia
 
 # Main command, you'll tell here to the program what to do
 essentials () {
+  # Get actual path
+  CURR=$(pwd)
   # Instructions
   if [ "$1" = "" ]; then
     echo " "
@@ -217,7 +219,7 @@ essentials () {
       megaupload
     done
   fi
-  cd $CURF
+  cd $CURR; unset CURR
 }
 
 # Done
