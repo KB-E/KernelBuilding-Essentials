@@ -22,7 +22,7 @@ if [ ! -f ./resources/other/firstrun ]; then
   echo " "
 fi
 
-sudo chmod 755 -R ./
+sudo chmod 755 -R $(ls -A|grep -v 'source/*')
 sudo chown -R $USER:users *
 
 # Program Directory Path
