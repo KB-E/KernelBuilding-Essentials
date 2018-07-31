@@ -137,6 +137,7 @@ select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid
 cd $CURF
 echo -e "$WHITE"
 echo "export P=$CDF/source/$d" >> $FILE; P=$CDF/source/$d
+read -p "   Boost Kernel Compiling? [y/n]: " BKB
 read -p "   Debug Kernel Building? [y/n]: " KDEBUG
 if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
   echo "export KDEBUG=1" >> $FILE
