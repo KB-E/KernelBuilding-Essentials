@@ -56,7 +56,7 @@ echo " "
 
 # Get the number of CPU Cores
 JOBS=$(grep -c ^processor /proc/cpuinfo)
-if [ "$KBK" = y ] || [ "$KBK" = Y ]; then
+if [ "$BKB" = y ] || [ "$BKB" = Y ]; then
   JOBS=$(( $JOBS + 2 ))
 fi
 # Start compiling kernel
