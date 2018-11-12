@@ -7,7 +7,7 @@
 installtools () {
   echo " "
   sudo apt-get update
-  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler
+  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache
   echo " "
 }
 
