@@ -121,7 +121,11 @@ if [ "$KERROR" != 1 ]; then
   if [ $ARCH = arm ]; then
     cp arch/arm/boot/zImage $ZIN/$VARIANT
   elif [ $ARCH = arm64 ]; then
-    cp arch/arm/boot/Image.gz-dtb $ZIN/$VARIANT
+    if [ -f arch/arm64/boot/Image.gz-dtb ]; then 
+      cp arch/arm64/boot/Image.gz-dtb $ZIN/$VARIANT
+    elif [ -f arch/arm64/boot/Image ]; then
+      cp arch/arm64/boot/Image $ZIN/$VARIANT
+    fi
   fi
   echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZIN'"
   echo " "
