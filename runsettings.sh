@@ -130,7 +130,7 @@ elif [ "$ARCH" = "arm64" ]; then
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
   echo " "
   echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
-  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
+  git clone https://github.com/KB-E/linaro-$ARCH $CDF/resources/crosscompiler/$ARCH/
   echo -e "$WHITE Done"
   fi
 fi
