@@ -36,7 +36,9 @@ else # If it doesnt exist it means that we don't have nothing to do
 fi
 
 # Export necessary things
+export KCONFIG_NOTIMESTAMP=true
 export ARCH=$ARCH                   # If the program succed at this step, this means
+export SUB_ARCH=$ARCH;
 #echo -e "$WHITE   Exported $ARCH"
 export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
 #echo -e "   Exported $CROSSCOMPILE"
@@ -47,9 +49,15 @@ if [ "$CLR" = "1" ]; then make clean; echo " "; fi # Clean Kernel source
 rm $P/arch/arm/boot/zImage &> /dev/null
 # ---------------------------------
 
+# Get config file
+if [ ! -f $P/.config ]; then
+  cp $P/arch/$ARCH/configs/$DEFCONFIG $P/.config
+fi
+
 # Load defconfig
 echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
-make $DEFCONFIG &> $LOGF/buildkernel_log.txt
+make ARCH=$ARCH $DEFCONFIG &> $LOGF/buildkernel_log.txt
+. $P/.config
 echo -e " Done"
 echo " "
 # -----------------------
@@ -61,17 +69,18 @@ if [ "$BKB" = y ] || [ "$BKB" = Y ]; then
 fi
 # Start compiling kernel
 echo -e "$GREEN$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+echo " "
 if [ $ARCH = arm ]; then
-  if [ "$KDEBUG" != "1" ]; then 
-    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS &>> $LOGF/buildkernel_log.txt # Store logs
+  if [ "$KDEBUG" != "1" ]; then
+    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm &>> $LOGF/buildkernel_log.txt # Store logs
   else
-    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS 
+    make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm
   fi
 elif [ $ARCH = arm64 ]; then
-  if [ "$KDEBUG" != "1" ]; then 
-    make -j$JOBS  &>> $LOGF/buildkernel64_log.txt # Store logs
+  if [ "$KDEBUG" != "1" ]; then
+    make -j$JOBS ARCH=arm64 &>> $LOGF/buildkernel64_log.txt # Store logs
   else
-    make -j$JOBS 
+    make -j$JOBS ARCH=arm64
   fi
 fi
 echo "   Done"
@@ -94,7 +103,7 @@ if [ $ARCH = arm ]; then
       fi
     fi
   fi
-elif [ $ARCH = arm64 ]; then
+if [ $ARCH = arm64 ]; then
   if [ ! -f ./arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
     export KERROR=1                          # an error compiling the kernel
     if [ "$KDEBUG" != "1" ]; then
