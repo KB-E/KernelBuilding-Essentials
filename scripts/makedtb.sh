@@ -12,6 +12,10 @@ echo -e "  |___/ |_| |___/ "
 echo " "
 echo " "
 echo -e "$GREEN$BLD - Build DTB Script for $VARIANT "
+
+# Check DTB Tool
+checkdtbtool
+
 # Remove old dt.img from kernel source
 if [ -f $P/arch/arm/boot/dt.img ]; then
   rm $P/arch/arm/boot/dt.img &> /dev/null
@@ -27,6 +31,7 @@ fi
 
 # Verify dt.img
 if [ ! -f $P/arch/arm/boot/dt.img ]; then
+  echo " "
   echo -e "$RED Create dt.img failed!$RATT$WHITE"
   read -p "   Read build-dtb_log? [y/n]: " RDDTB
   if [ $RDDTB = y ] || [ $RDDTB = Y ]; then

@@ -74,7 +74,6 @@ auto () {
     echo " "
     . $CDF/resources/paths.sh
     . $CDF/resources/megaconfig.sh
-    . $CDF/resources/buildtools.sh
     . $CDF/scripts/buildkernel.sh
     . $CDF/scripts/makeanykernel.sh
     . $CDF/scripts/makedtb.sh

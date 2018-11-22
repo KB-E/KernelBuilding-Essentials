@@ -16,6 +16,8 @@ echo -e "$GREEN$BLD - AnyKernel Installer Building Script  $RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
 echo -e "   Kernel: $KERNELNAME; Variant: $VARIANT; Date: $DATE"
 
+# Check Zip Tool
+checkziptool
 # Starting the real process!
 # -----------------------
 cd $TF

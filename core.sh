@@ -114,7 +114,6 @@ sleep 0.5
 # Initialize KB-E Resources and Functions
 . resources/other/folders.sh
 . resources/paths.sh
-. resources/buildtools.sh
 . resources/programtools.sh
 . resources/megaconfig.sh
 #. resources/megadlt.sh

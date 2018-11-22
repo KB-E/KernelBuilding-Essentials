@@ -4,7 +4,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 buildkernel () {
-  checkenvironment &> /dev/null
+  checkcc &> /dev/null
 echo -ne "$GREEN$BLD"
 echo -e "   _  __                 _ "
 echo -e "  | |/ /___ _ _ _ _  ___| |  "
