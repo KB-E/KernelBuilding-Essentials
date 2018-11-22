@@ -72,12 +72,12 @@ auto () {
     export CURF=$(pwd)
     # Load necessary files
     echo " "
-    . $CDF/resources/paths.sh
+    . $CDF/resources/resources/paths.sh
     . $CDF/resources/megaconfig.sh
-    . $CDF/scripts/buildkernel.sh
-    . $CDF/scripts/makeanykernel.sh
-    . $CDF/scripts/makedtb.sh
-    . $CDF/scripts/upload.sh
+    . $CDF/resources/scripts/buildkernel.sh
+    . $CDF/resources/scripts/makeanykernel.sh
+    . $CDF/resources/scripts/makedtb.sh
+    . $CDF/resources/scripts/upload.sh
     . $CDF/resources/other/folders.sh
     . $CDF/resources/programtools.sh
     echo " "

@@ -118,11 +118,11 @@ sleep 0.5
 . resources/megaconfig.sh
 #. resources/megadlt.sh
 . resources/other/help.sh
-. scripts/buildkernel.sh
-. scripts/makedtb.sh
-. scripts/makeanykernel.sh
+. resources/scripts/buildkernel.sh
+. resources/scripts/makedtb.sh
+. resources/scripts/makeanykernel.sh
 #. scripts/makearoma.sh Disabled for now
-. scripts/upload.sh
+. resources/scripts/upload.sh
 . defaultsettings.sh
 if [ $AUSETTINGS = 1 ]; then
   . runsettings.sh
