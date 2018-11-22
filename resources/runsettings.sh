@@ -4,7 +4,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Check if theres a firstrun file, if not, execute the firstrun script
-if [ ! -f ./resources/other/firstrun ]; then
+if [ ! -f $CDF/resources/other/firstrun ]; then
   . $CDF/resources/firstrun.sh
   return 1
 fi
@@ -14,7 +14,7 @@ unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
 unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
 unset BTYPE; unset AKBO; unset KDEBUG; unset RD
 
-if [ ! -d ./source/* ]; then
+if [ ! -d $CDF/source/* ]; then
 echo " "
 echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
 CWK=n
@@ -131,7 +131,7 @@ fi
 
 echo " "
 echo -e "$GREEN$BLD - Select a Kernel Source folder...$WHITE"
-cd source
+cd $CDF/source
 select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
 if [ $ARCH = arm64 ] && [ ! -d $CDF/source/$d/arch/$ARCH/ ]; then
   echo " "
@@ -218,11 +218,9 @@ if [ "$UDF" != "1" ]; then
 fi
 
 echo " "
-if [ $ARCH = arm ]; then
-  read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
-  if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
-    export MAKEDTB=1
-  fi
+read -p "   Make dt.img? (Device Tree Image) [y/n]: " MKDTB
+if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
+  export MAKEDTB=1
 fi
 
 read -p "   Clear Source on every Build? [y/n]: " CLRS

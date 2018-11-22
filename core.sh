@@ -125,7 +125,7 @@ sleep 0.5
 . resources/scripts/upload.sh
 . defaultsettings.sh
 if [ $AUSETTINGS = 1 ]; then
-  . runsettings.sh
+  . resources/runsettings.sh
 fi
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
