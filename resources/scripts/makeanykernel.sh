@@ -28,7 +28,7 @@ if [ -f $ZIN/$VARIANT ]; then
   echo " "
   if [ $ARCH = arm ]; then
     cp $ZIN/$VARIANT $TF/zImage
-  elif [ $ARCH = arm64 ]; then
+  elif [ $ARCH = arm64 ]; then 
     cp $ZIN/$VARIANT $TF/Image.gz-dtb
   fi
   echo -e "$WHITE$BLD   Kernel Updated"

@@ -25,7 +25,6 @@ checkfolders () {
   FD=resources/devices; folder
   #echo " "
   echo -e "$GREEN$BLD   Done$RATT"
-  echo " "
 }
 
 # Done here
