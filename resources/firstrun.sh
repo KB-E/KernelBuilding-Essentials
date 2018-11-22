@@ -10,19 +10,7 @@ echo -e "$GREEN - It seems that you're running this program for the first time"
 echo -e "   Lets install some necessaty stuff... $WHITE"
 
 # Load auto.sh function into .bashrc
-echo " "
-echo -ne "$GREEN$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
-sudo sed -i '/# Load auto.sh function and path/d' ~/.bashrc
-sudo sed -i '/CDF=/d' ~/.bashrc
-sudo sed -i '/resources/other/colors.sh/d' ~/.bashrc
-sudo sed -i '/auto.sh/d' ~/.bashrc
-echo "# Load auto.sh function and path" >> ~/.bashrc
-echo "CDF=$CDF" >> ~/.bashrc
-echo ". $CDF/resources/other/colors.sh" >> ~/.bashrc
-echo ". $CDF/auto.sh" >> ~/.bashrc
-. $CDF/auto.sh
-echo -e " Done"
-echo " "
+writeprogramconfig
 
 # Install necessary stuff
 installtools
