@@ -16,11 +16,10 @@ crosscompiler is downloaded automatically).
 # INDEX: #
 
 - Line 26: Program and Command: 'essentials' explanation
-- Line 104: Command: 'auto (device)' explanation
-- Line 122: Other program commands (Functions)
-- Line 232: The 'defaultsettings.sh' config file
-- Line 246: Program Variables
-- Line 265: That's all
+- Line 105: Command: 'auto (device)' explanation
+- Line 123: Other program commands (Functions)
+- Line 233: Program Variables
+- Line 252: That's all
 
 --------------------------------------------------------------------------------
 
@@ -228,20 +227,6 @@ your source folder.
 
 Don't use these commands when you're building anything for multi-variants, 
 rather use the essentials command, this will only work the first variant
-
---------------------------------------------------------------------------------
-
-# defaultsettings.sh #
-
-As I said before, this program will prompt to you for data that'll be used
-during all the processes, but, here comes the "./defaultsettings.sh".
-
-*defaultsettings.sh*: This configuration file is designed to have all the data
-used during the program execution, all the data that is prompted to the user
-can be pre-defined here in this file, you just have to modify his settings and
-enable it (There's a variable named "DSENABLED", change the value to 1), and
-the program will no longer ask you for necessary data, this will make a more
-faster and automatized session of this program.
 
 --------------------------------------------------------------------------------
 

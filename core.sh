@@ -34,12 +34,6 @@ CDF=$(pwd)
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
   echo -e "$GREEN$BLD - Perfoming a Cleaning...$WHITE"
-  if [ -f $CDF/defaultsettings.sh ]; then
-  rm $CDF/defaultsettings.sh
-  fi
-  if [ ! -f $CDF/defaultsettings.sh ]; then
-  cp $CDF/resources/other/defaultsettings.sh $CDF/
-  fi
   if [ -d $CDF/resources/crosscompiler/ ]; then
     rm -rf $CDF/resources/crosscompiler/
   fi
@@ -56,9 +50,6 @@ fi
 # Function to clear KB-E Environment
 kbeclear () {
 echo -e "$GREEN$BLD - Performing a Cleaning...$WHITE"
-if [ -f $CDF/defaultsettings.sh ]; then
-  rm $CDF/defaultsettings.sh
-fi
 if [ -d $CDF/resources/crosscompiler/ ]; then
   rm -rf $CDF/resources/crosscompiler/
 fi
@@ -123,10 +114,7 @@ sleep 0.5
 . resources/scripts/makeanykernel.sh
 #. scripts/makearoma.sh Disabled for now
 . resources/scripts/upload.sh
-. defaultsettings.sh
-if [ $AUSETTINGS = 1 ]; then
-  . resources/runsettings.sh
-fi
+. resources/runsettings.sh
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
