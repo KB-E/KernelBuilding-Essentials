@@ -9,9 +9,14 @@ touch ./resources/other/firstrun
 echo " "
 echo -e "$GREEN - It seems that you're running this program for the first time"
 echo -e "   Lets install some necessaty stuff... $WHITE"
+
 # Load auto.sh function into .bashrc
 echo " "
-echo -ne "$GREEN$BLD - Loading auto.sh fuction and path...$WHITE"
+echo -ne "$GREEN$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
+sudo sed -i '/# Load auto.sh function and path/d' ~/.bashrc
+sudo sed -i '/CDF=$CDF/d' ~/.bashrc
+sudo sed -i '/. $CDF/resources/other/colors.sh/d' ~/.bashrc
+sudo sed -i '/. $CDF/auto.sh/d' ~/.bashrc
 echo "# Load auto.sh function and path" >> ~/.bashrc
 echo "CDF=$CDF" >> ~/.bashrc
 echo ". $CDF/resources/other/colors.sh" >> ~/.bashrc
@@ -19,6 +24,7 @@ echo ". $CDF/auto.sh" >> ~/.bashrc
 . $CDF/auto.sh
 echo -e " Done"
 echo " "
+
 # Install necessary stuff
 installtools
 echo -e "   Done, let's begin with some initial configuration..."
