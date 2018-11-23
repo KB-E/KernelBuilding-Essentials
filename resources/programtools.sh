@@ -16,6 +16,26 @@ kbhelp () {
   nano $HFP
 }
 
+loadresources () {
+  # Initialize KB-E Resources
+  . $CDF/resources/other/folders.sh
+  . $CDF/resources/paths.sh
+  . $CDF/resources/runsettings.sh
+  . $CDF/resources/buildkernel/buildkernel.sh
+}
+
+loadmodules () {
+  # Initialize KB-E Modules
+  . $CDF/modules/megaconfig.sh
+  . $CDF/modules/scripts/makedtb.sh
+  . $CDF/modules/scripts/makeanykernel.sh
+  . $CDF/modules/scripts/upload.sh
+
+  # Disabled Modules
+  #. $CDF/modules/makearoma.sh
+  #. $CDF/modules/megadlt.sh
+}
+
 # Check CrossCompiler
 checkcc () {
   # CROSS_COMPILER

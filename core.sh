@@ -30,6 +30,8 @@ CDF=$(pwd)
 
 # Load Colors
 . $CDF/resources/other/colors.sh
+# Load ProgramTools
+. $CDF/resources/programtools.sh
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
@@ -102,18 +104,8 @@ echo -e "$GREEN$BLD  - Initializing...$RATT"
 echo " "
 sleep 0.5
 
-# Initialize KB-E Resources and Functions
-. resources/other/folders.sh
-. resources/paths.sh
-. resources/programtools.sh
-. resources/megaconfig.sh
-#. resources/megadlt.sh
-. resources/scripts/buildkernel.sh
-. resources/scripts/makedtb.sh
-. resources/scripts/makeanykernel.sh
-#. scripts/makearoma.sh Disabled for now
-. resources/scripts/upload.sh
-. resources/runsettings.sh
+# Initialize KB-E Resources and Modules
+loadfunctions
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
