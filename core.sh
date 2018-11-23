@@ -108,7 +108,6 @@ sleep 0.5
 . resources/programtools.sh
 . resources/megaconfig.sh
 #. resources/megadlt.sh
-. resources/other/help.sh
 . resources/scripts/buildkernel.sh
 . resources/scripts/makedtb.sh
 . resources/scripts/makeanykernel.sh

@@ -11,6 +11,11 @@ installtools () {
   echo " "
 }
 
+# Help command
+kbhelp () {
+  nano $HFP
+}
+
 # Check CrossCompiler
 checkcc () {
   # CROSS_COMPILER
