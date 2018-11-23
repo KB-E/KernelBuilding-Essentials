@@ -32,6 +32,8 @@ CDF=$(pwd)
 . $CDF/resources/other/colors.sh
 # Load ProgramTools
 . $CDF/resources/programtools.sh
+# Load title 
+. $CDF/resources/other/programtitle.sh
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
@@ -84,25 +86,8 @@ until [ $X = 21 ]; do
   unset VARIANT$X
 done
 
-# Tittle with style
-echo -e "$WHITE"
-echo -e "██╗  ██╗███████╗██████╗ ███╗   ██╗███████╗██╗     ██████╗ ██╗   ██╗██╗██╗     ██████╗ ██╗███╗   ██╗ ██████╗"; sleep 0.05
-echo -e "██║ ██╔╝██╔════╝██╔══██╗████╗  ██║██╔════╝██║     ██╔══██╗██║   ██║██║██║     ██╔══██╗██║████╗  ██║██╔════╝"; sleep 0.05
-echo -e "█████╔╝ █████╗  ██████╔╝██╔██╗ ██║█████╗  ██║     ██████╔╝██║   ██║██║██║     ██║  ██║██║██╔██╗ ██║██║  ███╗"; sleep 0.05
-echo -e "██╔═██╗ ██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝  ██║     ██╔══██╗██║   ██║██║██║     ██║  ██║██║██║╚██╗██║██║   ██║"; sleep 0.05
-echo -e "██║  ██╗███████╗██║  ██║██║ ╚████║███████╗███████╗██████╔╝╚██████╔╝██║███████╗██████╔╝██║██║ ╚████║╚██████╔╝"; sleep 0.05
-echo -e "╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ "; sleep 0.05
-echo -e "                                                                                                        "; sleep 0.05
-echo -e "              ███████╗███████╗███████╗███████╗███╗   ██╗████████╗██╗ █████╗ ██╗     ███████╗         "; sleep 0.05
-echo -e "              ██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██║██╔══██╗██║     ██╔════╝        "; sleep 0.05
-echo -e "              █████╗  ███████╗███████╗█████╗  ██╔██╗ ██║   ██║   ██║███████║██║     ███████╗   $GREEN$BLD KB-E v$KBV$WHITE"; sleep 0.05
-echo -e "              ██╔══╝  ╚════██║╚════██║██╔══╝  ██║╚██╗██║   ██║   ██║██╔══██║██║     ╚════██║    $GREEN$BLD By Artx$WHITE"; sleep 0.05
-echo -e "              ███████╗███████║███████║███████╗██║ ╚████║   ██║   ██║██║  ██║███████╗███████║   "; sleep 0.05
-echo -e "              ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝    "
-echo " "
-echo -e "$GREEN$BLD  - Initializing...$RATT"
-echo " "
-sleep 0.5
+# DisplayTitle
+title
 
 # Initialize KB-E Resources and Modules
 loadfunctions

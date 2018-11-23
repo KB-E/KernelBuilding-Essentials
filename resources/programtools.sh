@@ -11,6 +11,31 @@ installtools () {
   echo " "
 }
 
+checkfolders () {
+  # Check environment folders and if one, some or all doesnt exist
+  # create or restore it
+  echo " "
+  echo -e "$GREEN$BLD - Checking Enviroment Folders..."
+  sleep 0.5
+  folder () {
+    if [ ! -d $CDF/$FD ]; then
+      mkdir $CDF/$FD
+      echo -e "$WHITE   Generated $FD folder$RATT"
+    fi
+  }
+  FD=out; folder
+  FD=out/zImagesNew; folder
+  FD=out/zImages; folder
+  FD=out/aktemplate; folder
+  FD=out/newzips; folder
+  FD=out/dt; folder
+  FD=source; folder
+  FD=templates; folder
+  FD=resources/logs; folder
+  FD=resources/devices; folder
+  echo -e "$GREEN$BLD   Done$RATT"
+}
+
 # Help command
 kbhelp () {
   nano $HFP
@@ -18,8 +43,7 @@ kbhelp () {
 
 loadresources () {
   # Initialize KB-E Resources
-  . $CDF/resources/other/folders.sh
-  . $CDF/resources/paths.sh
+  . $CDF/resources/variables.sh
   . $CDF/resources/runsettings.sh
   . $CDF/resources/buildkernel/buildkernel.sh
 }

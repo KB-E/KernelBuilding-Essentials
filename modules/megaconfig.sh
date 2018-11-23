@@ -62,6 +62,3 @@ if [ "$1" = "--reconfigure" ]; then
   # ----------------------------------
 fi
 }
-
-# Done here
-echo -e "$WHITE * Function 'megacheck' Loaded$RATT"

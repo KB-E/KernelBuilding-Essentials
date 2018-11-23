@@ -49,5 +49,3 @@ echo " "
   fi
   echo -e "$RATT"
 }
-
-echo -e "$WHITE * Function 'megaupload' Loaded$RATT"

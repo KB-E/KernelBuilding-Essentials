@@ -89,7 +89,7 @@ echo " "
 # Verify if the kernel were built
 KERROR=0
 if [ $ARCH = arm ]; then
-  if [ ! -f ./arch/arm/boot/zImage ]; then # If theres no zImage built then there was
+  if [ ! -f $P/arch/arm/boot/zImage ]; then # If theres no zImage built then there was
     export KERROR=1                          # an error compiling the kernel
     if [ "$KDEBUG" != "1" ]; then
       echo " "
@@ -104,7 +104,7 @@ if [ $ARCH = arm ]; then
     fi
   fi
 if [ $ARCH = arm64 ]; then
-  if [ ! -f ./arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
+  if [ ! -f $P/arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
     export KERROR=1                          # an error compiling the kernel
     if [ "$KDEBUG" != "1" ]; then
       echo " "
@@ -128,12 +128,12 @@ if [ "$KERROR" != 1 ]; then
     echo -e "$GREEN$BLD   Moved old $VARIANT Kernel to$WHITE '$ZI'"
   fi
   if [ $ARCH = arm ]; then
-    cp arch/arm/boot/zImage $ZIN/$VARIANT
+    cp $P/arch/arm/boot/zImage $ZIN/$VARIANT
   elif [ $ARCH = arm64 ]; then
-    if [ -f arch/arm64/boot/Image.gz-dtb ]; then 
-      cp arch/arm64/boot/Image.gz-dtb $ZIN/$VARIANT
-    elif [ -f arch/arm64/boot/Image ]; then
-      cp arch/arm64/boot/Image $ZIN/$VARIANT
+    if [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then 
+      cp $P/arch/arm64/boot/Image.gz-dtb $ZIN/$VARIANT
+    elif [ -f $P/arch/arm64/boot/Image ]; then
+      cp $P/arch/arm64/boot/Image $ZIN/$VARIANT
     fi
   fi
   echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZIN'"
@@ -147,6 +147,3 @@ else # Else, finish the function with a kernel building failed!
 fi
 cd $CDF
 }
-
-# Done here
-echo -e "$WHITE * Function 'buildkernel' Loaded$RATT"
