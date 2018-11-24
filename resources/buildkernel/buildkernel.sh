@@ -143,6 +143,8 @@ if [ "$KERROR" != 1 ]; then
 else # Else, finish the function with a kernel building failed!
   echo " "
   echo -e "$RED   ## Kernel Building Failed ##$RATT"
+  # Report failed build to KB-E
+  export KBUILDFAILED=1
   echo " "
 fi
 cd $CDF

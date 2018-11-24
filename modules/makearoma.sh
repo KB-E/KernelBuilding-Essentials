@@ -3,6 +3,11 @@
 # Installer zips building solution (AROMA)
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
+# Identify the Module
+MODULE_NAME=MakeAnykernel
+MODULE_VERSION=1.0
+MODULE_DESCRIPTION="AnyKernel Installer building Module for KB-E by Artx"
+MODULE_PRIORITY=5 # Priority level is from 1 to 10
 
 make_aroma () {
 # Tittle

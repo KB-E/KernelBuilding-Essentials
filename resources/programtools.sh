@@ -24,15 +24,12 @@ checkfolders () {
     fi
   }
   FD=out; folder
-  FD=out/zImagesNew; folder
-  FD=out/zImages; folder
-  FD=out/aktemplate; folder
-  FD=out/newzips; folder
+  FD=out/Images; folder
   FD=out/dt; folder
   FD=source; folder
-  FD=templates; folder
   FD=resources/logs; folder
   FD=resources/devices; folder
+  unset FD
   echo -e "$GREEN$BLD   Done$RATT"
 }
 
@@ -46,18 +43,16 @@ loadresources () {
   . $CDF/resources/variables.sh
   . $CDF/resources/runsettings.sh
   . $CDF/resources/buildkernel/buildkernel.sh
+  . $CDF/resources/buildkernel/makedtb.sh
 }
 
 loadmodules () {
   # Initialize KB-E Modules
-  . $CDF/modules/megaconfig.sh
-  . $CDF/modules/scripts/makedtb.sh
+  . $CDF/modules/megatools.sh
   . $CDF/modules/scripts/makeanykernel.sh
-  . $CDF/modules/scripts/upload.sh
 
   # Disabled Modules
   #. $CDF/modules/makearoma.sh
-  #. $CDF/modules/megadlt.sh
 }
 
 # Check CrossCompiler
@@ -150,11 +145,4 @@ installmega () {
   # Configure megarc
   megacheck
   unset NOUP
-}
-
-# AnyKernel extract
-templatesconfig () {
-  cp -rf $AKTF/* $AKT
-  echo -e "$GREEN$BLD   AnyKernel Extract Done"
-  export AKED=1
 }

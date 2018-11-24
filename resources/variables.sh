@@ -4,21 +4,14 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Local Folders Paths
-ZIN=$CDF/"out/zImagesNew/" # Recently built zImages
-ZI=$CDF/"out/zImages/" # Last Built zImages
-NZIPS=$CDF/"out/newzips/" # New Zips built output folder (AROMA/AnyKernel/Others)
-AKT=$CDF/"out/aktemplate/" # AnyKernel source will be extracted here and used has template
+ZI=$CDF/"out/Images/" # Last Built zImages
 DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
+
+# Variants file
+VF=$OTHERF/variants.sh
 
 # Resources folder
 SRCF=$CDF/"resources/"
-
-# Local Templates folder
-AKTF=$CDF/"resources/localtemplates/anykernel/"
-ATF=$CDF/"resources/localtemplates/aroma/"
-
-# User Templates folder
-UTF=$CDF/"templates"
 
 # Log output folder
 LOGF=$CDF/"resources/logs/" # Build Kernel and dt.img logs comes here
@@ -31,6 +24,3 @@ OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
 
 # Help fle path
 HFP=$CDF/README.md
-
-# All set
-echo -e "$GREEN$BLD * Loaded Program Paths$RATT"

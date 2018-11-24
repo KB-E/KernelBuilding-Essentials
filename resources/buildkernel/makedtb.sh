@@ -37,6 +37,8 @@ build_dtb () {
      unset RDDTB
     fi
     echo -e "$RATT"
+    # Report DTB Build failed to KB-E
+    export DTBFAILED=1
     return 1
   else
    mv $P/arch/$ARCH/boot/dt.img $DT/$VARIANT
@@ -44,6 +46,3 @@ build_dtb () {
    echo " "
   fi
 }
-
-# Done
-echo -e "$WHITE * Function 'build_dtb' Loaded$RATT"

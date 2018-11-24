@@ -80,55 +80,6 @@ elif [ "$ARCH" = "arm64" ]; then
   fi
 fi
 
-# AnyKernel Source Select
-if [ "$BLDTYPE" = "K" ]; then
-  BTYPE=AnyKernel
-echo " "
-echo -e "$GREEN$BLD - Choose an option for $BTYPE Installer: "
-echo " "
-echo -e "$WHITE   1) Use local $GREEN$BLD$BTYPE$WHITE Template"
-echo -e "   2) Select a template from your 'templates' folder"
-echo -e "   3) Let me manually set my template"
-echo " "
-until [ "$AKBO" = "1" ] || [ "$AKBO" = "3" ]; do
-  read -p "   Your option [1/2/3]: " AKBO
-  if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ] && [ "$AKBO" != "3" ]; then
-    echo " "
-    echo -e "$RED$BLD - Error, invalid option, try again..."
-    echo -e "$WHITE"
-  fi
-  if [ "$AKBO" = "2" ]; then
-    if [ ! -f $UTF/*/anykernel.sh ]; then
-      echo " "
-      echo -e "$RED$BLD There isn't any template inside 'templates' folder, choose other option$RATT"
-      echo " "
-    else
-      CURR=$(pwd)
-      cd $UTF
-      select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-      cd $CURR; unset CURR
-      export TF=$UTF/$d
-      break
-    fi
-  fi
-done
-
-if [ "$AKBO" = "1" ]; then
-  # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
-  export TF=$AKT
-  # If this file is missing we can assume that we need to restore this template
-  if [ ! -f $AKT/anykernel.sh ]; then
-  checkfolders
-  templatesconfig
-  fi
-fi
-
-if [ "$AKBO" = "3" ]; then
-  # Tell the makeanykernel script to use the "./out/aktemplates folder for anykernel building"
-  export TF=$AKT
-fi
-fi
-
 echo " "
 echo -e "$GREEN$BLD - Select a Kernel Source folder...$WHITE"
 cd $CDF/source
@@ -185,8 +136,7 @@ if [ "$UDF" != "1" ]; then
   echo " "
   read -p "   Add more Variants? [y/n]: " ADDMV
   if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
-    X=1
-    VF=$OTHERF/variants.sh
+    X=1   
     if [ ! -f $VF ]; then
       touch $VF
       echo "export VARIANT$X=$VARIANT1" > $VF
@@ -228,7 +178,27 @@ if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
   export CLR=1
 fi
 
-echo " "
+echo -e "$WHITE  -------------------------"
+echo -e "$GREEN   Modules selection:"
+echo -e "$WHITE  -------------------------"
+# 
+for i in $CDF/modules/*.sh
+do
+  echo " "
+  echo -e "$WHITE  ------------------------"
+  echo -e "$GREEN   Module Name:$WHITE $(grep MODULE_NAME $CDF/modules/$i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Version:$WHITE $(grep MODULE_VERSION $CDF/modules/$i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Description:$WHITE $(grep MODULE_DESCRIPTION $CDF/modules/$i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Priority:$WHITE $(grep MODULE_PRIORITY $CDF/modules/$i | cut -d '=' -f2)"
+  echo -e "$WHITE  ------------------------"
+  echo " "
+  echo -ne "$GREEN   Enable:$WHITE $(grep MODULE_NAME $CDF/modules/$i | cut -d '=' -f2)? [Y/N]: "
+  read -p EM
+  if [ "$EM" = y ] || [ "$EM" = Y ]; then
+    . $CDF/modules/$i --kbe
+  fi
+done
+
 export RD=1
 echo -e "$GREEN$BLD - Config Done, now you can start Building! $WHITE"
 echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
