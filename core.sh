@@ -121,8 +121,8 @@ essentials () {
     echo "For more information use 'kbhelp' command"
     echo " "
   fi
-  # Get and execute the modules
 
+  # Get and execute the modules
   for a in $@; do
     i=1
     while var=MODULE$((i++)); [[ ${!var} ]]; do

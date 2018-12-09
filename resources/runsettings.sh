@@ -206,6 +206,7 @@ do
     . $i
   fi
 done
+. $MLIST
 
 export RD=1
 echo -e "$GREEN$BLD - Config Done, now you can start Building! $WHITE"
