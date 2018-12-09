@@ -90,7 +90,7 @@ done
 title
 
 # Initialize KB-E Resources and Modules
-loadfunctions
+loadresources
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
@@ -106,17 +106,58 @@ essentials () {
   CURR=$(pwd)
   # Instructions
   if [ "$1" = "" ]; then
+    i=1
     echo " "
-    echo "Usage: essentials --kernel (Builds the kernel)                   | "
-    echo "                  --dtb (Builds device tree image)               | These flags "
-    echo "                  --anykernel (Builds the kernel installer)      | can be combined"
-    echo "                  --upload (Upload the kernel installer to MEGA) | "
-    echo "                                                                   "
+    echo "Usage: essentials --kernel (Builds the kernel)"
+    echo "                  --dtb (Builds device tree image)"
+    i=1
+    while var=MODULE$((i++)); [[ ${!var} ]]; do
+    path=MPATH$(($i-1)); [[ ${!path} ]];
+      echo "                  --${!var} ($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))"
+    done
+    echo " "
     echo "                  --all (Does everything mentioned above)        | Work alone "
     echo " "
     echo "For more information use 'kbhelp' command"
     echo " "
   fi
+  # Get and execute the modules
+
+  for a in $@; do
+  i=1
+  while var=MODULE$((i++)); [[ ${!var} ]]; do
+    path=MPATH$(($i-1)); [[ ${!path} ]];
+    if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$@" ]; then
+      EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
+      . $EXEC
+    done
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   # If user defined --kernel flag, Build kernel
   if [ "$1" = "--kernel" ] || [ "$2" = "--kernel" ] || [ "$3" = "--kernel" ] || [ "$4" = "--kernel" ]; then
     i=1

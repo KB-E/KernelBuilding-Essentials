@@ -5,11 +5,15 @@
 
 # MEGA
 
-# Identify the Module
-MODULE_NAME=MegaTools
-MODULE_VERSION=1.0
-MODULE_DESCRIPTION="MegaTools, this module handles the config of megatools, download and uploading of files"
-MODULE_PRIORITY=1 # Priority level is from 1 to 10
+# ---------------------------
+# Identify the Module:
+# ---------------------------
+# MODULE_NAME=MegaTools
+# MODULE_VERSION=1.0
+# MODULE_DESCRIPTION="MegaTools, this module handles the config of megatools, download and uploading of files"
+# MODULE_PRIORITY=1
+# MODULE_FUNCTION_NAME=megaupload
+# ---------------------------
 
 # MegaTools Log file
 MEGALOG=$CDF/resources/logs/megalog.txt

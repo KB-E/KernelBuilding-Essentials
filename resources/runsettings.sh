@@ -15,11 +15,11 @@ unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
 unset BTYPE; unset AKBO; unset KDEBUG; unset RD
 
 if [ ! -d $CDF/source/* ]; then
-echo " "
-echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
-CWK=n
-echo " "
-return 1
+  echo " "
+  echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
+  CWK=n
+  echo " "
+  return 1
 fi
 
 # Prompt for data
@@ -64,19 +64,19 @@ if [ "$ARCH" = "arm" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-  echo " "
-  echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
-  git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
-  echo -e "$WHITE Done"
+    echo " "
+    echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
+    git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
+    echo -e "$WHITE Done"
   fi
 elif [ "$ARCH" = "arm64" ]; then
   CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
-  echo " "
-  echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
-  git clone https://github.com/KB-E/linaro-$ARCH $CDF/resources/crosscompiler/$ARCH/
-  echo -e "$WHITE Done"
+    echo " "
+    echo -e "$GREEN$BLD - Downloading the $ARCH CrossCompiler...$WHITE"
+    git clone https://github.com/KB-E/linaro-$ARCH $CDF/resources/crosscompiler/$ARCH/
+    echo -e "$WHITE Done"
   fi
 fi
 
@@ -181,21 +181,27 @@ fi
 echo -e "$WHITE  -------------------------"
 echo -e "$GREEN   Modules selection:"
 echo -e "$WHITE  -------------------------"
-# 
+rm $MLIST
+touch $MLIST
+echo "# Modules Functions" > $MLIST
+k=1
+x=1
 for i in $CDF/modules/*.sh
 do
   echo " "
   echo -e "$WHITE  ------------------------"
-  echo -e "$GREEN   Module Name:$WHITE $(grep MODULE_NAME $CDF/modules/$i | cut -d '=' -f2)"
-  echo -e "$GREEN   Module Version:$WHITE $(grep MODULE_VERSION $CDF/modules/$i | cut -d '=' -f2)"
-  echo -e "$GREEN   Module Description:$WHITE $(grep MODULE_DESCRIPTION $CDF/modules/$i | cut -d '=' -f2)"
-  echo -e "$GREEN   Module Priority:$WHITE $(grep MODULE_PRIORITY $CDF/modules/$i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Name:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Version:$WHITE $(grep MODULE_VERSION $i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Description:$WHITE $(grep MODULE_DESCRIPTION $i | cut -d '=' -f2)"
+  echo -e "$GREEN   Module Priority:$WHITE $(grep MODULE_PRIORITY $i | cut -d '=' -f2)"
   echo -e "$WHITE  ------------------------"
   echo " "
-  echo -ne "$GREEN   Enable:$WHITE $(grep MODULE_NAME $CDF/modules/$i | cut -d '=' -f2)? [Y/N]: "
+  echo -ne "$GREEN   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
   read -p EM
   if [ "$EM" = y ] || [ "$EM" = Y ]; then
-    . $CDF/modules/$i --kbe
+    echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
+    echo "export MPATH$((x++))=$i" >> $MLIST
+    . $i
   fi
 done
 

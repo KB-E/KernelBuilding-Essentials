@@ -10,6 +10,9 @@ DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
 # Variants file
 VF=$OTHERF/variants.sh
 
+# Module List
+MLIST=$CDF/resources/other/modulelist.txt
+
 # Resources folder
 SRCF=$CDF/"resources/"
 

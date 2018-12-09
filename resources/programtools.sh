@@ -11,6 +11,16 @@ installtools () {
   echo " "
 }
 
+checkvariants () {
+  if [ -z "$VARIANT2" ]; then
+    # We have only one Variant to Build
+    MULTIVARIANT=false
+  else
+    # We have more than one Variant to Build
+    MULTIVARIANT=true
+  fi
+}
+
 checkfolders () {
   # Check environment folders and if one, some or all doesnt exist
   # create or restore it
