@@ -124,108 +124,16 @@ essentials () {
   # Get and execute the modules
 
   for a in $@; do
-  i=1
-  while var=MODULE$((i++)); [[ ${!var} ]]; do
-    path=MPATH$(($i-1)); [[ ${!path} ]];
-    if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$@" ]; then
-      EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
-      . $EXEC
-    done
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  # If user defined --kernel flag, Build kernel
-  if [ "$1" = "--kernel" ] || [ "$2" = "--kernel" ] || [ "$3" = "--kernel" ] || [ "$4" = "--kernel" ]; then
     i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-      DEFCONFIG=${!def}
-      VARIANT=${!var}
-      buildkernel
+    while var=MODULE$((i++)); [[ ${!var} ]]; do
+      path=MPATH$(($i-1)); [[ ${!path} ]];
+      if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$@" ]; then
+        EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
+        . $EXEC
+      fi
     done
-  fi
-
-  # If user defined --dtb flag, Build dtb (dt.img (Device Tree Image))
-  if [ "$1" = "--dtb" ] || [ "$2" = "--dtb" ] || [ "$3" = "--dtb" ] || [ "$4" = "--dtb" ]; then
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      VARIANT=${!var}
-      build_dtb
-    done
-  fi
-
-  # If user defined --make_anykernel flag, Build AnyKernel Installer
-  if [ "$1" = "--anykernel" ] || [ "$2" = "--anykernel" ] || [ "$3" = "--anykernel" ] || [ "$4" = "--anykernel" ]; then
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-      DEFCONFIG=${!def}
-      VARIANT=${!var}
-      make_anykernel
-    done
-  fi  
-
-  # If user defined --upload flag, Upload the last built Installer
-  if [ "$1" = "--upload" ] || [ "$2" = "--upload" ] || [ "$3" = "--upload" ] || [ "$4" = "--upload" ]; then
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      VARIANT=${!var}
-      megaupload
-    done
-  fi
-
-  # If user defined --all flag, do everything automatically
-  if [ "$1" = "--all" ]; then
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-      DEFCONFIG=${!def}
-      VARIANT=${!var}
-      buildkernel
-    done
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      VARIANT=${!var}
-      build_dtb
-    done
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      VARIANT=${!var}
-      make_anykernel
-    done
-    i=1
-    while var=VARIANT$((i++)); [[ ${!var} ]]; do
-      VARIANT=${!var}
-      megaupload
-    done
-  fi
+  done
   cd $CURR; unset CURR
-}
-
 # Done
 if [ "$RD" = "1" ]; then
   echo -e "$GREEN$BLD - Kernel-Building Essentials it's ready!$RATT"
