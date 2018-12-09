@@ -10,7 +10,7 @@
 # MODULE_VERSION=1.0
 # MODULE_DESCRIPTION="AnyKernel Installer building Module for KB-E by Artx"
 # MODULE_PRIORITY=5
-# MODULE_FUNCTION_NAME=make_anykernel
+# MODULE_FUNCTION_NAME=anykernel
 # ---------------------------
 
 # AnyKernel Source Select
@@ -60,7 +60,7 @@ if [ "$AKBO" = "3" ]; then
   export TF=$AKT
 fi
 
-make_anykernel () {
+anykernel () {
 # Tittle
 if [ "$1" != "--no-spam" ]; then
 echo -ne "$GREEN$BLD"

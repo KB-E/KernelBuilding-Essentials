@@ -127,13 +127,14 @@ essentials () {
     i=1
     while var=MODULE$((i++)); [[ ${!var} ]]; do
       path=MPATH$(($i-1)); [[ ${!path} ]];
-      if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$@" ]; then
+      if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$a" ]; then
         EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
-        . $EXEC
+        $EXEC
       fi
     done
   done
   cd $CURR; unset CURR
+}
 # Done
 if [ "$RD" = "1" ]; then
   echo -e "$GREEN$BLD - Kernel-Building Essentials it's ready!$RATT"

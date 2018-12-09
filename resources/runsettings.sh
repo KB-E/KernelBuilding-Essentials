@@ -181,7 +181,9 @@ fi
 echo -e "$WHITE  -------------------------"
 echo -e "$GREEN   Modules selection:"
 echo -e "$WHITE  -------------------------"
-rm $MLIST
+if [ -f $MLIST ]; then
+  rm $MLIST
+fi
 touch $MLIST
 echo "# Modules Functions" > $MLIST
 k=1
@@ -197,7 +199,7 @@ do
   echo -e "$WHITE  ------------------------"
   echo " "
   echo -ne "$GREEN   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
-  read -p EM
+  read  EM
   if [ "$EM" = y ] || [ "$EM" = Y ]; then
     echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
     echo "export MPATH$((x++))=$i" >> $MLIST
