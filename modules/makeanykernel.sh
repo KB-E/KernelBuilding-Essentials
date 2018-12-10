@@ -64,8 +64,10 @@ if [ "$MULTIVARIANT" = true ] && [ "$LOCKMA" != true ]; then
     def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
     DEFCONFIG=${!def}
     VARIANT=${!var}
-    make_anykernel --no-spam
+    anykernel --no-spam
   done
+unset LOCKMA
+return 1
 fi
 if [ "$MULTIVARIANT" = false ]; then
   DEFCONFIG=$DEFCONFIG1
