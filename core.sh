@@ -72,6 +72,9 @@ fi
 if [ -f $CDF/resources/other/variants.sh ]; then
   rm $CDF/resources/other/variants.sh
 fi
+if [ -f $CDF/resources/other/modulelist.txt ]; then
+  rm $CDF/resources/other/modulelist.txt
+fi
 echo -e "   Done$RATT"
 }
 

@@ -24,13 +24,14 @@ checkvariants () {
 checkfolders () {
   # Check environment folders and if one, some or all doesnt exist
   # create or restore it
-  echo " "
-  echo -e "$GREEN$BLD - Checking Enviroment Folders..."
+  if [ "$1" != "--silent" ]; then
+    echo " "
+    echo -ne "$GREEN$BLD - Checking Enviroment Folders... "
+  fi
   sleep 0.5
   folder () {
     if [ ! -d $CDF/$FD ]; then
       mkdir $CDF/$FD
-      echo -e "$WHITE   Generated $FD folder$RATT"
     fi
   }
   FD=out; folder
@@ -40,7 +41,9 @@ checkfolders () {
   FD=resources/logs; folder
   FD=resources/devices; folder
   unset FD
-  echo -e "$GREEN$BLD   Done$RATT"
+  if [ "$1" != "--silent" ]; then
+    echo -e "$WHITE Done$RATT"
+  fi
 }
 
 # Help command
@@ -105,7 +108,7 @@ if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
   fi
 else
   export NOBZ=0 # Well, you had it, nice!
-  echo -e "   Zip Tool Found! $RATT"
+  echo -e "$WHITE  - Zip Tool Found! $RATT"
 fi
 }
 

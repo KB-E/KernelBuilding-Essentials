@@ -104,6 +104,7 @@ buildkernel () {
         fi
       fi
     fi
+  fi
   if [ $ARCH = arm64 ]; then
     if [ ! -f $P/arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
       export KERROR=1                          # an error compiling the kernel
