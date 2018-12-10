@@ -16,9 +16,6 @@
 # Variables and config
 AKFOLDER=$CDF/anykernelfiles
 AKSH=$AKFOLDER/anykernel.sh
-if [ ! -d $AKFOLDER ]; then
-  mkdir $AKFOLDER
-fi
 
 # AnyKernel Required Data by User
 echo " "
@@ -39,12 +36,11 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
     if [ -f $AKSH ]; then
       read -p "   AnyKernel Files Folder is not Empty, clean it? [Y/N]: " CLRAKF
       if [ "$CLRAKF" = "y" ] || [ "$CLRAKF" = "Y" ]; then
-        rm -rf $AKFOLDER/*
+        rm -rf $AKFOLDER
         echo -e "$GREENBLD   Done$WHITE"
       elif [ "$CLRAKF" = "n" ] || [ "$CLRAKF" = "N" ]; then
         STOPD=1
       fi
-      unset CLRAKF
     fi
     if [ "$STOPD" != "1" ]; then
       echo " "
@@ -54,10 +50,9 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
     else
       echo -e "$RED$BLD - Download cancelled$WHITE"
     fi
-    unset STOPD
   fi
 done
-unset  AKBO
+unset AKBO; unset STOPD; unset CLRAKF;
 
 anykernel () {
 # Check if we're building for 1 or more Variants
@@ -86,17 +81,20 @@ echo -e "   / _ \| ' \ || | ' </ -_) '_| ' \/ -_) | "
 echo -e "  /_/ \_\_||_\_, |_|\_\___|_| |_||_\___|_| "
 echo -e "             |__/                         "
 echo " "
-echo -e "$GREEN$BLD - AnyKernel Installer Building Script  $RATT$WHITE"
+echo -e "$GREEN$BLD   --------------------------$WHITE"
+echo -e "$WHITE - AnyKernel Installer Building Script  $RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
-echo -e "   Kernel: $KERNELNAME; Variant: $VARIANT; Date: $DATE"
-else 
-echo -ne "$GREEN$BLD - Building AnyKernel for $VARIANT... "
+echo -e "   Kernel:$GREEN$BLD $KERNELNAME$WHITE; Variant:$GREEN$BLD $VARIANT$WHITE; Date:$GREEN$BLD $DATE$WHITE"
+else
+echo " "
+echo -e "$GREEN$BLD   --------------------------$WHITE"
+echo -ne " - Building AnyKernel for $VARIANT... "
 fi
 
 # Setup MakeAnykernel
-checkfolders
+checkfolders --silent
 # Check MakeAnykerel folders
-if [ "$1" != "--no-spam" ]; then echo -ne "$GREEN$BLD - Checking MakeAnykernel folders..."; fi
+if [ "$1" != "--no-spam" ]; then echo -ne "$WHITE   Checking MakeAnykernel folders..."; fi
 sleep 0.5
 akfolder () {
   if [ ! -d $CDF/$FD ]; then
@@ -105,7 +103,7 @@ akfolder () {
 }
 FD=out/AnyKernel; akfolder
 unset FD
-if [ "$1" != "--no-spam" ]; then echo -e "$WHITE Done$RATT"; fi
+if [ "$1" != "--no-spam" ]; then echo -ne "$GREEN$BLD Done$RATT"; fi
 
 # Paths
 NZIPS=$CDF/"out/AnyKernel" # New Zips built output folder
@@ -115,23 +113,17 @@ checkziptool
 # Starting the real process!
 # -----------------------
 # Kernel Update
-if [ -f $ZIN/$VARIANT ]; then
-  if [ "$1" != "--no-spam" ]; then
-    echo " "
-    echo -e "$GREEN$BLD   Replacing files...$RATT$WHITE"
-    echo " "
-  else
-    echo -ne "$GREEN$BLD - Updating Files..."
-  fi
+if [ -f $ZI/$VARIANT ]; then
+  echo -e "$WHITE   Updating Files..."
   if [ $ARCH = arm ]; then
-    cp $ZIN/$VARIANT $AKFOLDER/zImage
+    cp $ZI/$VARIANT $AKFOLDER/zImage
   elif [ $ARCH = arm64 ]; then 
-    cp $ZIN/$VARIANT $AKFOLDER/Image.gz-dtb
+    cp $ZI/$VARIANT $AKFOLDER/Image.gz-dtb
   fi
   if [ "$1" != "--no-spam" ]; then
     echo -e "$WHITE$BLD   Kernel Updated"
   fi
-  if [ $MAKEDTB = 1 ]; then 
+  if [ "$MAKEDTB" = "1" ]; then 
     cp $DT/$VARIANT $AKFOLDER/dtb
     if [ "$1" != "--no-spam" ]; then 
       echo -e "$WHITE$BLD   DTB Updated"
@@ -139,20 +131,19 @@ if [ -f $ZIN/$VARIANT ]; then
     fi
   fi
 fi
-echo " "
 # -----------------------
 
 # Make the kernel installer zip
 if [ "$1" != "--no-spam" ]; then
   echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
 else
-  echo -ne "$GREEN$BLD Building Installer..."
+  echo -ne "$WHITE   Building Installer..."
 fi
 cd $AKFOLDER
 zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip * &> /dev/null
 mv "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip $NZIPS/
 echo -e "$GREEN$BLD Done!$RATT"
-echo " "
+echo -e "$GREEN$BLD   --------------------------$WHITE"
 cd $CDF
 }
 

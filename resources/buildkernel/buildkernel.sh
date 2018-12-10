@@ -125,19 +125,15 @@ buildkernel () {
   # If KERROR is not equal to 1 then we can proceed to
   # move the kernel in their respective folders
   if [ "$KERROR" != 1 ]; then
-    if [ -f $ZIN/$VARIANT ]; then
-      mv $ZIN/$VARIANT $ZI/$VARIANT
-      echo -e "$GREEN$BLD   Moved old $VARIANT Kernel to$WHITE '$ZI'"
-    fi
     if [ $ARCH = arm ]; then
-      cp $P/arch/arm/boot/zImage $ZIN/$VARIANT
+      cp $P/arch/arm/boot/zImage $ZI/$VARIANT
     fi
     if [ $ARCH = arm64 ]; then
       if [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then 
-        cp $P/arch/arm64/boot/Image.gz-dtb $ZIN/$VARIANT
+        cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$VARIANT
       fi
       if [ -f $P/arch/arm64/boot/Image ]; then
-        cp $P/arch/arm64/boot/Image $ZIN/$VARIANT
+        cp $P/arch/arm64/boot/Image $ZI/$VARIANT
       fi
     fi
     echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZIN'"

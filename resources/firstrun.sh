@@ -6,21 +6,22 @@
 # Create a first run file, KB-E will check for it 
 touch $CDF/resources/other/firstrun
 echo " "
-echo -e "$GREEN - FirstRun: Starting new first run config process... $WHITE"
+echo -e "$GREEN$BLD - FirstRun: Starting new first run config process... $WHITE"
 
 # Load auto.sh function into .bashrc
 writeprogramconfig
 
 # Install necessary stuff
 installtools
-echo -e "$GREEN$BLD - Done, let's begin with some initial config..."
+clear
+echo " "
+echo -e "$GREEN$BLD - Tools Download Finished..."
 sleep 1
 
 # Check environment
 checkfolders
 checkdtbtool
 checkziptool
-megacheck
 
 # Same has the above code, if checkenviroment doesn't detects the DTB tool, then
 # this time, the user deleted it or its corrupt, if that's the case, the user must
@@ -32,24 +33,25 @@ if [ "$NODTB" = 1 ]; then
   echo " "
 fi
 
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo " "
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 echo -e "$WHITE   Your Kernel source goes in the ./source folder, you can download there all"
 echo -e "   the kernel sources you want, this program will prompt you which one you're"
 echo -e "   going to build every session"
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 echo " "
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 echo -e "$WHITE   Also, every session this program will prompt to you things like the kernel  "
 echo -e "   name, version, target android, build type, etc... You can skip all of this"
 echo -e "   by using the 'auto <device>' command, this program has been made to make "
 echo -e "   everything you need automatically."
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 echo " "
 read -p "   Press enter to continue..."
 echo " "
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 echo -e "$WHITE   First run is done, run the command 'kbhelp' for more information and run"
 echo -e "   this program again!"
-echo -e "$GREEN   ---------------------------------------------------------------------------"
+echo -e "$GREEN$BLD   ---------------------------------------------------------------------------"
 
 export FRF=1

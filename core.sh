@@ -125,6 +125,40 @@ essentials () {
     echo " "
   fi
 
+  # First of all, the program buildkernel and makedtb
+  for g in $@; do
+    if [ "$g" = "--kernel" ]; then
+      checkvariants
+      if [ "$MULTIVARIANT" = "true" ]; then
+        while var=VARIANT$((i++)); [[ ${!var} ]]; do
+          def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
+          DEFCONFIG=${!def}
+          VARIANT=${!var}
+          buildkernel
+        done
+      else
+        VARIANT=$VARIANT1
+        DEFCONFIG=$DEFCONFIG1
+        buildkernel
+      fi
+    fi
+  done
+
+  for s in $@; do
+    if [ "$s" = "--dtb" ]; then
+      checkvariants
+      if [ "$MULTIVARIANT" = "true" ]; then
+        while var=VARIANT$((i++)); [[ ${!var} ]]; do
+          VARIANT=${!var}
+          makedtb
+        done
+      else
+        VARIANT=$VARIANT1
+        makedtb
+      fi
+    fi
+  done
+
   # Get and execute the modules
   for a in $@; do
     i=1

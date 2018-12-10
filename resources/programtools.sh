@@ -108,7 +108,7 @@ if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
   fi
 else
   export NOBZ=0 # Well, you had it, nice!
-  echo -e "$WHITE  - Zip Tool Found! $RATT"
+  echo -e "$WHITE   Zip Tool Found! $RATT"
 fi
 }
 
