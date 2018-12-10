@@ -3,18 +3,18 @@
 # KB-E Title :)
 title () {
   echo -e "$WHITE"
-  echo -e "██╗  ██╗███████╗██████╗ ███╗   ██╗███████╗██╗     ██████╗ ██╗   ██╗██╗██╗     ██████╗ ██╗███╗   ██╗ ██████╗"; sleep 0.05
-  echo -e "██║ ██╔╝██╔════╝██╔══██╗████╗  ██║██╔════╝██║     ██╔══██╗██║   ██║██║██║     ██╔══██╗██║████╗  ██║██╔════╝"; sleep 0.05
-  echo -e "█████╔╝ █████╗  ██████╔╝██╔██╗ ██║█████╗  ██║     ██████╔╝██║   ██║██║██║     ██║  ██║██║██╔██╗ ██║██║  ███╗"; sleep 0.05
-  echo -e "██╔═██╗ ██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝  ██║     ██╔══██╗██║   ██║██║██║     ██║  ██║██║██║╚██╗██║██║   ██║"; sleep 0.05
-  echo -e "██║  ██╗███████╗██║  ██║██║ ╚████║███████╗███████╗██████╔╝╚██████╔╝██║███████╗██████╔╝██║██║ ╚████║╚██████╔╝"; sleep 0.05
-  echo -e "╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ "; sleep 0.05
+  echo -e "██$GREEN$BLD╗$WHITE  ██$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE██████$GREEN$BLD╗$WHITE ███$GREEN$BLD╗$WHITE   ██$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE██$GREEN$BLD╗$WHITE     ██████$GREEN$BLD╗$WHITE ██$GREEN$BLD╗$WHITE   ██$GREEN$BLD╗$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD╗$WHITE     ██████$GREEN$BLD╗$WHITE ██$GREEN$BLD╗$WHITE███$GREEN$BLD╗$WHITE   ██$GREEN$BLD╗$WHITE ██████$GREEN$BLD╗$WHITE"; sleep 0.05
+  echo -e "██$GREEN$BLD║$WHITE ██$GREEN$BLD╔╝$WHITE██$GREEN$BLD╔════╝$WHITE██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE████$GREEN$BLD╗$WHITE  ██$GREEN$BLD║$WHITE██$GREEN$BLD╔════╝$WHITE██$GREEN$BLD║$WHITE     ██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE     ██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE████$GREEN$BLD╗$WHITE  ██$GREEN$BLD║$WHITE██$GREEN$BLD╔════╝$WHITE"; sleep 0.05
+  echo -e "█████$GREEN$BLD╔╝$WHITE █████$GREEN$BLD╗$WHITE  ██████$GREEN$BLD╔╝$WHITE██$GREEN$BLD╔$WHITE██$GREEN$BLD╗$WHITE ██$GREEN$BLD║$WHITE█████$GREEN$BLD╗$WHITE  ██$GREEN$BLD║$WHITE     ██████$GREEN$BLD╔╝$WHITE██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE     ██$GREEN$BLD║$WHITE  ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD╔$WHITE██$GREEN$BLD╗$WHITE ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE  ███$GREEN$BLD╗$WHITE"; sleep 0.05
+  echo -e "██$GREEN$BLD╔═$WHITE██$GREEN$BLD╗$WHITE ██$GREEN$BLD╔══╝$WHITE  ██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║╚$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD╔══╝$WHITE  ██$GREEN$BLD║$WHITE     ██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE     ██$GREEN$BLD║$WHITE  ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║╚$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE"; sleep 0.05
+  echo -e "██$GREEN$BLD║$WHITE  ██$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE  ██$GREEN$BLD║$WHITE██$GREEN$BLD║ ╚$WHITE████$GREEN$BLD║$WHITE███████$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE██████$GREEN$BLD╔╝╚$WHITE██████$GREEN$BLD╔╝$WHITE██$GREEN$BLD║$WHITE███████$GREEN$BLD╗$WHITE██████$GREEN$BLD╔╝$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║ ╚$WHITE████$GREEN$BLD║╚$WHITE██████$GREEN$BLD╔╝$WHITE"; sleep 0.05
+  echo -e "$GREEN$BLD╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ $WHITE"; sleep 0.05
   echo -e "                                                                                                        "; sleep 0.05
-  echo -e "              ███████╗███████╗███████╗███████╗███╗   ██╗████████╗██╗ █████╗ ██╗     ███████╗         "; sleep 0.05
-  echo -e "              ██╔════╝██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██║██╔══██╗██║     ██╔════╝        "; sleep 0.05
-  echo -e "              █████╗  ███████╗███████╗█████╗  ██╔██╗ ██║   ██║   ██║███████║██║     ███████╗   $GREEN$BLD KB-E v$KBV$WHITE"; sleep 0.05
-  echo -e "              ██╔══╝  ╚════██║╚════██║██╔══╝  ██║╚██╗██║   ██║   ██║██╔══██║██║     ╚════██║    $GREEN$BLD By Artx$WHITE"; sleep 0.05
-  echo -e "              ███████╗███████║███████║███████╗██║ ╚████║   ██║   ██║██║  ██║███████╗███████║   "; sleep 0.05
-  echo -e "              ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝    "
+  echo -e "              ███████$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE███$GREEN$BLD╗$WHITE   ██$GREEN$BLD╗$WHITE████████$GREEN$BLD╗$WHITE██$GREEN$BLD╗$WHITE █████$GREEN$BLD╗$WHITE ██$GREEN$BLD╗$WHITE     ███████$GREEN$BLD╗$WHITE         "; sleep 0.05
+  echo -e "              ██$GREEN$BLD╔════╝$WHITE██$GREEN$BLD╔════╝$WHITE██$GREEN$BLD╔════╝$WHITE██$GREEN$BLD╔════╝$WHITE████$GREEN$BLD╗$WHITE  ██$GREEN$BLD║╚══$WHITE██$GREEN$BLD╔══╝$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD╔══$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE     ██$GREEN$BLD╔════╝$WHITE        "; sleep 0.05
+  echo -e "              █████$GREEN$BLD╗$WHITE  ███████$GREEN$BLD╗$WHITE███████$GREEN$BLD╗$WHITE█████$GREEN$BLD╗$WHITE  ██$GREEN$BLD╔$WHITE██$GREEN$BLD╗$WHITE ██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE███████$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE     ███████$GREEN$BLD╗$WHITE    KB$GREEN$BLD-"$WHITE"E "$GREEN$BLD"v$WHITE$KBV$WHITE"; sleep 0.05
+  echo -e "              ██$GREEN$BLD╔══╝  ╚════$WHITE██$GREEN$BLD║╚════$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD╔══╝$WHITE  ██$GREEN$BLD║╚$WHITE██$GREEN$BLD╗$WHITE██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE██$GREEN$BLD╔══$WHITE██$GREEN$BLD║$WHITE██$GREEN$BLD║     ╚════$WHITE██$GREEN$BLD║    $WHITE By Artx$WHITE"; sleep 0.05
+  echo -e "              ███████$GREEN$BLD╗$WHITE███████$GREEN$BLD║$WHITE███████$GREEN$BLD║$WHITE███████$GREEN$BLD╗$WHITE██$GREEN$BLD║ ╚$WHITE████$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE   ██$GREEN$BLD║$WHITE██$GREEN$BLD║$WHITE  ██$GREEN$BLD║$WHITE███████$GREEN$BLD╗$WHITE███████$GREEN$BLD║$WHITE   "; sleep 0.05
+  echo -e "             $GREEN$BLD ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝ $WHITE   "
   echo " "
 }
