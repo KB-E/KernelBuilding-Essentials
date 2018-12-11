@@ -214,7 +214,26 @@ done
 
 export RD=1
 echo " "
-echo -e "$GREEN$BLD - Config Done, now you can start Building! $WHITE"
-echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
+echo -e "$WHITE  --------$GREEN$BLD CONFIG DONE$WHITE --------"
+echo " "
+echo -e "$GREEN$BLD - Usage:$WHITE essentials --kernel $GREEN$BLD(Builds the kernel)$WHITE"
+echo -e "                     --dtb $GREEN$BLD(Builds device tree image)$WHITE"
+i=1
+while var=MODULE$((i++)); [[ ${!var} ]]; do
+  path=MPATH$(($i-1)); [[ ${!path} ]];
+  echo -e "                     --${!var} $GREEN$BLD($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))$WHITE"
+done
+echo " "
+echo -e "                     --all $GREEN$BLD(Does everything mentioned above)      $WHITE  | Work alone "
+echo " "
+echo -e "   For more information use $GREEN$BLD'kbhelp'$WHITE command"
+echo " "
+echo -e "$WHITE  --------------------------$GREEN$BLD"
+
+#echo " "
+#echo -e "$GREEN$BLD - Config Done, now you can start running the 'essentials' command!  $WHITE"
+#echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
+#echo " "
 echo " "
 read -p "   Press enter to continue..."
+echo -ne "$WHITE"

@@ -59,15 +59,6 @@ loadresources () {
   . $CDF/resources/buildkernel/makedtb.sh
 }
 
-loadmodules () {
-  # Initialize KB-E Modules
-  . $CDF/modules/megatools.sh
-  . $CDF/modules/scripts/makeanykernel.sh
-
-  # Disabled Modules
-  #. $CDF/modules/makearoma.sh
-}
-
 # Check CrossCompiler
 checkcc () {
   # CROSS_COMPILER
@@ -118,7 +109,7 @@ writeprogramconfig () {
   echo -ne "$GREEN$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
   sudo sed -i '/# Load auto.sh function and path/d' ~/.bashrc
   sudo sed -i '/CDF=/d' ~/.bashrc
-  sudo sed -i '/resources/other/colors.sh/d' ~/.bashrc
+  sudo sed -i '/colors.sh/d' ~/.bashrc
   sudo sed -i '/auto.sh/d' ~/.bashrc
   echo "# Load auto.sh function and path" >> ~/.bashrc
   echo "CDF=$CDF" >> ~/.bashrc

@@ -14,6 +14,7 @@ writeprogramconfig
 # Install necessary stuff
 installtools
 clear
+title
 echo " "
 echo -e "$GREEN$BLD - Tools Download Finished..."
 sleep 1
