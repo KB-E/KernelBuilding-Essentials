@@ -94,6 +94,7 @@ title
 
 # Initialize KB-E Resources and Modules
 loadresources
+checktools
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1

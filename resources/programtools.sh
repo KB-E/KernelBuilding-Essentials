@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Program tools functions
@@ -9,6 +10,37 @@ installtools () {
   sudo apt-get update
   sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache
   echo " "
+}
+checktools () {
+  if [ -f $CDF/resources/other/missingdeps ]; then
+    rm $CDF/resources/other/missingdeps
+  fi
+  declare -a progtools=("git" "build-essential" "kernel-package" "fakeroot" "libncurses5-dev" "libssl-dev" "device-tree-compiler" "ccache")
+  for i in "${progtools[@]}"
+  do
+    PROGRAMINST=$(dpkg -s "$i" | grep Status | cut -d ":" -f 2)
+    if [ "$PROGRAMINST" != " install ok installed" ]; then
+      echo -e "$RED$BLD   $i is Missing"
+      touch $CDF/resources/other/missingdeps
+      echo "$1" >> $CDF/resources/other/missingdeps
+      MISSINGDEPS=1
+    fi
+  done
+  if [ ! -f $CDF/resources/other/missingdeps ]; then
+    echo -e "$WHITE - All Dependencies checked$GREEN$BLD (Pass)$RATT"
+    echo " "
+  fi
+  if [ "$MISSINGDEPS" = "1" ]; then
+    echo " "
+    echo -e "$RED$BLD - Some Dependecies are missing, KB-E cannot initialize without then, proceed to install? [Y/N]"
+    read INSTDEP
+    if [ "$INSTDEP" = "y" ] || [ "$INSTDEP" = "Y" ]; then
+      installtools
+    else
+      echo -e "$WHITE Exiting KB-E..."
+      export CWK=N
+    fi
+  fi
 }
 
 checkvariants () {

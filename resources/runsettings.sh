@@ -60,7 +60,7 @@ if [ "$ARCH" = "arm" ]; then
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
     echo " "
     echo -ne "$WHITE   Downloading the$GREEN$BLD ARM$WHITE CrossCompiler$GREEN$BLD (22.35MB, 'Ctrl + C' to Cancel)..."
-    git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+    git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
     echo -e "$WHITE Done"
   fi
 elif [ "$ARCH" = "arm64" ]; then
