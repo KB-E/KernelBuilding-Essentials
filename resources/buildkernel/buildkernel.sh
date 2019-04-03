@@ -136,7 +136,7 @@ buildkernel () {
         cp $P/arch/arm64/boot/Image $ZI/$VARIANT
       fi
     fi
-    echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZIN'"
+    echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZI'"
     echo " "
     echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
     echo " "
