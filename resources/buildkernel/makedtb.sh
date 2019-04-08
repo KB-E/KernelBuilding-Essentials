@@ -3,7 +3,7 @@
 # Script to make Kernel DTB
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
-build_dtb () {
+makedtb () {
   echo -ne "$GREEN$BLD"
   echo -e "   ___ _____ ___  " 
   echo -e "  |   \_   _| _ ) "
