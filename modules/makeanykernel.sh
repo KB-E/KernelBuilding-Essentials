@@ -126,10 +126,14 @@ if [ -f $ZI/$VARIANT ]; then
     echo -e "$WHITE$BLD   Kernel Updated"
   fi
   if [ "$MAKEDTB" = "1" ]; then 
-    cp $DT/$VARIANT $AKFOLDER/dtb
-    if [ "$1" != "--no-spam" ]; then 
-      echo -e "$WHITE$BLD   DTB Updated"
-      echo -e "   Done"
+    if [ -f $DT/$VARIANT ]; then
+      cp $DT/$VARIANT $AKFOLDER/dtb
+      if [ "$1" != "--no-spam" ]; then 
+        echo -e "$WHITE$BLD   DTB Updated"
+        echo -e "   Done"
+      fi
+    else
+      echo -e "$RED$BLD   DTB not found for $VARIANT, skipping..."
     fi
   fi
 fi
