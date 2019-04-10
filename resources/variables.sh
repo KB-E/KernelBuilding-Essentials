@@ -20,7 +20,7 @@ SRCF=$CDF/"resources/"
 LOGF=$CDF/"resources/logs/" # Build Kernel and dt.img logs comes here
 
 # dtbToolLineage
-DTB=$CDF/"resources/dtb/dtbToolLineage"
+DTB=$CDF/"resources/dtb/dtbToolLineage2"
 
 # Others folder
 OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
