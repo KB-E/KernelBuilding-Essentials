@@ -74,6 +74,14 @@ if [ "$MULTIVARIANT" = false ]; then
   VARIANT=$VARIANT1
 fi
 
+# Cancel if theres no Kernel built
+if [ ! -f $ZI/$VARIANT ]; then
+  echo " "
+  echo -e "$RED$BLD   There's no Kernel built for $VARIANT, aborting..."
+  echo -e "$WHITE   Did you built the Kernel?"
+  echo -e "$RATT"
+  return 1
+fi
 # Tittle
 if [ "$1" != "--no-spam" ]; then
 echo -ne "$GREEN$BLD"
