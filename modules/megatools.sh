@@ -33,49 +33,33 @@ echo -e "  | |_| | '_ \ / _ \/ _' / _' | "
 echo -e "   \___/| .__/_\___/\__,_\__,_| "
 echo -e "        |_|                    "
 echo " "
-echo -e "$GREEN$BLD - Initializing Kernel(s) upload...$RATT$WHITE"
+echo -e "$GREEN$BLD   --------------------------"
+echo -e "$WHITE - Initializing Kernel(s) upload...$RATT$WHITE"
+UPZIP="$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip
+echo -e "$WHITE   Checking file to be uploaded..."
+if [ ! -f $NZIPS/$UPZIP ]; then
+  echo " "
+  echo -e "$RED   '$UPZIP' not found"
+  echo -e "$RED$BLD   Did module 'makeanykernel' built it?"
+  echo " "
+  return 1
+fi
 export DATE=`date +%Y-%m-%d`
-echo -e "   Kernel: $KERNELNAME; Variant: $VARIANT; Date: $DATE"
+echo -e "   Kernel: $GREEN$BLD$KERNELNAME$WHITE; Variant: $GREEN$BLD$VARIANT$WHITE; Date: $GREEN$BLD$DATE$WHITE"
 megacheck
-echo " "
   # Try to remove the Kernel Installer and reload MegaTools Cache  
-  if [ "$BLDTYPE" = "A" ]; then
-    megarm /Root/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AROMA_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
-    megals --reload &> /dev/null
-  elif [ "$BLDTYPE" = "K" ]; then
-    megarm /Root/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip &> /dev/null
-    megals --reload &> /dev/null
-  fi
+  megarm /Root/$UPZIP &> /dev/null
+  megals --reload &> /dev/null
   # --------
   # Upload the Kernel Installer(s)
-  echo -e "$WHITE$BLD   Uploading Zip for $VARIANT to MEGA...$WHITE"
-  if [ "$BLDTYPE" = "A" ]; then
-    megaput $NZIPS/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AROMA_"$DATE"_"$VARIANT"_KB-E"$KBV".zip 2> $MEGALOG
-    CHECKUPLOAD=$(grep -Ewo 'ERROR' $MEGALOG)
-    if [ "$CHECKUPLOAD" = "ERROR" ]; then
-      echo -e "$RED Error: File not found"
-      # Report upload error to KB-E
-      export UPLOADERROR=1
-    else
-      echo -e "$GREEN$BLD   Done$RATT"
-    fi
-  elif [ "$BLDTYPE" = "K" ]; then
-    megaput $NZIPS/"$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip 2> $MEGALOG
-    CHECKUPLOAD=$(grep -Ewo 'ERROR' $MEGALOG)
-    if [ "$CHECKUPLOAD" = "ERROR" ]; then
-      echo -e "$RED Error: File not found"
-      # Report upload error to KB-E
-      export UPLOADERROR=1
-    else
-      echo -e "$GREEN$BLD   Done$RATT"
-    fi
-  fi
-  echo -e "$RATT"
+  echo -e "$WHITE   Uploading Zip for $VARIANT to MEGA..."
+  megaput $NZIPS/$UPZIP &> $MEGALOG
+  echo -e "$WHITE   Done"
+  echo -e "$GREEN$BLD   --------------------------$WHITE"
 }
 
 megacheck () {
-echo " "
-echo -e "$GREEN$BLD   Configuring MEGA...$RATT"
+echo -e "$WHITE   Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed
   echo " "
@@ -131,6 +115,39 @@ if [ "$1" = "--reconfigure" ]; then
 fi
 }
 
+# Install MEGATools used by this program
+MTF="megatools-1.9.98.tar.gz"
+installmega () {
+  # Check if MEGATools is already installed
+  if [ -x "$(command -v megaput)" ]; then
+    echo " "
+    echo -e "$WHITE   MEGATools is already installed, exiting..."
+    echo " "
+    return 1
+  fi
+  echo " "
+  echo -e "$GREEN$BLD   Installing MEGATools...$WHITE"
+  # Make temp folder for installation
+  mkdir megatemp
+  cd megatemp
+  wget https://megatools.megous.com/builds/$MTF
+  tar -xzf $MTF
+  cd megatools-1.9.98
+  # Install dependencies
+  sudo apt-get install libcurl4-gnutls-dev libglib2.0-dev asciidoc fop
+  ./configure
+  make
+  sudo make install
+  cd ../../
+  # Clean temp folder
+  rm -rf megatemp
+  echo -e "$WHITE   Done"
+  # Configure megarc
+  megacheck
+  unset NOUP
+}
+
+
 # Download a template from MEGA
 megadlt () {
   # Check if MEGA is available
@@ -145,7 +162,6 @@ megadlt () {
   read -p " - File name (.zip): " TN
   # Combine path to the folder with file name to get full path
   MTP="$TFP/$TN"
-  ZIPERROR=0
   echo -e "$LRED$BLD   Downloading specified template for: $VARIANT "
   # Start Downloading the template
   megaget $MTP --path $MAKT
