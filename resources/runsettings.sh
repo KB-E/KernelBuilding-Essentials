@@ -220,8 +220,10 @@ do
   echo -ne "$GREEN$BLD   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
   read  EM
   if [ "$EM" = y ] || [ "$EM" = Y ]; then
-    echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" | tee -a $MLIST $DFILE &> /dev/null
-    echo "export MPATH$((x++))=$i" | tee -a $MLIST $DFILE &> /dev/null
+    echo "export MODULE$((k))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
+    echo "export MPATH$((x))=$i" >> $MLIST
+    echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $DFILE
+    echo "export MPATH$((x++))=$i" >> $DFILE
     . $i
     # Execute module on device kernel file
     echo ". $i" >> $DFILE
