@@ -15,7 +15,7 @@ elif [ "$ARMT" = "2" ]; then
   echo "export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-" >> $DFILE
 fi
 echo "export P=$P" >> $DFILE
-if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
+if [ $KDEBUG = 1 ]; then
   echo "export KDEBUG=1" >> $DFILE
 fi
 echo "export VARIANT1=$VARIANT1" >> $DFILE
