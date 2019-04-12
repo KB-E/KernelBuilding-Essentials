@@ -13,6 +13,9 @@ VF=$OTHERF/variants.sh
 # Module List
 MLIST=$CDF/resources/other/modulelist.txt
 
+# Core Devices
+CORED=$CDF/resources/core-devices
+
 # Resources folder
 SRCF=$CDF/"resources/"
 

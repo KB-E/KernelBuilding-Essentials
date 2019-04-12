@@ -89,6 +89,7 @@ loadresources () {
   . $CDF/resources/runsettings.sh
   . $CDF/resources/buildkernel/buildkernel.sh
   . $CDF/resources/buildkernel/makedtb.sh
+  . $CDF/resources/other/writecoredevice.sh
 }
 
 # Check CrossCompiler

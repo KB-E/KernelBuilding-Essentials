@@ -29,6 +29,15 @@ echo -e "$GREEN$BLD - Enter your Kernel Information:"
 echo -e "$WHITE  -------------------------"
 echo " "
 read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; if [ "$KERNELNAME" = "" ]; then return 1; fi
+if [ -f $CORED/$KERNELNAME.dev ]; then
+  read -p "   Load last settings for '$KERNELNAME'? [Y/N]: " LLS
+  if [ "$LLS" = "Y" ] || [ "$LLS" = "y" ]; then
+    . $CORED/$KERNELNAME.dev
+    unset LLS
+    export RD=1
+    return 1
+  fi
+fi
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
 read -p "   Version: " VERSION; export VERSION;  if [ "$VERSION" = "" ]; then return 1; fi
 echo " "
@@ -178,6 +187,10 @@ read CLRS
 if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
   export CLR=1
 fi
+# Save this session kernel data
+export DFILE=$CORED/$KERNELNAME.dev
+touch $DFILE
+writecoredevice
 echo " "
 echo " "
 echo -e "$WHITE  --------------------------"
@@ -205,9 +218,11 @@ do
   echo -ne "$GREEN$BLD   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
   read  EM
   if [ "$EM" = y ] || [ "$EM" = Y ]; then
-    echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
-    echo "export MPATH$((x++))=$i" >> $MLIST
+    echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" | tee -a $MLIST $DFILE &> /dev/null
+    echo "export MPATH$((x++))=$i" | tee -a $MLIST $DFILE &> /dev/null
     . $i
+    # Execute module on device kernel file
+    echo ". $i" >> $DFILE
   fi
 done
 . $MLIST
