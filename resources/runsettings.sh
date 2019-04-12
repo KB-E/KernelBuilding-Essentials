@@ -36,6 +36,8 @@ if [ -f $CORED/$KERNELNAME.dev ]; then
     unset LLS
     export RD=1
     return 1
+  else
+    rm $CORED/$KERNELNAME.dev
   fi
 fi
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
