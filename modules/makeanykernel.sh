@@ -75,7 +75,9 @@ if [ "$MULTIVARIANT" = false ]; then
 fi
 
 # Cancel if theres no Kernel built
-if [ ! -f $ZI/$VARIANT ]; then
+if [ -f $ZI$VARIANT.gz-dtb ] || [ -f $ZI$VARIANT.gz ] || [ -f $ZI$VARIANT ]; then
+  sleep 0.1
+else
   echo " "
   echo -e "$RED$BLD   There's no Kernel built for $VARIANT, aborting..."
   echo -e "$WHITE   Did you built the Kernel?"
@@ -120,29 +122,50 @@ NZIPS=$CDF/"out/AnyKernel" # New Zips built output folder
 
 # Check Zip Tool
 checkziptool
+# Check buildkernel.sh KBUILDFAILED variable
+if [ "$KBUILDFAILED" = "1" ]; then
+  echo -e "$RED$BLD   Warning:$WHITE the previous kernel were not built successfully"
+  read -p "Ignore this warning and continue? [Y/N]: " CAB           # KBUILDFAILED tell us if the lastest kernel
+  if [ "$CAB" = "y" ] || [ "$CAB" = "Y" ]; then                     # building failed, but, we still have the 
+    echo -e "$WHITE   Using last built Kernel for $VARIANT..."      # last successfully built kernel so this will
+  else                                                              # ask the user if he wants to continue building
+    echo -e "$WHITE   Aborting..."                                  # the anykernel installer, if not, exit the 
+    echo -e "$GREEN$BLD   --------------------------$WHITE"         # module.
+    cd $CDF
+    return 1
+  fi
+fi
 # Starting the real process!
 # -----------------------
 # Kernel Update
-if [ -f $ZI/$VARIANT ]; then
-  echo -e "$WHITE   Updating Files..."
-  if [ $ARCH = arm ]; then
+while true
+do
+  if [ "$ARCH" = "arm" ]; then
     cp $ZI/$VARIANT $AKFOLDER/zImage
-  elif [ $ARCH = arm64 ]; then 
-    cp $ZI/$VARIANT $AKFOLDER/Image.gz-dtb
+    break
+  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT.gz-dtb ]; then 
+    cp $ZI/$VARIANT.gz-dtb $AKFOLDER/Image.gz-dtb
+    break
+  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT.gz ]; then
+    cp $ZI/$VARIANT.gz $AKFOLDER/Image.gz
+    break
+  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT ]; then
+    cp $ZI/$VARIANT $AKFOLDER/Image
+    break
   fi
-  if [ "$1" != "--no-spam" ]; then
-    echo -e "$WHITE$BLD   Kernel Updated"
-  fi
-  if [ "$MAKEDTB" = "1" ]; then 
-    if [ -f $DT/$VARIANT ]; then
-      cp $DT/$VARIANT $AKFOLDER/dtb
-      if [ "$1" != "--no-spam" ]; then 
-        echo -e "$WHITE$BLD   DTB Updated"
-        echo -e "   Done"
-      fi
-    else
-      echo -e "$RED$BLD   DTB not found for $VARIANT, skipping..."
+done
+if [ "$1" != "--no-spam" ]; then
+  echo -e "$WHITE$BLD   Kernel Updated"
+fi
+if [ "$MAKEDTB" = "1" ]; then 
+  if [ -f $DT/$VARIANT ]; then
+    cp $DT/$VARIANT $AKFOLDER/dtb
+    if [ "$1" != "--no-spam" ]; then 
+      echo -e "$WHITE$BLD   DTB Updated"
+      echo -e "   Done"
     fi
+  else
+    echo -e "$RED$BLD   DTB not found for $VARIANT, skipping..."
   fi
 fi
 # -----------------------
@@ -158,7 +181,10 @@ zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VAR
 mv "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip $NZIPS/
 echo -e "$GREEN$BLD Done!$RATT"
 echo -e "$GREEN$BLD   --------------------------$WHITE"
+# Clean anykernelfiles Folder
+rm $AKFOLDER/zImage &> /dev/null
+rm $AKFOLDER/Image.gz-dtb &> /dev/null
+rm $AKFOLDER/Image.gz &> /dev/null
+rm $AKFOLDER/Image &> /dev/null
 cd $CDF
 }
-
-
