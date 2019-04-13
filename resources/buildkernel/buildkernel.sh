@@ -47,6 +47,9 @@ buildkernel () {
   if [ "$CLR" = "1" ]; then make clean; echo " "; fi # Clean Kernel source
   # To avoid a false sucessfull build
   rm $P/arch/arm/boot/zImage &> /dev/null
+  rm $P/arch/arm/boot/Image.gz-dtb &> /dev/null
+  rm $P/arch/arm/boot/Image &> /dev/null
+  rm $P/arch/arm/boot/Image.gz &> /dev/null
   # ---------------------------------
 
   # Get config file
@@ -56,7 +59,11 @@ buildkernel () {
 
   # Load defconfig
   echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
-  make ARCH=$ARCH $DEFCONFIG &> $LOGF/buildkernel_log.txt
+  if [ "$ARCH" = "arm" ]; then
+    make ARCH=arm $DEFCONFIG &> $LOGF/buildkernel_log.txt
+  elif [ "$ARCH" = "arm64" ]; then
+    make ARCH=arm64 $DEFCONFIG &> $LOGF/buildkernel64_log.txt
+  fi
   . $P/.config
   echo -e " Done"
   echo " "
@@ -70,14 +77,14 @@ buildkernel () {
   # Start compiling kernel
   echo -e "$GREEN$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
   echo " "
-  if [ $ARCH = arm ]; then
+  if [ $ARCH = "arm" ]; then
     if [ "$KDEBUG" != "1" ]; then
       make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm &>> $LOGF/buildkernel_log.txt # Store logs
     else
       make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm
     fi
   fi
-  if [ $ARCH = arm64 ]; then
+  if [ $ARCH = "arm64" ]; then
     if [ "$KDEBUG" != "1" ]; then
       make -j$JOBS ARCH=arm64 &>> $LOGF/buildkernel64_log.txt # Store logs
     else
@@ -88,11 +95,63 @@ buildkernel () {
   echo " "
 
   # Verify if the kernel were built
-  KERROR=0
-  if [ $ARCH = arm ]; then
+  if [ $ARCH = "arm" ]; then
     if [ ! -f $P/arch/arm/boot/zImage ]; then # If theres no zImage built then there was
-      export KERROR=1                          # an error compiling the kernel
-      if [ "$KDEBUG" != "1" ]; then
+      export KFAIL="1"                        # an error compiling the kernel
+      readlog # Asks the user to open the kernel log in KDEBUG is disabled
+    fi
+  fi
+  if [ $ARCH = "arm64" ]; then
+    if [ -f $P/arch/arm64/boot/Image.gz-dtb ] || [ -f $P/arch/arm64/boot/Image.gz ] || [ -f $P/arch/arm64/boot/Image ]; then
+      echo -e "$WHITE   Kernel Found..."
+    else
+      export KFAIL="1"
+      readlog
+    fi
+  fi
+  
+  # If KFAIL=1 then exit the script
+  if [ "$KFAIL" = "1" ]; then
+    echo " "
+    echo -e "$RED   ## Kernel Building Failed ##$RATT"
+    # Report failed build to KB-E
+    export KBUILDFAILED=1
+    echo " "
+    unset KFAIL
+    return 1
+  fi
+
+  # Move the Kernel to out/Images
+  while true
+  do
+    if [ $ARCH = arm ]; then
+      KFNAME="$VARIANT"     
+      cp $P/arch/arm/boot/zImage $ZI/$KFNAME
+      break
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then
+      KFNAME="$VARIANT.gz-dtb"     
+      cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$KFNAME
+      break
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz ]; then 
+      KFNAME="$VARIANT.gz"     
+      cp $P/arch/arm64/boot/Image $ZI/$KFNAME
+      break
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image ]; then  
+      KFNAME="$VARIANT"        
+      cp $P/arch/arm64/boot/Image $ZI/$KFNAME
+      break
+    fi
+  done
+  echo -e "$GREEN$BLD   New Kernel ($KFNAME) Copied to$WHITE '$ZI'"
+  echo " "
+  echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
+  echo " "
+  cd $CDF
+}
+
+readlog () {
+if [ "$ARCH" = "arm" ]; then
+    if [ "$KDEBUG" != "1" ]; then
         echo " "
         echo -e "$RED$BLD ## Build for $VARIANT Failed ## $WHITE"
         echo " " &>> $LOGF/buildkernel_log.txt
@@ -102,13 +161,10 @@ buildkernel () {
           nano $LOGF/buildkernel_log.txt
           unset READBL
         fi
-      fi
     fi
-  fi
-  if [ $ARCH = arm64 ]; then
-    if [ ! -f $P/arch/arm64/boot/Image.gz-dtb ]; then # If theres no zImage built then there was
-      export KERROR=1                          # an error compiling the kernel
-      if [ "$KDEBUG" != "1" ]; then
+fi
+if [ "$ARCH" = "arm64" ]; then
+    if [ "$KDEBUG" != "1" ]; then
         echo " "
         echo -e "$RED$BLD ## Build for $VARIANT Failed ## $WHITE"
         echo " " &>> $LOGF/buildkernel64_log.txt
@@ -118,34 +174,6 @@ buildkernel () {
           nano $LOGF/buildkernel64_log.txt
           unset READBL
         fi
-      fi
     fi
-  fi
-
-  # If KERROR is not equal to 1 then we can proceed to
-  # move the kernel in their respective folders
-  if [ "$KERROR" != 1 ]; then
-    if [ $ARCH = arm ]; then
-      cp $P/arch/arm/boot/zImage $ZI/$VARIANT
-    fi
-    if [ $ARCH = arm64 ]; then
-      if [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then 
-        cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$VARIANT
-      fi
-      if [ -f $P/arch/arm64/boot/Image ]; then
-        cp $P/arch/arm64/boot/Image $ZI/$VARIANT
-      fi
-    fi
-    echo -e "$GREEN$BLD   New Kernel Copied to$WHITE '$ZI'"
-    echo " "
-    echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
-    echo " "
-  else # Else, finish the function with a kernel building failed!
-    echo " "
-    echo -e "$RED   ## Kernel Building Failed ##$RATT"
-    # Report failed build to KB-E
-    export KBUILDFAILED=1
-    echo " "
-  fi
-  cd $CDF
+fi
 }
