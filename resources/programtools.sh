@@ -152,3 +152,13 @@ writeprogramconfig () {
   echo -e " Done"
   echo " "
 }
+
+cdkernel () {
+BACK=$(pwd)
+cd $P
+}
+
+back () {
+cd $BACK
+BACK=.
+}
