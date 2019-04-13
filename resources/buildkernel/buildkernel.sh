@@ -4,6 +4,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 buildkernel () {
+  unset KBUILDFAILED
   checkcc &> /dev/null
   echo -ne "$GREEN$BLD"
   echo -e "   _  __                 _ "
