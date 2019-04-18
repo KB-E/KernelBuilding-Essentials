@@ -43,3 +43,13 @@ if [ "$ARCH" = "arm" ] && [ -f $ZI$KER ]; then
     echo -e "   Kernel for $KER copied to ($1) named 'Image'"
  fi
 }
+
+# Clear the current working kernel source
+clrsource () {
+BACK=$(pwd)
+cd $P
+make clean
+cd $BACK
+unset BACK
+}
+export -f clrsource
