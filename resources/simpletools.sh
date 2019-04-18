@@ -3,7 +3,7 @@
 # By Artx/Stayn <artx4dev@gmail.com>
 
 # Enter the current working kernel source
-cdkernel () {
+cdsource () {
 BACK=$(pwd)
 cd $P
 }
