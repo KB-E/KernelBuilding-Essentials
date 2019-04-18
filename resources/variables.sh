@@ -4,29 +4,29 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Local Folders Paths
-ZI=$CDF/"out/Images/" # Last Built zImages
-DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
+export ZI=$CDF/"out/Images/" # Last Built zImages
+export DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
 
 # Variants file
-VF=$OTHERF/variants.sh
+export VF=$OTHERF/variants.sh
 
 # Module List
-MLIST=$CDF/resources/other/modulelist.txt
+export MLIST=$CDF/resources/other/modulelist.txt
 
 # Core Devices
-CORED=$CDF/resources/core-devices
+export CORED=$CDF/resources/core-devices
 
 # Resources folder
-SRCF=$CDF/"resources/"
+export SRCF=$CDF/"resources/"
 
 # Log output folder
-LOGF=$CDF/"resources/logs/" # Build Kernel and dt.img logs comes here
+export LOGF=$CDF/"resources/logs/" # Build Kernel and dt.img logs comes here
 
 # dtbToolLineage
-DTB=$CDF/"resources/dtb/dtbtool"
+export DTB=$CDF/"resources/dtb/dtbtool"
 
 # Others folder
-OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
+export OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
 
 # Help fle path
-HFP=$CDF/README.md
+export HFP=$CDF/README.md

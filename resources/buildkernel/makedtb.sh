@@ -46,3 +46,4 @@ makedtb () {
    echo " "
   fi
 }
+export -f makedtb

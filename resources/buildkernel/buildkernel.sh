@@ -178,3 +178,4 @@ if [ "$ARCH" = "arm64" ]; then
     fi
 fi
 }
+export -f buildkernel

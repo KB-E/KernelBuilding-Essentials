@@ -11,6 +11,8 @@ installtools () {
   sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache libc++-dev
   echo " "
 }
+export -f installtools
+
 checktools () {
   if [ -f $CDF/resources/other/missingdeps ]; then
     rm $CDF/resources/other/missingdeps
@@ -42,6 +44,7 @@ checktools () {
     fi
   fi
 }
+export -f checktools
 
 checkvariants () {
   if [ -z "$VARIANT2" ]; then
@@ -52,6 +55,7 @@ checkvariants () {
     MULTIVARIANT=true
   fi
 }
+export -f checkvariants
 
 checkfolders () {
   # Check environment folders and if one, some or all doesnt exist
@@ -77,11 +81,13 @@ checkfolders () {
     echo -e "$WHITE Done$RATT"
   fi
 }
+export -f checkfolders
 
 # Help command
 kbhelp () {
   nano $HFP
 }
+export -f kbhelp
 
 loadresources () {
   # Initialize KB-E Resources
@@ -91,6 +97,7 @@ loadresources () {
   . $CDF/resources/buildkernel/makedtb.sh
   . $CDF/resources/other/writecoredevice.sh
 }
+export -f loadresources
 
 # Check CrossCompiler
 checkcc () {
@@ -103,6 +110,7 @@ else
   export CERROR=0 # Initialize CrossCompilerERROR Variable
 fi
 }
+export -f checkcc
 
 # Check DTB Tool
 checkdtbtool () {
@@ -115,6 +123,7 @@ else
   echo -e "$WHITE   DTB Tool found"
 fi
 }
+export -f checkdtbtool
 
 # Check Zip Tool
 checkziptool () {
@@ -135,6 +144,7 @@ else
   echo -e "$WHITE   Zip Tool Found! $RATT"
 fi
 }
+export -f checkziptool
 
 # Load auto.sh function into .bashrc
 writeprogramconfig () {
@@ -152,13 +162,16 @@ writeprogramconfig () {
   echo -e " Done"
   echo " "
 }
+export -f writeprogramconfig
 
 cdkernel () {
 BACK=$(pwd)
 cd $P
 }
+export -f cdkernel
 
 back () {
 cd $BACK
 BACK=.
 }
+export -f back

@@ -27,5 +27,5 @@ if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
   echo "export CLR=1" >> $DFILE
 fi
 }
-
+export -f writecoredevice
 

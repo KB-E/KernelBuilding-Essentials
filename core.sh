@@ -182,4 +182,4 @@ else
   echo " "
   unset -f essentials
 fi
-
+export -f essentials

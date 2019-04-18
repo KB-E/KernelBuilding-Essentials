@@ -108,7 +108,7 @@ if [ $ARCH = arm ] && [ ! -d $CDF/source/$d/arch/$ARCH/ ]; then
   return 1
 fi
 cd $CDF
-P=$CDF/source/$d
+export P=$CDF/source/$d
 echo " "
 echo -ne "   Debug Kernel Building?$GREEN$BLD [Y/N]:$WHITE "
 read KDEBUG
@@ -123,7 +123,7 @@ if [ -f $OTHERF/variants.sh ]; then
   read UDF
   if [ "$UDF" = y ] || [ "$UDF" = Y ]; then
     echo -e "   Using lastest defined variants..."
-    . $OTHERF/variants.sh
+    bash $OTHERF/variants.sh
     UDF=1
   fi
 fi
