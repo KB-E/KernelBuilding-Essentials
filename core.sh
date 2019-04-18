@@ -105,22 +105,22 @@ echo " "
 unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentials
 
 # Main command, you'll tell here to the program what to do
-essentials () {
+kbe () {
   # Get actual path
   CURR=$(pwd)
   # Instructions
   if [ "$1" = "" ]; then
     i=1
     echo " "
-    echo "Usage: essentials --kernel (Builds the kernel)"
-    echo "                  --dtb (Builds device tree image)"
+    echo "Usage: kbe --kernel or -k (Builds the kernel)"
+    echo "           --dtb or -dt (Builds device tree image)"
     i=1
     while var=MODULE$((i++)); [[ ${!var} ]]; do
     path=MPATH$(($i-1)); [[ ${!path} ]];
-      echo "                  --${!var} ($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))"
+      echo "           --${!var} ($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))"
     done
     echo " "
-    echo "                  --all (Does everything mentioned above)        | Work alone "
+    echo "           --all (Does everything mentioned above)        | Work alone "
     echo " "
     echo "For more information use 'kbhelp' command"
     echo " "
@@ -128,7 +128,7 @@ essentials () {
 
   # First of all, the program buildkernel and makedtb
   for g in $@; do
-    if [ "$g" = "--kernel" ]; then
+    if [ "$g" = "--kernel" ] || [ "$g" = "-k" ]; then
       checkvariants
       if [ "$MULTIVARIANT" = "true" ]; then
         while var=VARIANT$((i++)); [[ ${!var} ]]; do
@@ -146,7 +146,7 @@ essentials () {
   done
 
   for s in $@; do
-    if [ "$s" = "--dtb" ]; then
+    if [ "$s" = "--dtb" ] || [ "$s" = "-dt" ]; then
       checkvariants
       if [ "$MULTIVARIANT" = "true" ]; then
         while var=VARIANT$((i++)); [[ ${!var} ]]; do
@@ -180,6 +180,6 @@ if [ "$RD" = "1" ]; then
 else
   echo -e "$RED$BLD - Session cancelled$RATT"
   echo " "
-  unset -f essentials
+  unset -f kbe
 fi
-export -f essentials
+export -f kbe
