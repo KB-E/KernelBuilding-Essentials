@@ -8,14 +8,14 @@
 installtools () {
   echo " "
   sudo apt-get update
-  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache
+  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache libc++-dev
   echo " "
 }
 checktools () {
   if [ -f $CDF/resources/other/missingdeps ]; then
     rm $CDF/resources/other/missingdeps
   fi
-  declare -a progtools=("git" "build-essential" "kernel-package" "fakeroot" "libncurses5-dev" "libssl-dev" "device-tree-compiler" "ccache")
+  declare -a progtools=("git" "build-essential" "kernel-package" "fakeroot" "libncurses5-dev" "libssl-dev" "device-tree-compiler" "ccache" "libc++-dev")
   for i in "${progtools[@]}"
   do
     PROGRAMINST=$(dpkg -s "$i" | grep Status | cut -d ":" -f 2)
