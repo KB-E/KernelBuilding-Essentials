@@ -32,6 +32,8 @@ CDF=$(pwd)
 . $CDF/resources/other/colors.sh
 # Load ProgramTools
 . $CDF/resources/programtools.sh
+# Load SimpleTools
+. $CDF/resources/simpletools.sh
 # Load title 
 . $CDF/resources/other/programtitle.sh
 

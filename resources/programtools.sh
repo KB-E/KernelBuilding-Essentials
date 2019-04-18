@@ -163,15 +163,3 @@ writeprogramconfig () {
   echo " "
 }
 export -f writeprogramconfig
-
-cdkernel () {
-BACK=$(pwd)
-cd $P
-}
-export -f cdkernel
-
-back () {
-cd $BACK
-BACK=.
-}
-export -f back
