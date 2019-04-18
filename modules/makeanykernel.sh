@@ -177,8 +177,8 @@ else
   echo -ne "$WHITE   Building Installer..."
 fi
 cd $AKFOLDER
-zip -r9 "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip * &> /dev/null
-mv "$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip $NZIPS/
+zip -r9 "$KERNELNAME"-v"$VERSION"-"$TARGETANDROID"_"$VARIANT".zip * &> /dev/null
+mv "$KERNELNAME"-v"$VERSION"-"$TARGETANDROID"_"$VARIANT".zip $NZIPS/
 echo -e "$GREEN$BLD Done!$RATT"
 echo -e "$GREEN$BLD   --------------------------$WHITE"
 # Clean anykernelfiles Folder

@@ -35,7 +35,7 @@ echo -e "        |_|                    "
 echo " "
 echo -e "$GREEN$BLD   --------------------------"
 echo -e "$WHITE - Initializing Kernel(s) upload...$RATT$WHITE"
-UPZIP="$KERNELNAME"Kernel-v"$VERSION"-"$TARGETANDROID"-AnyKernel_"$DATE"_"$VARIANT"_KB-E"$KBV".zip
+UPZIP="$KERNELNAME"-v"$VERSION"-"$TARGETANDROID"_"$VARIANT".zip
 echo -e "$WHITE   Checking file to be uploaded..."
 if [ ! -f $NZIPS/$UPZIP ]; then
   echo " "
