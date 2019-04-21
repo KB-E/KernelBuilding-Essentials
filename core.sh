@@ -28,18 +28,22 @@ sudo chown -R $USER:users *
 # Program Directory Path
 CDF=$(pwd)
 
+# Logging script
+export KBELOG=$CDF/resources/logs/kbessentials.log
+log -t " " $KBELOG
+source $CDF/resources/log.sh; log -t "Starting KB-E..." $KBELOG
 # Load Colors
-. $CDF/resources/other/colors.sh
+. $CDF/resources/other/colors.sh; log -t "Colors loaded" $KBELOG
 # Load ProgramTools
-. $CDF/resources/programtools.sh
+. $CDF/resources/programtools.sh; log -t "ProgramTools loaded" $KBELOG
 # Load SimpleTools
-. $CDF/resources/simpletools.sh
+. $CDF/resources/simpletools.sh; log -t "SimpleTools loaded" $KBELOG
 # Load title 
-. $CDF/resources/other/programtitle.sh
+. $CDF/resources/other/programtitle.sh; log -t "ProgramTitle loaded" $KBELOG
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
-  echo -e "$GREEN$BLD - Perfoming a Cleaning...$WHITE"
+  echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment..." $KBELOG
   if [ -d $CDF/resources/crosscompiler/ ]; then
     rm -rf $CDF/resources/crosscompiler/
   fi
@@ -55,7 +59,7 @@ fi
 
 # Function to clear KB-E Environment
 kbeclear () {
-echo -e "$GREEN$BLD - Performing a Cleaning...$WHITE"
+echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment by kbeclear command..." $KBELOG
 if [ -d $CDF/resources/crosscompiler/ ]; then
   rm -rf $CDF/resources/crosscompiler/
 fi
@@ -82,7 +86,7 @@ echo -e "   Done$RATT"
 
 # Start
 # KB-E Version
-KBV=1.0
+KBV=1.0; log -t "KB-E Version: $KBV" $KBELOG
 clear # Clear user UI
 unset CWK
 X=0
@@ -92,11 +96,11 @@ until [ $X = 21 ]; do
 done
 
 # DisplayTitle
-title
+title; log -t "Displaying title" $KBELOG
 
 # Initialize KB-E Resources and Modules
-checktools
-loadresources
+checktools; log -t "Checking tools" $KBELOG
+loadresources; lot -t "Loading resources" $KBELOG
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
@@ -104,14 +108,16 @@ fi
 echo " "
 
 # Clear some variables
-unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f essentials
+unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f kbe
 
 # Main command, you'll tell here to the program what to do
+log -t "Loading 'kbe' function..." $KBELOG
 kbe () {
   # Get actual path
   CURR=$(pwd)
   # Instructions
   if [ "$1" = "" ]; then
+    log -t "Displaying 'kbe' usage information" $KBELOG
     i=1
     echo " "
     echo "Usage: kbe --kernel or -k (Builds the kernel)"
@@ -131,17 +137,18 @@ kbe () {
   # First of all, the program buildkernel and makedtb
   for g in $@; do
     if [ "$g" = "--kernel" ] || [ "$g" = "-k" ]; then
+      log -t "Checking variants..." $KBELOG
       checkvariants
       if [ "$MULTIVARIANT" = "true" ]; then
         while var=VARIANT$((i++)); [[ ${!var} ]]; do
           def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
           DEFCONFIG=${!def}
-          VARIANT=${!var}
+          VARIANT=${!var}; log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
           buildkernel
         done
       else
         VARIANT=$VARIANT1
-        DEFCONFIG=$DEFCONFIG1
+        DEFCONFIG=$DEFCONFIG1; log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
         buildkernel
       fi
     fi
@@ -149,14 +156,15 @@ kbe () {
 
   for s in $@; do
     if [ "$s" = "--dtb" ] || [ "$s" = "-dt" ]; then
+      log -t "Checking variants..." $KBELOG
       checkvariants
       if [ "$MULTIVARIANT" = "true" ]; then
         while var=VARIANT$((i++)); [[ ${!var} ]]; do
-          VARIANT=${!var}
+          VARIANT=${!var}; log -t "Building DTB for $VARIANT" $KBELOG
           makedtb
         done
       else
-        VARIANT=$VARIANT1
+        VARIANT=$VARIANT1; log -t "Building DTB for $VARIANT" $KBELOG
         makedtb
       fi
     fi
@@ -168,7 +176,7 @@ kbe () {
     while var=MODULE$((i++)); [[ ${!var} ]]; do
       path=MPATH$(($i-1)); [[ ${!path} ]];
       if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$a" ]; then
-        EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
+        EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2); log -t "Executing '$(grep MODULE_NAME ${!path} | cut -d '=' -f2)' Module..." $KBELOG
         $EXEC
       fi
     done
@@ -177,11 +185,12 @@ kbe () {
 }
 # Done
 if [ "$RD" = "1" ]; then
-  echo -e "$GREEN$BLD - Kernel-Building Essentials it's ready!$RATT"
+  echo -e "$GREEN$BLD - Kernel-Building Essentials it's ready!$RATT"; log -t "KB-E is Ready for its use" $KBELOG
   echo " "
 else
-  echo -e "$RED$BLD - Session cancelled$RATT"
+  echo -e "$RED$BLD - Session cancelled$RATT"; log -t "KB-E Session cancelled" $KBELOG
   echo " "
   unset -f kbe
 fi
 export -f kbe
+log -f kbe $KBELOG
