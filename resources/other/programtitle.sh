@@ -18,4 +18,4 @@ title () {
   echo -e "             $GREEN$BLD ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝ $WHITE   "
   echo " "
 }
-export -f title
+export -f title; log -f title $KBELOG

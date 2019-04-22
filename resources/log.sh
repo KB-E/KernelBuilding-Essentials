@@ -53,7 +53,7 @@ log () {
     # -------------------
     # Now the real stuff
     # -------------------
-    
+
     # Create the file
     if [ ! -f "$3" ]; then
         touch "$3"

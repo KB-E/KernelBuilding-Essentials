@@ -30,3 +30,4 @@ export OTHERF=$CDF/"resources/other/" # First run file, other paths variables, e
 
 # Help fle path
 export HFP=$CDF/README.md
+log -t "Variables loaded" $KBELOG

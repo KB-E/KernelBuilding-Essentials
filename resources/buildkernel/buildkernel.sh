@@ -5,7 +5,9 @@
 
 buildkernel () {
   unset KBUILDFAILED
+  log -t "BuildKernel: Checking CrossCompiler" $KBELOG
   checkcc &> /dev/null
+  log -t "BuildKernel: Done" $KBELOG
   echo -ne "$GREEN$BLD"
   echo -e "   _  __                 _ "
   echo -e "  | |/ /___ _ _ _ _  ___| |  "
@@ -19,7 +21,7 @@ buildkernel () {
   if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                              # were not found and we cannot compile the kernel
     echo -e "$RED - There was an error getting the CrossCompiler path, exiting...$RATT"
-    echo " "
+    echo " "; log -t "BuildKernel: There was an error getting the CrossCompiler, exiting..." $KBELOG
     return 1
   fi
 
@@ -28,9 +30,9 @@ buildkernel () {
                       # in the process or defaultsettings.sh
     cd $P
     echo -e "$GREEN$BLD   Entered in $WHITE'$P' $GREEN$BLDSucessfully"
-    echo " "
+    echo " "; log -t "BuildKernel: Entered in '$P'" $KBELOG
   else # If it doesnt exist it means that we don't have nothing to do
-    echo -e "$RED   Path doesn't exist!"
+    echo -e "$RED   Path doesn't exist!"; log -t "BuildKernel: Source path '$P' doesnt exist, exiting..." $KBELOG
     echo -e "$RED - Build canceled$RATT"
     echo " "
     return 1
@@ -39,13 +41,15 @@ buildkernel () {
   # Export necessary things
   export KCONFIG_NOTIMESTAMP=true
   export ARCH=$ARCH                   # If the program succed at this step, this means
+  log -t "BuildKernel: Exported ARCH=$ARCH" $KBELOG
   export SUB_ARCH=$ARCH;
   #echo -e "$WHITE   Exported $ARCH"
   export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
+  log -t "BuildKernel: Exported CROSS_COMPILE=$CROSSCOMPILE" $KBELOG
   #echo -e "   Exported $CROSSCOMPILE"
 
   #Start Building Process
-  if [ "$CLR" = "1" ]; then make clean; echo " "; fi # Clean Kernel source
+  if [ "$CLR" = "1" ]; then make clean; log -t "BuildKernel: Source cleaned" $KBELOG; echo " "; fi # Clean Kernel source
   # To avoid a false sucessfull build
   rm $P/arch/arm/boot/zImage &> /dev/null
   rm $P/arch/arm/boot/Image.gz-dtb &> /dev/null
@@ -55,29 +59,30 @@ buildkernel () {
 
   # Get config file
   if [ ! -f $P/.config ]; then
-    cp $P/arch/$ARCH/configs/$DEFCONFIG $P/.config
+    cp $P/arch/$ARCH/configs/$DEFCONFIG $P/.config; log -t "BuildKernel: Copied defcofig to '$P/.config'" $KBELOG
   fi
 
   # Load defconfig
   echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
   if [ "$ARCH" = "arm" ]; then
-    make ARCH=arm $DEFCONFIG &> $LOGF/buildkernel_log.txt
+    make ARCH=arm $DEFCONFIG &> $LOG/buildkernel_log.txt
   elif [ "$ARCH" = "arm64" ]; then
     make ARCH=arm64 $DEFCONFIG &> $LOGF/buildkernel64_log.txt
   fi
   . $P/.config
   echo -e " Done"
-  echo " "
+  echo " "; log -t "BuildKernel: Loaded '$DEFCONFIG' defconfig" $KBELOG
   # -----------------------
 
   # Get the number of CPU Cores
-  JOBS=$(grep -c ^processor /proc/cpuinfo)
+  JOBS=$(grep -c ^processor /proc/cpuinfo); log -t "BuildKernel: Number of Cores=$JOBS" $KBELOG
   if [ "$BKB" = y ] || [ "$BKB" = Y ]; then
-    JOBS=$(( $JOBS + 2 ))
+    JOBS=$(( $JOBS + 2 )); log -t "BuildKernel: Cores number Boosted, Cores=$JOBS" $KBELOG
   fi
   # Start compiling kernel
   echo -e "$GREEN$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
   echo " "
+  log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
   if [ $ARCH = "arm" ]; then
     if [ "$KDEBUG" != "1" ]; then
       make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm &>> $LOGF/buildkernel_log.txt # Store logs
@@ -100,14 +105,16 @@ buildkernel () {
     if [ ! -f $P/arch/arm/boot/zImage ]; then # If theres no zImage built then there was
       export KFAIL="1"                        # an error compiling the kernel
       readlog # Asks the user to open the kernel log in KDEBUG is disabled
+      log -t "BuildKernel: Error: No kernel built found, compiling process failed" $KBELOG
     fi
   fi
   if [ $ARCH = "arm64" ]; then
     if [ -f $P/arch/arm64/boot/Image.gz-dtb ] || [ -f $P/arch/arm64/boot/Image.gz ] || [ -f $P/arch/arm64/boot/Image ]; then
-      echo -e "$WHITE   Kernel Found..."
+      echo -e "$WHITE   Kernel Found..."; log -t "BuildKernel: Kernel build process done successfully" $KBELOG
     else
       export KFAIL="1"
       readlog
+      log -t "BuildKernel: Error: No kernel built found, compiling process failed" $KBELOG
     fi
   fi
   
@@ -119,6 +126,7 @@ buildkernel () {
     export KBUILDFAILED=1
     echo " "
     unset KFAIL
+    log -t "BuildKernel: Build failed, exiting..." $KBELOG
     return 1
   fi
 
@@ -126,27 +134,27 @@ buildkernel () {
   while true
   do
     if [ $ARCH = arm ]; then
-      KFNAME="$VARIANT"     
-      cp $P/arch/arm/boot/zImage $ZI/$KFNAME
+      KFNAME="$VARIANT"
+      cp $P/arch/arm/boot/zImage $ZI/$KFNAME; log -t "BuildKernel: zImage found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then
-      KFNAME="$VARIANT.gz-dtb"     
-      cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$KFNAME
+      KFNAME="$VARIANT.gz-dtb"
+      cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz ]; then 
-      KFNAME="$VARIANT.gz"     
-      cp $P/arch/arm64/boot/Image $ZI/$KFNAME
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz ]; then
+      KFNAME="$VARIANT.gz"
+      cp $P/arch/arm64/boot/Image $ZI/$KFNAME; log -t "BuildKernel: Image.gz found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image ]; then  
-      KFNAME="$VARIANT"        
-      cp $P/arch/arm64/boot/Image $ZI/$KFNAME
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image ]; then
+      KFNAME="$VARIANT"
+      cp $P/arch/arm64/boot/Image $ZI/$KFNAME; log -t "BuildKernel: Image found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     fi
   done
   echo -e "$GREEN$BLD   New Kernel ($KFNAME) Copied to$WHITE '$ZI'"
   echo " "
   echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
-  echo " "
+  echo " "; log -t "BuildKernel: All done" $KBELOG
   cd $CDF
 }
 
@@ -159,6 +167,7 @@ if [ "$ARCH" = "arm" ]; then
         echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel_log.txt
         read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
         if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
+          log -t "ReadLog: Opening kernel build log to user" $KBELOG
           nano $LOGF/buildkernel_log.txt
           unset READBL
         fi
@@ -172,10 +181,12 @@ if [ "$ARCH" = "arm64" ]; then
         echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel64_log.txt
         read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
         if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
+          log -t "ReadLog: Opening kernel build log to user" $KBELOG
           nano $LOGF/buildkernel64_log.txt
           unset READBL
         fi
     fi
 fi
 }
-export -f buildkernel
+export -f buildkernel; log -f buildkernel $KBELOG
+export -f readlog; log -f readlog $KBELOG

@@ -3,6 +3,18 @@
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
+# Program Directory Path
+CDF=$(pwd)
+# Set environment folders
+source $CDF/resources/other/checkfolders.sh
+checkfolders
+# Logging script
+source $CDF/resources/log.sh
+export KBELOG=$CDF/resources/logs/kbessentials.log
+log -t " " $KBELOG
+log -t "Starting KB-E..." $KBELOG
+
+# Check for firstrun
 if [ ! -f ./resources/other/firstrun ]; then
   echo " "
   echo -e " - Disclaimer: "
@@ -25,13 +37,6 @@ fi
 sudo chmod 755 -R $(ls -A|grep -v 'source/*')
 sudo chown -R $USER:users *
 
-# Program Directory Path
-CDF=$(pwd)
-
-# Logging script
-export KBELOG=$CDF/resources/logs/kbessentials.log
-log -t " " $KBELOG
-source $CDF/resources/log.sh; log -t "Starting KB-E..." $KBELOG
 # Load Colors
 . $CDF/resources/other/colors.sh; log -t "Colors loaded" $KBELOG
 # Load ProgramTools
@@ -49,9 +54,6 @@ if [ ! -f $CDF/resources/other/firstrun ]; then
   fi
   if [ -d $CDF/out/ ]; then
     rm -rf $CDF/out/
-  fi
-  if [ -d $CDF/resources/logs/ ]; then
-    rm -rf $CDF/resources/logs/
   fi
   echo -e "   Done"
 sleep 1.5
@@ -100,7 +102,7 @@ title; log -t "Displaying title" $KBELOG
 
 # Initialize KB-E Resources and Modules
 checktools; log -t "Checking tools" $KBELOG
-loadresources; lot -t "Loading resources" $KBELOG
+loadresources; log -t "Loading resources" $KBELOG
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1

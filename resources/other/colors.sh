@@ -12,5 +12,4 @@ YELLOW="\e[1;33m"; BLUE="\e[0;34m"; MAGENTA="\e[0;35m"
 CYAN="\e[0;36m"; LGRAY="\e[0;37m"; DGRAY="\e[0;30m"
 LRED="\e[0;31m"; LGREEN="\e[1;32m"; LBLUE="\e[1;34m"
 LMAGENTA="\e[1;35m"; LCYAN="\e[1;36m"
-
 # Done
