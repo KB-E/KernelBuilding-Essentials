@@ -22,9 +22,6 @@ export SRCF=$CDF/"resources/"
 # Log output folder
 export LOGF=$CDF/"resources/logs/" # Build Kernel and dt.img logs comes here
 
-# dtbToolLineage
-export DTB=$CDF/"resources/dtb/dtbtool"
-
 # Others folder
 export OTHERF=$CDF/"resources/other/" # First run file, other paths variables, etc...
 

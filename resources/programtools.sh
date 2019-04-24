@@ -9,7 +9,7 @@ installtools () {
   log -t "Installing dependencies..." $KBELOG
   echo " "
   sudo apt-get update
-  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache libc++-dev
+  sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache libc++-dev gcc
   echo " "
   log -t "Dependencies installed" $KBELOG
 }
@@ -76,8 +76,8 @@ loadresources () {
   log -t "LoadResources: Loading variables..." $KBELOG
   . $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
   . $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
-  . $CDF/resources/buildkernel/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
-  . $CDF/resources/buildkernel/makedtb.sh; log -t "LoadResources: Loading writecoredevice script" $KBELOG
+  . $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
+  . $CDF/resources/makedtb.sh; log -t "LoadResources: Loading writecoredevice script" $KBELOG
   . $CDF/resources/other/writecoredevice.sh
 }
 export -f loadresources; log -f loadresources $KBELOG
@@ -100,12 +100,14 @@ export -f checkcc; log -f checkcc $KBELOG
 checkdtbtool () {
   log -t "CheckDTBTool: Checking DTB Tool..." $KBELOG
   echo " "
-  if [ ! -f $DTB ]; then # Check local dtbTool
-  echo -e "$RED$BLD   DTB Tool not found, continuing without it...$RATT$WHITE"; log -t "CheckDTBTool: DTB Tool not found, skipping..." $KBELOG
-  NODTB=1
+  if [ ! -f $CDF/resources/dtbtool/dtbtool.c ]; then # Check local dtbTool
+  echo -e "$RED$BLD   DTB Tool source not found$RATT$WHITE"; log -t "CheckDTBTool: DTB Tool source not found" $KBELOG
+  echo -ne "$WHITE   Downloading from Github..."; log -t "CheckDTBTool: Downloading from Github..." $KBELOG
+  git clone https://github.com/KB-E/dtbtool resources/dtbtool &> /dev/null
+  echo -e "$GREEN$BLD Done$RATT"; log -t "CheckDTBTool: Done" $KBELOG
 else
   # If you didn't removed it, dtb is fine
-  echo -e "$WHITE   DTB Tool found"; log -t "CheckDTBTool: DTB Tool found" $KBELOG
+  echo -e "$WHITE   DTB Tool source found"; log -t "CheckDTBTool: DTB Tool source found" $KBELOG
 fi
 }
 export -f checkdtbtool; log -f checkdtbtool $KBELOG

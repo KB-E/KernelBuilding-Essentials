@@ -3,7 +3,28 @@
 # Script to make Kernel DTB
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
+function compiledtb() {
+  checkdtbtool
+  DTBF=$CDF/resources/dtbtool/dtbtool.c
+  DTBB=$CDF/resources/dtbtool/dtbtool
+  DTBC=$CDF/resources/dtbtool/dtbtool.o
+  if [ ! -f $DTBB ]; then
+    echo -e "$WHITE   Compiling DTB Tool..."; log -t "CompileDTB: Compiling DTB Tool..." $KBELOG
+    gcc -c $DTBF -o $DTBC; if [ -f $DTBC ]; then log -t "CompileDTB: dtbtool.o found" $KBELOG; fi
+    gcc $DTBC -o dtbtool && mv dtbtool $(dirname $DTBB); if [ -f $DTBB ]; then log -t "CompileDTB: dtbtool build done" $KBELOG; fi
+    if [ ! -f $DTBB ]; then
+      echo -e "$RED$BLD   Error: DTB Tool compile failed"
+      export NODTB=1; log -t "CompileDTB: DTB Tool compile failed" $KBELOG
+    fi
+    echo -e "$WHITE   Done$RATT"
+  else
+    echo -e "$WHITE   DTB Tool binary found$RATT"; log -t "CompileDTB: DTB Tool binary found" $KBELOG
+  fi
+}
+export -f compiledtb; log -f compiledtb $KBELOG
+
 makedtb () {
+  DTB=$CDF/resources/dtbtool/dtbtool
   echo -ne "$GREEN$BLD"
   echo -e "   ___ _____ ___  " 
   echo -e "  |   \_   _| _ ) "
@@ -13,11 +34,6 @@ makedtb () {
   echo " "
   echo -e "$GREEN$BLD - Build DTB Script for $VARIANT "
 
-  # Check DTB Tool
-  log -t "MakeDTB: Checking DTB Tool..." $KBELOG
-  checkdtbtool
-  log -t "MakeDTB: Done" $KBELOG
-
   # Remove old dt.img from kernel source
   if [ -f $P/arch/$ARCH/boot/dt.img ]; then
    rm $P/arch/$ARCH/boot/dt.img; log -t "MakeDTB: Removed old dt.img" $KBELOG
@@ -26,7 +42,7 @@ makedtb () {
   # Build with Lineage dtbTool 
   chmod 777 $DTB
   echo " "; log -t "MakeDTB: Building DTB with dtbToolLineage" $KBELOG
-  echo -ne "$WHITE   Building DTB with dtbToolLineage...$RATT$WHITE"
+  echo -ne "$WHITE   Building DTB...$RATT$WHITE"
   $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/ &> $LOGF/build-dtb_log.txt
 
   # Verify dt.img
