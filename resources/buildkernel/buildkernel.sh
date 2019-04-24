@@ -65,7 +65,7 @@ buildkernel () {
   # Load defconfig
   echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
   if [ "$ARCH" = "arm" ]; then
-    make ARCH=arm $DEFCONFIG &> $LOG/buildkernel_log.txt
+    make ARCH=arm $DEFCONFIG &> $LOGF/buildkernel_log.txt
   elif [ "$ARCH" = "arm64" ]; then
     make ARCH=arm64 $DEFCONFIG &> $LOGF/buildkernel64_log.txt
   fi
