@@ -60,7 +60,7 @@ sleep 1.5
 fi
 
 # Function to clear KB-E Environment
-kbeclear () {
+function kbeclear() {
 echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment by kbeclear command..." $KBELOG
 if [ -d $CDF/resources/crosscompiler/ ]; then
   rm -rf $CDF/resources/crosscompiler/
@@ -85,6 +85,7 @@ if [ -f $CDF/resources/other/modulelist.txt ]; then
 fi
 echo -e "   Done$RATT"
 }
+export -f kbeclear; log -f kbeclear $KBELOG
 
 # Start
 # KB-E Version
@@ -114,7 +115,7 @@ unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X; unset -f kbe
 
 # Main command, you'll tell here to the program what to do
 log -t "Loading 'kbe' function..." $KBELOG
-kbe () {
+function kbe() {
   # Get actual path
   CURR=$(pwd)
   # Instructions
@@ -194,5 +195,5 @@ else
   echo " "
   unset -f kbe
 fi
-export -f kbe
+export -f kbe &> /dev/null
 log -f kbe $KBELOG

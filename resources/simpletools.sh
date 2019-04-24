@@ -3,20 +3,20 @@
 # By Artx/Stayn <artx4dev@gmail.com>
 
 # Enter the current working kernel source
-cdsource () {
+function cdsource() {
 BACK=$(pwd)
 cd $P
 }
-export -f cdkernel
+export -f cdsource; log -f cdsource $KBELOG
 # Back
-back () {
+function back() {
 cd $BACK
 BACK=.
 }
-export -f back
+export -f back; log -f back $KBELOG
 
 # Copy the Kernel binary to a specified path
-cpkernel () {
+function cpkernel() {
 if [ "$1" = "" ]; then
   echo "Usage: cpkernel <path> (Copy your kernel to a specified path)"
 fi
@@ -43,14 +43,14 @@ if [ "$ARCH" = "arm" ] && [ -f $ZI$KER ]; then
     echo -e "   Kernel for $KER copied to ($1) named 'Image'"
  fi
 }
-export -f cpkernel
+export -f cpkernel; log -f cpkernel $KBELOG
 
 # Clear the current working kernel source
-clrsource () {
+function clrsource() {
 BACK=$(pwd)
 cd $P
 make clean
 cd $BACK
 unset BACK
 }
-export -f clrsource
+export -f clrsource; log -f clrsource $KBELOG

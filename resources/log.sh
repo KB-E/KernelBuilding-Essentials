@@ -4,7 +4,7 @@
 
 # Main Function
 # Usage: log <flag> <function/text> <filepath> 
-log () {
+function log() {
     # User Information
     if [ "$1" = "" ] && [ "$2" = "" ] && [ "$3" = "" ]; then
         echo "[Log Script] Usage:     log -f <function> <filepath> (Test a function)"
@@ -74,3 +74,4 @@ log () {
     fi
 
 }
+export -f log

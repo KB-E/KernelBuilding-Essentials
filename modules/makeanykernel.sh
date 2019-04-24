@@ -54,7 +54,7 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
 done
 unset AKBO; unset STOPD; unset CLRAKF;
 
-anykernel () {
+function anykernel() {
 # Check if we're building for 1 or more Variants
 checkvariants
 if [ "$MULTIVARIANT" = true ] && [ "$LOCKMA" != true ]; then
@@ -188,3 +188,4 @@ rm $AKFOLDER/Image.gz &> /dev/null
 rm $AKFOLDER/Image &> /dev/null
 cd $CDF
 }
+export -f anykernel; log -f anykernel $KBELOG

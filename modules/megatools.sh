@@ -19,7 +19,7 @@
 MEGALOG=$CDF/resources/logs/megalog.txt
 
 # Upload the Kernel
-megaupload () {
+function megaupload() {
 # Start
 if [ "$NOUP" = 1 ]; then
   export NOUP=0
@@ -57,8 +57,9 @@ megacheck
   echo -e "$WHITE   Done"
   echo -e "$GREEN$BLD   --------------------------$WHITE"
 }
+export -f megaupload; log -f megaupload $KBELOG
 
-megacheck () {
+function megacheck() {
 echo -e "$WHITE   Configuring MEGA...$RATT"
 # Check Megatools
 if ! [ -x "$(command -v megaput)" ]; then # Check if MEGATools is installed
@@ -114,10 +115,11 @@ if [ "$1" = "--reconfigure" ]; then
   # ----------------------------------
 fi
 }
+export -f megacheck; log -f megacheck $KBELOG
 
 # Install MEGATools used by this program
 MTF="megatools-1.9.98.tar.gz"
-installmega () {
+function installmega() {
   # Check if MEGATools is already installed
   if [ -x "$(command -v megaput)" ]; then
     echo " "
@@ -146,10 +148,10 @@ installmega () {
   megacheck
   unset NOUP
 }
-
+export -f installmega; log -f installmega $KBELOG
 
 # Download a template from MEGA
-megadlt () {
+function megadlt() {
   # Check if MEGA is available
   megacheck
   # Clear some variables
@@ -194,3 +196,4 @@ rm $TN
 echo -e "$WHITE   Done"
 cd $CDF
 }
+export -f megadlt; log -f megadlt $KBELOG

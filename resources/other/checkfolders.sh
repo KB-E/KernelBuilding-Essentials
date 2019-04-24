@@ -1,4 +1,4 @@
-checkfolders () {
+function checkfolders() {
   # Check environment folders and if one, some or all doesnt exist
   # create or restore it
   if [ "$1" != "--silent" ]; then

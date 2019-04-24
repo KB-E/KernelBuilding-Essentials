@@ -3,7 +3,7 @@
 # Kernel building script methods
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
-buildkernel () {
+function buildkernel() {
   unset KBUILDFAILED
   log -t "BuildKernel: Checking CrossCompiler" $KBELOG
   checkcc &> /dev/null
@@ -158,7 +158,7 @@ buildkernel () {
   cd $CDF
 }
 
-readlog () {
+function readlog() {
 if [ "$ARCH" = "arm" ]; then
     if [ "$KDEBUG" != "1" ]; then
         echo " "

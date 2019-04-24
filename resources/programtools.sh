@@ -5,7 +5,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Install Building Tools
-installtools () {
+function installtools() {
   log -t "Installing dependencies..." $KBELOG
   echo " "
   sudo apt-get update
@@ -13,9 +13,9 @@ installtools () {
   echo " "
   log -t "Dependencies installed" $KBELOG
 }
-export -f installtools
+export -f installtools; log -f installtools $KBELOG
 
-checktools () {
+function checktools() {
   log -t "CheckTools: Checking dependencies..." $KBELOG
   if [ -f $CDF/resources/other/missingdeps ]; then
     rm $CDF/resources/other/missingdeps;
@@ -51,7 +51,7 @@ checktools () {
 }
 export -f checktools; log -f checktools $KBELOG
 
-checkvariants () {
+function checkvariants() {
   log -t "CheckVariants: Checking Multivariants..." $KBELOG
   if [ -z "$VARIANT2" ]; then
     # We have only one Variant to Build
@@ -64,13 +64,13 @@ checkvariants () {
 export -f checkvariants; log -f checkvariants $KBELOG
 
 # Help command
-kbhelp () {
+function kbhelp() {
   log -t "kbehelp: Displaying help file to user" $KBELOG
   nano $HFP;
 }
-export -f kbhelp
+export -f kbhelp; log -f kbhelp $KBELOG
 
-loadresources () {
+function loadresources() {
   log -t "LoadResources: Loading environment resources..." $KBELOG
   # Initialize KB-E Resources
   log -t "LoadResources: Loading variables..." $KBELOG
@@ -83,7 +83,7 @@ loadresources () {
 export -f loadresources; log -f loadresources $KBELOG
 
 # Check CrossCompiler
-checkcc () {
+function checkcc() {
   log -t "CheckCC: Checking CrossCompiler..." $KBELOG
   # CROSS_COMPILER
 if [ ! -f "$CROSSCOMPILE"gcc ]; then
@@ -97,7 +97,7 @@ fi
 export -f checkcc; log -f checkcc $KBELOG
 
 # Check DTB Tool
-checkdtbtool () {
+function checkdtbtool() {
   log -t "CheckDTBTool: Checking DTB Tool..." $KBELOG
   echo " "
   if [ ! -f $CDF/resources/dtbtool/dtbtool.c ]; then # Check local dtbTool
@@ -113,7 +113,7 @@ fi
 export -f checkdtbtool; log -f checkdtbtool $KBELOG
 
 # Check Zip Tool
-checkziptool () {
+function checkziptool() {
   log -t "CheckZipTool: Checking Zip tool..." $KBELOG
   echo " "
 if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
@@ -137,7 +137,7 @@ fi
 export -f checkziptool; log -f checkziptool $KBELOG
 
 # Load auto.sh function into .bashrc
-writeprogramconfig () {
+function writeprogramconfig() {
   log -t "WriteProgramConfig: Writting KB-E config to ~/.bashrc" $KBELOG
   echo " "
   echo -ne "$GREEN$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"

@@ -23,7 +23,7 @@ function compiledtb() {
 }
 export -f compiledtb; log -f compiledtb $KBELOG
 
-makedtb () {
+function makedtb() {
   DTB=$CDF/resources/dtbtool/dtbtool
   echo -ne "$GREEN$BLD"
   echo -e "   ___ _____ ___  " 
@@ -65,4 +65,4 @@ makedtb () {
    echo " "; log -t "MakeDTB: All done" $KBELOG
   fi
 }
-export -f makedtb
+export -f makedtb; log -f makedtb $KBELOG

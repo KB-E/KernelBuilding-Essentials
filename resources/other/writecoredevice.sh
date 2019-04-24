@@ -1,7 +1,7 @@
 #!/bin/bash
 # Save Last User "core.sh" config
 
-writecoredevice () {
+function writecoredevice() {
 # Write settings to kernel config file
 echo "# Config File for '$KERNELNAME'" > $DFILE
 echo "export KERNELNAME=$KERNELNAME" >> $DFILE; log -t "WriteCoreDevice: Exported KERNELNAME=$KERNELNAME" $KBELOG
