@@ -1,76 +1,84 @@
  ## Guide for KB-E (Kernel Building - Essentials) ##
-   ### By Artx/Stayn <jesusgabriel.91@gmail.com> ###
+     ### By Artx/Stayn <artx4dev@gmail.com> ###
 
 This Guide is going to tell you all the basics and functionality of this
-program made for automatic building of all your Kernel related process as
-your please (Only Kernel for now).
+program made for building Kernels (arm/arm64). This program can handle the 
+Kernel Building automatically using some data defined by the user and other
+operations made by the module scripts (such as MakeAnykernel or Megatools).
 
-Basically, this program can handle the Kernel Building automatically with
-predefined by user data, you don't need a lot of knowledge to run this program
-and build your own kernel, this software is going to download and install
-all required tools to make your Kernel Building an easy task (Even the
-crosscompiler is downloaded automatically).
+You don't need a lot of knowledge to run this program and build your own 
+kernel, this software is going to download, install and export all the 
+necessary tools, variables and functions, but, this doesn't mean that this
+will fix your compilation errors, contact the maintainer of that kernel or 
+fix it by yourself.
 
---------------------------------------------------------------------------------
-
-# INDEX: #
-
-- Line 26: Program and Command: 'essentials' explanation
-- Line 105: Command: 'auto (device)' explanation
-- Line 123: Other program commands (Functions)
-- Line 233: Program Variables
-- Line 252: That's all
+In case of any error or help needed, contact me via Email or PM via XDA 
+@Stayn with the log files inside this program ./resources/logs folder, thanks ;).
 
 --------------------------------------------------------------------------------
 
-## Let's talk about the program: ##
+# Download and Setup: #
+
+- To download and setup this program, follow these steps:
+
+1) vm$ git clone https://github.com/KB-E/KernelBuilding-Essentials 
+2) vm$ cd KernelBuilding-Essentials (Or the folder where you downloaded the repo)
+3) vm$ source core.sh
+
+- After running core.sh your environment will be set, then, you have to download
+your kernel source inside ./source folder and run core.sh again (Keep in mind
+that everytime you want to run this program it has to be inside the folder 
+where you downloaded the repo)
+
+--------------------------------------------------------------------------------
+
+## Now, let's talk about the program: ##
 
 In order to run this program, you have to run "core.sh", this is the main script,
-to execute it, run ". core.sh" has a command and the program will initialize, after
+to execute it, run "source core.sh" as a command and the program will initialize, after
 this, you'll be prompted to accept an disclaimer, it's very important, because this 
 software is going to require "sudo" access (To set the right permissions), then,
 you'll be into the first run and once it's finished, you can execute this program 
 again to start the config process where this program will prompt you for the session
 needed information
 
-# Command: 'essentials' #
+# Main command: 'kbe' #
 
-Here is where you start once you finish setting all the configs, 'essentials' is the 
+Here is where you start once you finish setting all the configs, 'kbe' is the 
 main command of this program, but it only works with flags, otherwise it'll display
 the flags information that I'm gonna explain right now:
 
-## '--kernel' Flag: ##
+## '--kernel' or '-k' Flag: ##
 
-This flag added to the command 'essentials' (essentials --kernel) is going to build
+This flag added to the command 'kbe' ("kbe --kernel" or "kbe -k") is going to build
 your kernel automatically using the data that you entered previously, you don't have
 to worry about anything at this process if the kernel that you're building doesn't 
-have any errors in his code.
+have any errors in the code.
 
 If you allowed the kernel building debug during the program configuration then you'll 
 see the compile process and if there's an error it will be more easy to you to fix it, 
 however, if you're running it without kernel building debug then if there's an error 
 everything will be logged into './resources/logs/' folder
 
-The Kernel built is going to be stored into './out/zImagesNew/'. If you build a new
-kernel for the same device and variant, then your old kernel will be moved to 
-'./out/zImages/' and the new one to './out/zImagesNew/'. The kernel name is the
+The Kernel built is going to be stored into './out/Images/'. The kernel name is the
 same has device variant name you set before (It can be anything, but you better put
 your device codename there).
 
-## '--dtb' Flag ##
+## '--dtb' or '-dt' Flag ##
 
-This flag added to the command 'essentials' (essentials --dtb) is going to build the
-variant dtb (Device tree) image for your specific device and variant, this only applies
-to 32bits devices. It's highly recommended to build it because it's the specific device
-tree image for the kernel that you're going to build
+This flag added to the command 'kbe' ("kbe --dtb" or "kbe -dt") is going to build the
+variant dtb (Device tree) image for your specific device and variant. It's highly 
+recommended to build it because it's the specific device tree image for the kernel that
+you're going to build. The dtb image built is going to be stored into './out/dt/'.
 
-The dtb image built is going to be stored into './out/dt/'.
+# Modules: #
 
+## AnyKernel Module ##
 ## '--anykernel' Flag ## 
 
-This flag added to the command 'essentials' (essentials --anynerel) is going to build 
-the installer for your variant using AnyKernel by osm0sis, during the configuration this
-program gives to you 3 options:
+This flag added to the command 'kbe' ("kbe --anynerel") is going to build the installer 
+for your variant using AnyKernel by osm0sis, during the configuration this program gives
+to you 3 options:
 
 1) You can use the local AnyKernel template that is going to be extracted into 
 './out/aktemplate/', this process is done during the configuration phase, for this option
