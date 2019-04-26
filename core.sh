@@ -38,13 +38,13 @@ sudo chmod 755 -R $(ls -A|grep -v 'source/*')
 sudo chown -R $USER:users *
 
 # Load Colors
-. $CDF/resources/other/colors.sh; log -t "Colors loaded" $KBELOG
+source $CDF/resources/other/colors.sh; log -t "Colors loaded" $KBELOG
 # Load ProgramTools
-. $CDF/resources/programtools.sh; log -t "ProgramTools loaded" $KBELOG
+source $CDF/resources/programtools.sh; log -t "ProgramTools loaded" $KBELOG
 # Load SimpleTools
-. $CDF/resources/simpletools.sh; log -t "SimpleTools loaded" $KBELOG
+source $CDF/resources/simpletools.sh; log -t "SimpleTools loaded" $KBELOG
 # Load title 
-. $CDF/resources/other/programtitle.sh; log -t "ProgramTitle loaded" $KBELOG
+source $CDF/resources/other/programtitle.sh; log -t "ProgramTitle loaded" $KBELOG
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then

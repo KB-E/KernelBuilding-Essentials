@@ -6,7 +6,7 @@
 # Check if theres a firstrun file, if not, execute the firstrun script
 if [ ! -f $CDF/resources/other/firstrun ]; then
   log -t "RunSettings: Starting first run process..." $KBELOG
-  . $CDF/resources/firstrun.sh
+  source $CDF/resources/firstrun.sh
   return 1
 fi
 
@@ -36,7 +36,7 @@ if [ -f $CORED/$KERNELNAME.dev ]; then
   read -p "   Load last settings for '$KERNELNAME'? [Y/N]: " LLS; log -t "RunSettings: '$KERNELNAME' last config found" $KBELOG
   if [ "$LLS" = "Y" ] || [ "$LLS" = "y" ]; then
     log -t "RunSettings: Loading '$KERNELNAME' last config" $KBELOG
-    . $CORED/$KERNELNAME.dev
+    source $CORED/$KERNELNAME.dev
     unset LLS
     export RD=1
     return 1
@@ -245,13 +245,13 @@ do
     echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $DFILE
     echo "export MPATH$((x++))=$i" >> $DFILE
     log -t "RunSettings: Running '$(grep MODULE_NAME $i | cut -d '=' -f2)' module" $KBELOG
-    . $i
+    source $i
     # Execute module on device kernel file
-    echo ". $i" >> $DFILE
+    echo "source $i" >> $DFILE
   fi
 done
 log -t "RunSettings: Exporting modules configuration" $KBELOG
-. $MLIST
+source $MLIST
 log -t "RunSettings: Done" $KBELOG
 
 export RD=1

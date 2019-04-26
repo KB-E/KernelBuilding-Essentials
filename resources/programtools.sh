@@ -74,11 +74,11 @@ function loadresources() {
   log -t "LoadResources: Loading environment resources..." $KBELOG
   # Initialize KB-E Resources
   log -t "LoadResources: Loading variables..." $KBELOG
-  . $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
-  . $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
-  . $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
-  . $CDF/resources/makedtb.sh; log -t "LoadResources: Loading writecoredevice script" $KBELOG
-  . $CDF/resources/other/writecoredevice.sh
+  source $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
+  source $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
+  source $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
+  source $CDF/resources/makedtb.sh; log -t "LoadResources: Loading writecoredevice script" $KBELOG
+  source $CDF/resources/other/writecoredevice.sh
 }
 export -f loadresources; log -f loadresources $KBELOG
 
@@ -149,7 +149,7 @@ function writeprogramconfig() {
   echo "CDF=$CDF" >> ~/.bashrc
   echo ". $CDF/resources/other/colors.sh" >> ~/.bashrc
   echo ". $CDF/auto.sh" >> ~/.bashrc
-  . $CDF/auto.sh; log -t "WriteProgramConfig: Loading auto.sh script..." $KBELOG
+  source $CDF/auto.sh; log -t "WriteProgramConfig: Loading auto.sh script..." $KBELOG
   echo -e " Done"
   echo " "; log -t "WriteProgramConfig: Done" $KBELOG
 }
