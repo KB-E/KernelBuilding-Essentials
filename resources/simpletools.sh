@@ -54,3 +54,10 @@ cd $BACK
 unset BACK
 }
 export -f clrsource; log -f clrsource $KBELOG
+
+# Clear Logs
+function rmlogs() {
+rm $LOGF/*
+echo -e "$WHITE   Logs files removed$RATT"
+}
+
