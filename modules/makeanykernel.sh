@@ -186,6 +186,7 @@ rm $AKFOLDER/zImage &> /dev/null
 rm $AKFOLDER/Image.gz-dtb &> /dev/null
 rm $AKFOLDER/Image.gz &> /dev/null
 rm $AKFOLDER/Image &> /dev/null
+rm $AKFOLDER/dtb &> /dev/null
 cd $CDF
 }
 export -f anykernel; log -f anykernel $KBELOG
