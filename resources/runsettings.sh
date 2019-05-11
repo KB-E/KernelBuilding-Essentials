@@ -14,7 +14,7 @@ fi
 log -t "RunSettings: Clearing variables" $KBELOG
 unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
 unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
-unset BTYPE; unset AKBO; unset KDEBUG; unset RD
+unset BTYPE; unset AKBO; unset KDEBUG; unset RD; unset RELEASETYPE;
 
 checkfolders --silent
 if [ -z "$(ls -A $CDF/source/)" ]; then
@@ -47,6 +47,9 @@ if [ -f $CORED/$KERNELNAME.dev ]; then
 fi
 read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID; log -t "RunSettings: Target OS: $TARGETANDROID" $KBELOG;  if [ "$TARGETANDROID" = "" ]; then return 1; fi
 read -p "   Version: " VERSION; export VERSION; log -t "RunSettings: Version: $VERSION" $KBELOG;  if [ "$VERSION" = "" ]; then return 1; fi
+read -p "   Release Type ( 1 = Stable; 2 = Beta ): " RELEASETYPE; if [ "$RELEASETYPE" = "" ]; then return 1; fi
+if [ "$RELEASETYPE" = "1" ]; then RELEASETYPE="Stable"; elif [ "$RELEASETYPE" = "2" ]; then RELEASETYPE="Beta"; fi; export RELEASETYPE
+log -t "Runsettings: Release Type: $RELEASETYPE" $KBELOG
 echo " "
 
 # Get the ARCH Type
