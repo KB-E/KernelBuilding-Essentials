@@ -43,7 +43,11 @@ function makedtb() {
   chmod 777 $DTB
   echo " "; log -t "MakeDTB: Building DTB with dtbToolLineage" $KBELOG
   echo -ne "$WHITE   Building DTB...$RATT$WHITE"
-  $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/ &> $LOGF/build-dtb_log.txt
+  if [ $ARCH = arm ]; then
+    $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/ &> $LOGF/build-dtb_log.txt
+  elif [ $ARCH = arm64 ]; then
+    $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/dts/qcom/ &> $LOGF/build-dtb_log.txt
+  fi
 
   # Verify dt.img
   if [ ! -f $P/arch/$ARCH/boot/dt.img ]; then
