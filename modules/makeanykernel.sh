@@ -184,11 +184,11 @@ if [ $RELEASETYPE = "Beta" ]; then
     touch $KREVF
     echo 0 > $KREVF
   fi
-  export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
   REVN=$(cat $KREVF)
   REVSUM=$((1+REVN))
   export REV=$REVSUM
   echo $REV > $KREVF
+  export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
 fi
 zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $NZIPS/
