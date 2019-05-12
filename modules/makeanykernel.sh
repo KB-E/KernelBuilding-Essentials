@@ -172,12 +172,6 @@ fi
 
 # Make the kernel installer zip
 export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
-if [ "$1" != "--no-spam" ]; then
-  echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
-else
-  echo -ne "$WHITE   Building Installer..."
-fi
-cd $AKFOLDER
 KREVF=$CDF/resources/core-devices/$KERNELNAME.rev
 if [ $RELEASETYPE = "Beta" ]; then
   if [ ! -f $KREVF ]; then
@@ -190,6 +184,13 @@ if [ $RELEASETYPE = "Beta" ]; then
   echo $REV > $KREVF
   export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
 fi
+echo -e "$GREEN$BLD   Zip Name: $WHITE$ZIPNAME"
+if [ "$1" != "--no-spam" ]; then
+  echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
+else
+  echo -ne "$WHITE   Building Installer..."
+fi
+cd $AKFOLDER
 zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $NZIPS/
 echo -e "$GREEN$BLD Done!$RATT"
