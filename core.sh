@@ -89,7 +89,7 @@ export -f kbeclear; log -f kbeclear $KBELOG
 
 # Start
 # KB-E Version
-KBV=1.0; log -t "KB-E Version: $KBV" $KBELOG
+KBV=2.0; log -t "KB-E Version: $KBV" $KBELOG
 clear # Clear user UI
 unset CWK
 X=0
