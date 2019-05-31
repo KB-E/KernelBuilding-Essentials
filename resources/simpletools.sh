@@ -61,3 +61,32 @@ rm $LOGF/*
 echo -e "$WHITE   Logs files removed$RATT"
 }
 
+function theme() {
+if [ "$1" = "" ]; then
+echo "Usage: theme <number>"
+echo "             1 = Blue"
+echo "             2 = Red"
+echo "             3 = Yellow"
+echo "             4 = Magenta"
+echo "             5 = Black"
+echo "             6 = Cyan"
+echo "             7 = White"
+echo "             8 = Green" 
+return 1
+fi
+
+COLORF=$CDF/resources/other/colors.sh
+CURTHEME="$(grep THEME $COLORF | cut -d '=' -f2)"
+case $1 in
+     "1") sed -i "s/THEME=$CURTHEME/THEME=\$BLUE/g" $COLORF; echo "KB-E Theme set to Blue" ;;
+     "2") sed -i "s/THEME=$CURTHEME/THEME=\$RED/g" $COLORF; echo "KB-E Theme set to Red" ;;
+     "3") sed -i "s/THEME=$CURTHEME/THEME=\$YELLOW/g" $COLORF; echo "KB-E Theme set to Yellow" ;;
+     "4") sed -i "s/THEME=$CURTHEME/THEME=\$MAGENTA/g" $COLORF; echo "KB-E Theme set to Magenta" ;;
+     "5") sed -i "s/THEME=$CURTHEME/THEME=\$BLACK/g" $COLORF; echo "KB-E Theme set to Black" ;;
+     "6") sed -i "s/THEME=$CURTHEME/THEME=\$CYAN/g" $COLORF; echo "KB-E Theme set to Cyan" ;;
+     "7") sed -i "s/THEME=$CURTHEME/THEME=\$WHITE/g" $COLORF; echo "KB-E Theme set to White" ;;
+     "8") sed -i "s/THEME=$CURTHEME/THEME=\$GREEN/g" $COLORF; echo "KB-E Theme set to Green" ;;
+esac
+source $CDF/resources/other/colors.sh
+}
+
