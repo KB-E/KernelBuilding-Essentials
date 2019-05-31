@@ -25,14 +25,14 @@ export -f compiledtb; log -f compiledtb $KBELOG
 
 function makedtb() {
   DTB=$CDF/resources/dtbtool/dtbtool
-  echo -ne "$GREEN$BLD"
+  echo -ne "$THEME$BLD"
   echo -e "   ___ _____ ___  " 
   echo -e "  |   \_   _| _ ) "
   echo -e "  | |) || | | _ \ "
   echo -e "  |___/ |_| |___/ "
   echo " "
   echo " "
-  echo -e "$GREEN$BLD - Build DTB Script for $VARIANT "
+  echo -e "$THEME$BLD - Build DTB Script for $VARIANT "
 
   # Remove old dt.img from kernel source
   if [ -f $P/arch/$ARCH/boot/dt.img ]; then
@@ -65,7 +65,7 @@ function makedtb() {
     return 1
   else
    mv $P/arch/$ARCH/boot/dt.img $DT/$VARIANT; log -t "MakeDTB: New DTB moved to '$DT' named '$VARIANT'" $KBELOG
-   echo -e "$GREEN$BLD Done$RATT"
+   echo -e "$THEME$BLD Done$RATT"
    echo " "; log -t "MakeDTB: All done" $KBELOG
   fi
 }

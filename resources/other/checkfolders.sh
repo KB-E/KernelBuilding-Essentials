@@ -3,7 +3,7 @@ function checkfolders() {
   # create or restore it
   if [ "$1" != "--silent" ]; then
     echo " "
-    echo -ne "$GREEN$BLD - Checking Enviroment Folders... ";
+    echo -ne "$THEME$BLD - Checking Enviroment Folders... ";
   fi
   sleep 0.5
   folder () {

@@ -3,10 +3,11 @@
 
 function writecoredevice() {
 # Write settings to kernel config file
-echo "# Config File for '$KERNELNAME'" > $DFILE
+echo "# Config File for '$KERNELNAME'" >> $DFILE
 echo "export KERNELNAME=$KERNELNAME" >> $DFILE; log -t "WriteCoreDevice: Exported KERNELNAME=$KERNELNAME" $KBELOG
 echo "export TARGETANDROID=$TARGETANDROID" >> $DFILE; log -t "WriteCoreDevice: Exported TARGETANDROID=$TARGETANDROID" $KBELOG
 echo "export VERSION=$VERSION" >> $DFILE; log -t "WriteCoreDevice: Exported VERSION=$VERSION" $KBELOG
+echo "export RELEASETYPE=$RELEASETYPE" >> $DFILE; log -t "WriteCoreDevice: Exported RELEASETYPE=$RELEASETYPE" $KBELOG
 if [ "$ARMT" = "1" ]; then
   echo "export ARCH=arm" >> $DFILE; log -t "WriteCoreDevice: Exported ARCH=arm" $KBELOG
   echo "export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-" >> $DFILE; log -t "WriteCoreDevice: Exported CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-" $KBELOG

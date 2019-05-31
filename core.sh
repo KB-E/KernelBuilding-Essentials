@@ -48,7 +48,7 @@ source $CDF/resources/other/programtitle.sh; log -t "ProgramTitle loaded" $KBELO
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
-  echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Core: Cleaning Environment..." $KBELOG
+  echo -e "$THEME$BLD - Cleaning Environment...$WHITE"; log -t "Core: Cleaning Environment..." $KBELOG
   if [ -d $CDF/resources/crosscompiler/ ]; then
     rm -rf $CDF/resources/crosscompiler/
   fi
@@ -61,7 +61,7 @@ fi
 
 # Function to clear KB-E Environment
 function kbeclear() {
-echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment by kbeclear command..." $KBELOG
+echo -e "$THEME$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment by kbeclear command..." $KBELOG
 if [ -d $CDF/resources/crosscompiler/ ]; then
   rm -rf $CDF/resources/crosscompiler/
 fi
@@ -188,10 +188,10 @@ function kbe() {
 }
 # Done
 if [ "$RD" = "1" ]; then
-  echo -e "$GREEN$BLD - Kernel-Building Essentials it's ready!$RATT"; log -t "KB-E is Ready for its use" $KBELOG
+  echo -e "$THEME$BLD - Kernel-Building Essentials it's ready!$RATT"; log -t "KB-E is Ready for its use" $KBELOG
   echo " "
 else
-  echo -e "$RED$BLD - Session cancelled$RATT"; log -t "KB-E Session cancelled" $KBELOG
+  echo -e "$THEME$BLD - Session cancelled$RATT"; log -t "KB-E Session cancelled" $KBELOG
   echo " "
   unset -f kbe
 fi

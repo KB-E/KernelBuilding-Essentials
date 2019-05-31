@@ -19,7 +19,7 @@ AKSH=$AKFOLDER/anykernel.sh
 
 # AnyKernel Required Data by User
 echo " "
-echo -e "$GREEN$BLD - Choose an option for AnyKernel Installer: "
+echo -e "$THEME$BLD - Choose an option for AnyKernel Installer: "
 echo " "
 echo -e "$WHITE   1) Download the AnyKernel Source and use it"
 echo -e "   2) Manually set the AnyKernel files"
@@ -37,14 +37,14 @@ until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
       read -p "   AnyKernel Files Folder is not Empty, clean it? [Y/N]: " CLRAKF
       if [ "$CLRAKF" = "y" ] || [ "$CLRAKF" = "Y" ]; then
         rm -rf $AKFOLDER
-        echo -e "$GREENBLD   Done$WHITE"
+        echo -e "$THEMEBLD   Done$WHITE"
       elif [ "$CLRAKF" = "n" ] || [ "$CLRAKF" = "N" ]; then
         STOPD=1
       fi
     fi
     if [ "$STOPD" != "1" ]; then
       echo " "
-      echo -ne "$GREEN$BLD - Downloading AnyKernel Source..."
+      echo -ne "$THEME$BLD - Downloading AnyKernel Source..."
       git clone https://github.com/osm0sis/AnyKernel2.git $AKFOLDER &> /dev/null
       echo -e "$WHITE Done"
     else
@@ -86,20 +86,20 @@ else
 fi
 # Tittle
 if [ "$1" != "--no-spam" ]; then
-echo -ne "$GREEN$BLD"
+echo -ne "$THEME$BLD"
 echo -e "     _            _  __                 _ "
 echo -e "    /_\  _ _ _  _| |/ /___ _ _ _ _  ___| | "
 echo -e "   / _ \| ' \ || | ' </ -_) '_| ' \/ -_) | "
 echo -e "  /_/ \_\_||_\_, |_|\_\___|_| |_||_\___|_| "
 echo -e "             |__/                         "
 echo " "
-echo -e "$GREEN$BLD   --------------------------$WHITE"
+echo -e "$THEME$BLD   --------------------------$WHITE"
 echo -e "$WHITE - AnyKernel Installer Building Script  $RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
-echo -e "   Kernel:$GREEN$BLD $KERNELNAME$WHITE; Variant:$GREEN$BLD $VARIANT$WHITE; Date:$GREEN$BLD $DATE$WHITE"
+echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Date:$THEME$BLD $DATE$WHITE"
 else
 echo " "
-echo -e "$GREEN$BLD   --------------------------$WHITE"
+echo -e "$THEME$BLD   --------------------------$WHITE"
 echo -ne " - Building AnyKernel for $VARIANT... "
 fi
 
@@ -115,7 +115,7 @@ akfolder () {
 }
 FD=out/AnyKernel; akfolder
 unset FD
-if [ "$1" != "--no-spam" ]; then echo -ne "$GREEN$BLD Done$RATT"; fi
+if [ "$1" != "--no-spam" ]; then echo -ne "$THEME$BLD Done$RATT"; fi
 
 # Paths
 NZIPS=$CDF/"out/AnyKernel" # New Zips built output folder
@@ -130,7 +130,7 @@ if [ "$KBUILDFAILED" = "1" ]; then
     echo -e "$WHITE   Using last built Kernel for $VARIANT..."      # last successfully built kernel so this will
   else                                                              # ask the user if he wants to continue building
     echo -e "$WHITE   Aborting..."                                  # the anykernel installer, if not, exit the 
-    echo -e "$GREEN$BLD   --------------------------$WHITE"         # module.
+    echo -e "$THEME$BLD   --------------------------$WHITE"         # module.
     cd $CDF
     return 1
   fi
@@ -184,7 +184,7 @@ if [ $RELEASETYPE = "Beta" ]; then
   echo $REV > $KREVF
   export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
 fi
-echo -e "$GREEN$BLD   Zip Name: $WHITE$ZIPNAME"
+echo -e "$THEME$BLD   Zip Name: $WHITE$ZIPNAME"
 if [ "$1" != "--no-spam" ]; then
   echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
 else
@@ -193,13 +193,13 @@ fi
 cd $AKFOLDER
 zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $NZIPS/
-echo -e "$GREEN$BLD Done!$RATT"
-echo -e "$GREEN$BLD   --------------------------$WHITE"
+echo -e "$THEME$BLD Done!$RATT"
+echo -e "$THEME$BLD   --------------------------$WHITE"
 # Clean anykernelfiles Folder
-rm $AKFOLDER/zImage &> /dev/null
-rm $AKFOLDER/Image.gz-dtb &> /dev/null
-rm $AKFOLDER/Image.gz &> /dev/null
-rm $AKFOLDER/Image &> /dev/null
+#rm $AKFOLDER/zImage &> /dev/null
+#rm $AKFOLDER/Image.gz-dtb &> /dev/null
+#rm $AKFOLDER/Image.gz &> /dev/null
+#rm $AKFOLDER/Image &> /dev/null
 rm $AKFOLDER/dtb &> /dev/null
 cd $CDF
 }

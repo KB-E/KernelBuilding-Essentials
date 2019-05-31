@@ -28,7 +28,7 @@ fi
 # Prompt for data
 echo " "
 echo -e "$WHITE  -------------------------"
-echo -e "$GREEN$BLD - Enter your Kernel Information:"
+echo -e "$THEME$BLD - Enter your Kernel Information:"
 echo -e "$WHITE  -------------------------"
 echo " "
 read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; log -t "RunSettings: Kernel name: $KERNELNAME" $KBELOG; if [ "$KERNELNAME" = "" ]; then return 1; fi
@@ -54,10 +54,10 @@ echo " "
 
 # Get the ARCH Type
 echo -e "$WHITE  -------------------------"
-echo -e "$GREEN$BLD - CrossCompiler Selection:"
+echo -e "$THEME$BLD - CrossCompiler Selection:"
 echo -e "$WHITE  -------------------------"
 echo " "
-echo -e "$GREEN$BLD   Choose ARCH Type ($WHITE 1 = 32Bits Devices; 2 =  64Bits Devices $GREEN$BLD) $WHITE"
+echo -e "$THEME$BLD   Choose ARCH Type ($WHITE 1 = 32Bits Devices; 2 =  64Bits Devices $THEME$BLD) $WHITE"
 until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
   read -p "   Your option [1/2]: " ARMT
   if [ "$ARMT" != "1" ] && [ "$ARMT" != "2" ]; then
@@ -79,7 +79,7 @@ if [ "$ARCH" = "arm" ]; then
   # Check
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
     echo " "; log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-    echo -ne "$WHITE   Downloading the$GREEN$BLD ARM$WHITE CrossCompiler$GREEN$BLD (22.35MB, 'Ctrl + C' to Cancel)..."
+    echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD (22.35MB, 'Ctrl + C' to Cancel)..."
     git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/
     echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG
   fi
@@ -89,14 +89,14 @@ elif [ "$ARCH" = "arm64" ]; then
   # Check 
   if [ ! -f "$CROSSCOMPILE"gcc ]; then
     echo " "; log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-    echo -ne "$WHITE   Downloading the$GREEN$BLD ARM64$WHITE CrossCompiler$GREEN$BLD (144.20MB, 'Ctrl + C' to Cancel)..."
+    echo -ne "$WHITE   Downloading the$THEME$BLD ARM64$WHITE CrossCompiler$THEME$BLD (144.20MB, 'Ctrl + C' to Cancel)..."
     git clone https://github.com/KB-E/linaro-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
     echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG
   fi
 fi
 echo " "
 echo -e "$WHITE  -------------------------"
-echo -e "$GREEN$BLD - Kernel Selection and Config:"
+echo -e "$THEME$BLD - Kernel Selection and Config:"
 echo -e "$WHITE  -------------------------"
 echo " "
 cd $CDF/source; log -t "RunSettings: Entered in $CDF/source" $KBELOG
@@ -120,7 +120,7 @@ fi
 cd $CDF
 export P=$CDF/source/$d; log -t "RunSettings: Exported kernel source to $P" $KBELOG
 echo " "
-echo -ne "   Debug Kernel Building?$GREEN$BLD [Y/N]:$WHITE "
+echo -ne "   Debug Kernel Building?$THEME$BLD [Y/N]:$WHITE "
 read KDEBUG
 if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
   export KDEBUG=1; log -t "RunSettings: Kernel debug enabled" $KBELOG
@@ -130,7 +130,7 @@ fi
 unset UDF
 if [ -f $OTHERF/variants.sh ]; then
   log -t "RunSettings: Lastest defined multi variants found" $KBELOG 
-  echo -ne "   Use lastest defined variants?$GREEN$BLD [Y/N]:$WHITE "
+  echo -ne "   Use lastest defined variants?$THEME$BLD [Y/N]:$WHITE "
   read UDF
   if [ "$UDF" = y ] || [ "$UDF" = Y ]; then
     echo -e "   Using lastest defined variants..."; log -t "RunSettings: Using lastest defined multi variants" $KBELOG
@@ -142,7 +142,7 @@ if [ -f $OTHERF/variants.sh ]; then
 fi
 if [ "$UDF" != "1" ]; then
   until [ "$VARIANT1" != "" ]; do
-    echo -ne "   Device Variant $GREEN$BLD($WHITE Device Codename, e.g., 'bacon'$GREEN$BLD ):$WHITE "
+    echo -ne "   Device Variant $THEME$BLD($WHITE Device Codename, e.g., 'bacon'$THEME$BLD ):$WHITE "
     read VARIANT1; export VARIANT1; log -t "RunSettings: Variant: $VARIANT1 defined" $KBELOG
     if [ "$VARIANT1" = "" ]; then
       echo " "
@@ -150,14 +150,14 @@ if [ "$UDF" != "1" ]; then
       echo " "
     fi
   done
-  echo -e "   Select a Defconfig $GREEN$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$GREEN$BLD ):$WHITE "
+  echo -e "   Select a Defconfig $THEME$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
   echo " "
   cd $P/arch/$ARCH/configs/; log -t "RunSettings: Entered in $P/arch/$ARCH/configs" $KBELOG
   select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
   cd $CDF
   export DEFCONFIG1=$DEF; log -t "RunSettings: Defconfig: $DEFCONFIG1" $KBELOG
   echo " "
-  echo -ne "   Add more Variants?$GREEN$BLD [Y/N]:$WHITE "
+  echo -ne "   Add more Variants?$THEME$BLD [Y/N]:$WHITE "
   read ADDMV
   if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
     log -t "RunSettings: Adding more variants and defconfigs..." $KBELOG
@@ -194,14 +194,14 @@ if [ "$UDF" != "1" ]; then
   fi
 fi
 
-echo -ne "   Make dt.img?$GREEN$BLD ($WHITE Device Tree Image, Recommended$GREEN$BLD ) [Y/N]:$WHITE "
+echo -ne "   Make dt.img?$THEME$BLD ($WHITE Device Tree Image, Recommended$THEME$BLD ) [Y/N]:$WHITE "
 read MKDTB
 if [ "$MKDTB" = "y" ] || [ "$MKDTB" = "Y" ]; then
   log -t "RunSettings: Enabled DTB Building" $KBELOG
   export MAKEDTB=1
 fi
 
-echo -ne "   Clear Source on every Build?$GREEN$BLD [Y/N]:$WHITE "
+echo -ne "   Clear Source on every Build?$THEME$BLD [Y/N]:$WHITE "
 read CLRS
 if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
   log -t "RunSettings: Cleaning source on every build" $KBELOG
@@ -209,14 +209,15 @@ if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
 fi
 # Save this session kernel data
 export DFILE=$CORED/$KERNELNAME.dev
-touch $DFILE; log -t "RunSettings: Created $DFILE" $KBELOG
-log -t "RunSettings: Running writecoredevice..." $KBELOG
+if [ ! -f $DFILE ]; then
+  touch $DFILE; log -t "RunSettings: Created $DFILE" $KBELOG
+fi; log -t "RunSettings: Running writecoredevice..." $KBELOG
 writecoredevice
 echo " "
 echo " "
 log -t "RunSettings: Entering modules selection" $KBELOG
 echo -e "$WHITE  --------------------------"
-echo -e "$GREEN$BLD   Modules selection:"
+echo -e "$THEME$BLD   Modules selection:"
 echo -e "$WHITE  --------------------------"
 if [ -f $MLIST ]; then
   log -t "RunSettings: Removing $MLIST file" $KBELOG
@@ -230,16 +231,16 @@ x=1
 for i in $CDF/modules/*.sh
 do
   echo " "
-  echo -e "$WHITE  --------$GREEN$BLD MODULE$WHITE --------"
+  echo -e "$WHITE  --------$THEME$BLD MODULE$WHITE --------"
   echo " "
-  echo -e "$GREEN$BLD   Name:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)"
-  echo -e "$GREEN$BLD   Version:$WHITE $(grep MODULE_VERSION $i | cut -d '=' -f2)"
-  echo -e "$GREEN$BLD   Description:$WHITE $(grep MODULE_DESCRIPTION $i | cut -d '=' -f2)"
-#  echo -e "$GREEN$BLD   Priority:$WHITE $(grep MODULE_PRIORITY $i | cut -d '=' -f2)"
+  echo -e "$THEME$BLD   Name:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)"
+  echo -e "$THEME$BLD   Version:$WHITE $(grep MODULE_VERSION $i | cut -d '=' -f2)"
+  echo -e "$THEME$BLD   Description:$WHITE $(grep MODULE_DESCRIPTION $i | cut -d '=' -f2)"
+#  echo -e "$THEME$BLD   Priority:$WHITE $(grep MODULE_PRIORITY $i | cut -d '=' -f2)"
   echo " "
   echo -e "$WHITE  ------------------------"
   echo " "
-  echo -ne "$GREEN$BLD   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
+  echo -ne "$THEME$BLD   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
   read  EM
   if [ "$EM" = y ] || [ "$EM" = Y ]; then
     log -t "RunSettings: Module '$(grep MODULE_NAME $i | cut -d '=' -f2)' enabled" $KBELOG
@@ -259,24 +260,24 @@ log -t "RunSettings: Done" $KBELOG
 
 export RD=1
 echo " "; log -t "RunSettings: Config done, displaying 'kbe' command usage to user" $KBELOG
-echo -e "$WHITE  --------$GREEN$BLD CONFIG DONE$WHITE --------"
+echo -e "$WHITE  --------$THEME$BLD CONFIG DONE$WHITE --------"
 echo " "
-echo -e "$GREEN$BLD - Usage:$WHITE kbe --kernel or -k $GREEN$BLD(Builds the kernel)$WHITE"
-echo -e "              --dtb or -dt $GREEN$BLD(Builds device tree image)$WHITE"
+echo -e "$THEME$BLD - Usage:$WHITE kbe --kernel or -k $THEME$BLD(Builds the kernel)$WHITE"
+echo -e "              --dtb or -dt $THEME$BLD(Builds device tree image)$WHITE"
 i=1
 while var=MODULE$((i++)); [[ ${!var} ]]; do
   path=MPATH$(($i-1)); [[ ${!path} ]];
-  echo -e "              --${!var} $GREEN$BLD($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))$WHITE"
+  echo -e "              --${!var} $THEME$BLD($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))$WHITE"
 done
 echo " "
-echo -e "              --all $GREEN$BLD(Does everything mentioned above)      $WHITE  | Work alone "
+echo -e "              --all $THEME$BLD(Does everything mentioned above)      $WHITE  | Work alone "
 echo " "
-echo -e "   For more information use $GREEN$BLD'kbhelp'$WHITE command"
+echo -e "   For more information use $THEME$BLD'kbhelp'$WHITE command"
 echo " "
-echo -e "$WHITE  --------------------------$GREEN$BLD"
+echo -e "$WHITE  --------------------------$THEME$BLD"
 
 #echo " "
-#echo -e "$GREEN$BLD - Config Done, now you can start running the 'kbe' command!  $WHITE"
+#echo -e "$THEME$BLD - Config Done, now you can start running the 'kbe' command!  $WHITE"
 #echo -e "   If you need help run 'kbhelp' or see './README.md' file for more information"
 #echo " "
 echo " "

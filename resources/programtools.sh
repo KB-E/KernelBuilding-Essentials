@@ -32,7 +32,7 @@ function checktools() {
     fi
   done
   if [ ! -f $CDF/resources/other/missingdeps ]; then
-    echo -e "$WHITE - All Dependencies checked$GREEN$BLD (Pass)$RATT"
+    echo -e "$WHITE - All Dependencies checked$THEME$BLD (Pass)$RATT"
     echo " "; log -t "CheckTools: All dependencies installed" $KBELOG
   fi
   if [ "$MISSINGDEPS" = "1" ]; then
@@ -104,7 +104,7 @@ function checkdtbtool() {
   echo -e "$RED$BLD   DTB Tool source not found$RATT$WHITE"; log -t "CheckDTBTool: DTB Tool source not found" $KBELOG
   echo -ne "$WHITE   Downloading from Github..."; log -t "CheckDTBTool: Downloading from Github..." $KBELOG
   git clone https://github.com/KB-E/dtbtool resources/dtbtool &> /dev/null
-  echo -e "$GREEN$BLD Done$RATT"; log -t "CheckDTBTool: Done" $KBELOG
+  echo -e "$THEME$BLD Done$RATT"; log -t "CheckDTBTool: Done" $KBELOG
 else
   # If you didn't removed it, dtb is fine
   echo -e "$WHITE   DTB Tool source found"; log -t "CheckDTBTool: DTB Tool source found" $KBELOG
@@ -140,7 +140,7 @@ export -f checkziptool; log -f checkziptool $KBELOG
 function writeprogramconfig() {
   log -t "WriteProgramConfig: Writting KB-E config to ~/.bashrc" $KBELOG
   echo " "
-  echo -ne "$GREEN$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
+  echo -ne "$THEME$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
   sudo sed -i '/# Load auto.sh function and path/d' ~/.bashrc
   sudo sed -i '/CDF=/d' ~/.bashrc
   sudo sed -i '/colors.sh/d' ~/.bashrc

@@ -8,14 +8,14 @@ function buildkernel() {
   log -t "BuildKernel: Checking CrossCompiler" $KBELOG
   checkcc &> /dev/null
   log -t "BuildKernel: Done" $KBELOG
-  echo -ne "$GREEN$BLD"
+  echo -ne "$THEME$BLD"
   echo -e "   _  __                 _ "
   echo -e "  | |/ /___ _ _ _ _  ___| |  "
   echo -e "  | ' </ -_) '_| ' \/ -_) |     "
   echo -e "  |_-|\\___|_| |_||_\___|_| "
   echo " "
   echo " "
-  echo -e "$GREEN$BLD - $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH)$RATT"
+  echo -e "$THEME$BLD - $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH)$RATT"
   echo -e "$WHITE   Version: $VERSION for $TARGETANDROID ROM's $RATT$WHITE"
   echo " "
   if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
@@ -29,7 +29,7 @@ function buildkernel() {
   if [ -d $P ]; then # P = Path for Kernel defined by the user
                       # in the process or defaultsettings.sh
     cd $P
-    echo -e "$GREEN$BLD   Entered in $WHITE'$P' $GREEN$BLDSucessfully"
+    echo -e "$THEME$BLD   Entered in $WHITE'$P' $THEME$BLDSucessfully"
     echo " "; log -t "BuildKernel: Entered in '$P'" $KBELOG
   else # If it doesnt exist it means that we don't have nothing to do
     echo -e "$RED   Path doesn't exist!"; log -t "BuildKernel: Source path '$P' doesnt exist, exiting..." $KBELOG
@@ -63,7 +63,7 @@ function buildkernel() {
   fi
 
   # Load defconfig
-  echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$GREEN$BLD"
+  echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$THEME$BLD"
   if [ "$ARCH" = "arm" ]; then
     make ARCH=arm $DEFCONFIG &> $LOGF/buildkernel_log.txt
   elif [ "$ARCH" = "arm64" ]; then
@@ -80,7 +80,7 @@ function buildkernel() {
     JOBS=$(( $JOBS + 2 )); log -t "BuildKernel: Cores number Boosted, Cores=$JOBS" $KBELOG
   fi
   # Start compiling kernel
-  echo -e "$GREEN$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+  echo -e "$THEME$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
   echo " "
   log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
   if [ $ARCH = "arm" ]; then
@@ -151,9 +151,9 @@ function buildkernel() {
       break
     fi
   done
-  echo -e "$GREEN$BLD   New Kernel ($KFNAME) Copied to$WHITE '$ZI'"
+  echo -e "$THEME$BLD   New Kernel ($KFNAME) Copied to$WHITE '$ZI'"
   echo " "
-  echo -e "$WHITE   Kernel for $VARIANT...$GREEN$BLD Done$RATT"
+  echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
   cd $CDF
 }

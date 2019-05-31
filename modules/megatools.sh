@@ -26,14 +26,14 @@ if [ "$NOUP" = 1 ]; then
   echo -e "$RED - Upload is disabled, Run 'megacheck' Command to Re-Configure MEGA"
   return 1
 fi
-echo -ne "$GREEN$BLD"
+echo -ne "$THEME$BLD"
 echo -e "   _   _      _              _ "
 echo -e "  | | | |_ __| |___  __ _ __| | "
 echo -e "  | |_| | '_ \ / _ \/ _' / _' | "
 echo -e "   \___/| .__/_\___/\__,_\__,_| "
 echo -e "        |_|                    "
 echo " "
-echo -e "$GREEN$BLD   --------------------------"
+echo -e "$THEME$BLD   --------------------------"
 echo -e "$WHITE - Initializing Kernel(s) upload...$RATT$WHITE"
 UPZIP=$ZIPNAME
 echo -e "$WHITE   Checking file to be uploaded..."
@@ -45,7 +45,7 @@ if [ ! -f $NZIPS/$UPZIP ]; then
   return 1
 fi
 export DATE=`date +%Y-%m-%d`
-echo -e "   Kernel: $GREEN$BLD$KERNELNAME$WHITE; Variant: $GREEN$BLD$VARIANT$WHITE; Date: $GREEN$BLD$DATE$WHITE"
+echo -e "   Kernel: $THEME$BLD$KERNELNAME$WHITE; Variant: $THEME$BLD$VARIANT$WHITE; Date: $THEME$BLD$DATE$WHITE"
 megacheck
   # Try to remove the Kernel Installer and reload MegaTools Cache  
   megarm /Root/$UPZIP &> /dev/null
@@ -55,7 +55,7 @@ megacheck
   echo -e "$WHITE   Uploading Zip for $VARIANT to MEGA..."
   megaput $NZIPS/$UPZIP &> $MEGALOG
   echo -e "$WHITE   Done"
-  echo -e "$GREEN$BLD   --------------------------$WHITE"
+  echo -e "$THEME$BLD   --------------------------$WHITE"
 }
 export -f megaupload; log -f megaupload $KBELOG
 
@@ -84,7 +84,7 @@ else
     read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
     echo " "
     echo " "
-    echo -e "$GREEN$BLD - MEGA Config Done!$RATT"
+    echo -e "$THEME$BLD - MEGA Config Done!$RATT"
     # Unset Email and Password variables (Erase them)
     unset MEGAE
     unset MEGAP
@@ -101,14 +101,14 @@ if [ "$1" = "--reconfigure" ]; then
   export NOUP=0
   sudo chown $USER:users ~/.megarc
   echo " "
-  echo -e "$GREEN$BLD   Re-Configuring megarc File...$WHITE"
+  echo -e "$THEME$BLD   Re-Configuring megarc File...$WHITE"
   echo " "
   sudo echo "[Login]" > ~/.megarc
   read -p " * Email: " MEGAE; sudo echo "Username = $MEGAE" >> ~/.megarc
   read -sp " * Password: " MEGAP; sudo echo "Password = $MEGAP" >> ~/.megarc
   echo " "
   echo " "
-  echo -e "$GREEN$BLD - MEGA Config Done!$RATT"
+  echo -e "$THEME$BLD - MEGA Config Done!$RATT"
   # Unset Email and Password variables (Erase them)
   unset MEGAE
   unset MEGAP
@@ -128,7 +128,7 @@ function installmega() {
     return 1
   fi
   echo " "
-  echo -e "$GREEN$BLD   Installing MEGATools...$WHITE"
+  echo -e "$THEME$BLD   Installing MEGATools...$WHITE"
   # Make temp folder for installation
   mkdir megatemp
   cd megatemp
@@ -157,7 +157,7 @@ function megadlt() {
   # Clear some variables
   unset TFP; unset TN; unset DTA; unset ZIPERROR
   echo " "
-  echo -e "$GREEN$BLD - You'll have to fill some data in order to download your template"
+  echo -e "$THEME$BLD - You'll have to fill some data in order to download your template"
   echo -e "$WHITE   Please, enter the information correctly (the file must be .zip):"
   echo " "
   read -p " - Path to the folder in your MEGA that contains the Template: " TFP
@@ -190,7 +190,7 @@ fi
 
 # Extract the files inside ./out/mega_aktemplate/
 cd $MAKT
-echo -e "$GREEN$BLD - Extracting $TN files..." 
+echo -e "$THEME$BLD - Extracting $TN files..." 
 unzip $TN &> /dev/null
 rm $TN
 echo -e "$WHITE   Done"
