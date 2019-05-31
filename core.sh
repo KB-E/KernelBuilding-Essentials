@@ -38,17 +38,17 @@ sudo chmod 755 -R $(ls -A|grep -v 'source/*')
 sudo chown -R $USER:users *
 
 # Load Colors
-source $CDF/resources/other/colors.sh; log -t "Colors loaded" $KBELOG
+source $CDF/resources/other/colors.sh; log -t "Core: Colors loaded" $KBELOG
 # Load ProgramTools
-source $CDF/resources/programtools.sh; log -t "ProgramTools loaded" $KBELOG
+source $CDF/resources/programtools.sh; log -t "Core: ProgramTools loaded" $KBELOG
 # Load SimpleTools
-source $CDF/resources/simpletools.sh; log -t "SimpleTools loaded" $KBELOG
+source $CDF/resources/simpletools.sh; log -t "Core: SimpleTools loaded" $KBELOG
 # Load title 
 source $CDF/resources/other/programtitle.sh; log -t "ProgramTitle loaded" $KBELOG
 
 # If 'firstrun' file is missing perform a clean of this program environment
 if [ ! -f $CDF/resources/other/firstrun ]; then
-  echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Cleaning Environment..." $KBELOG
+  echo -e "$GREEN$BLD - Cleaning Environment...$WHITE"; log -t "Core: Cleaning Environment..." $KBELOG
   if [ -d $CDF/resources/crosscompiler/ ]; then
     rm -rf $CDF/resources/crosscompiler/
   fi
