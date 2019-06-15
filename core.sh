@@ -3,6 +3,12 @@
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
+# Only run with bash
+if readlink /proc/$$/exe | grep -q "dash"; then
+        echo "This script needs to be run with bash, not sh"
+        exit
+fi
+
 # Program Directory Path
 CDF=$(pwd)
 # Set environment folders
@@ -191,7 +197,7 @@ if [ "$RD" = "1" ]; then
   echo -e "$THEME$BLD - Kernel-Building Essentials it's ready!$RATT"; log -t "KB-E is Ready for its use" $KBELOG
   echo " "
 else
-  echo -e "$THEME$BLD - Session cancelled$RATT"; log -t "KB-E Session cancelled" $KBELOG
+  echo -e "$RED$BLD - Session cancelled$RATT"; log -t "KB-E Session cancelled" $KBELOG
   echo " "
   unset -f kbe
 fi
