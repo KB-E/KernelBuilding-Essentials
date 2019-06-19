@@ -90,3 +90,13 @@ esac
 source $CDF/resources/other/colors.sh
 }
 
+function backupdef () {
+if [ ! -d $CDF/backup ]; then
+  mkdir $CDF/backup
+fi
+if [ ! -d $CDF/backup/$KERNELNAME ]; then
+  mkdir $CDF/backup/$KERNELNAME
+fi
+cp $P/arch/$ARCH/configs/$DEFCONFIG1 $CDF/backup/$KERNELNAME/$KERNELNAME.defconfig
+echo "BackupDef: Done, located at $CDF/backup/$KERNELNAME/$KERNELNAME.defconfig"
+}
