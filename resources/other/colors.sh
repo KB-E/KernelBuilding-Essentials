@@ -14,6 +14,6 @@ LRED="\e[0;31m"; LGREEN="\e[1;32m"; LBLUE="\e[1;34m"
 LMAGENTA="\e[1;35m"; LCYAN="\e[1;36m"
 
 # KB-E Theme color
-THEME=$CYAN
+THEME=$GREEN
 
 # Done

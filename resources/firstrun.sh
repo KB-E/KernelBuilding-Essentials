@@ -58,5 +58,6 @@ echo -e "$THEME$BLD   ----------------------------------------------------------
 echo -e "$WHITE   First run is done, run the command 'kbhelp' for more information and run"
 echo -e "   this program again!"
 echo -e "$THEME$BLD   ---------------------------------------------------------------------------"
+sleep 4
 log -t "FirstRun: All done" $KBELOG
 export FRF=1

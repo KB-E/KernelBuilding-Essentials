@@ -7,6 +7,8 @@
 export ZI=$CDF/"out/Images/" # Last Built zImages
 export DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
 
+# Some scripts paths
+
 # Variants file
 export VF=$OTHERF/variants.sh
 
