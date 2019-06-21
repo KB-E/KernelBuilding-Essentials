@@ -100,3 +100,13 @@ fi
 cp $P/arch/$ARCH/configs/$DEFCONFIG1 $CDF/backup/$KERNELNAME/$DEFCONFIG1
 echo "BackupDef: Done, located at $CDF/backup/$KERNELNAME/$DEFCONFIG"
 }
+
+function restoredef () {
+if [ ! -f $CDF/backup/$KERNELNAME/$DEFCONFIG1 ]; then
+  echo "RestoreDef: Error, no defconfig backup found for $KERNELNAME"
+else
+  cp $CDF/backup/$KERNELNAME/$DEFCONFIG1 $P/arch/$ARCH/configs/$DEFCONFIG1
+  echo "RestoreDef: Done, restored $KERNELNAME defconfig"
+fi
+}
+
