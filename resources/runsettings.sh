@@ -26,12 +26,6 @@ if [ "$CWK" = "n" ]; then return 1; fi
 
 # Save data
 function storedata () {
-  if [ ! -d $DPATH/$KERNELNAME ]; then
-    mkdir $DPATH/$KERNELNAME
-  fi
-  if [ ! -f $DPATH/$KERNELNAME/$KERNELNAME.data ]; then
-    touch $DPATH/$KERNELNAME/$KERNELNAME.data
-  fi
   case $1 in
     "-t") echo "$2" >> $DFPATH ;;
     "-v") echo "export $2=$3" >> $DFPATH ;;
