@@ -81,18 +81,6 @@ function kbhelp() {
 }
 export -f kbhelp; log -f kbhelp $KBELOG
 
-function loadresources() {
-  log -t "LoadResources: Loading environment resources..." $KBELOG
-  # Initialize KB-E Resources
-  log -t "LoadResources: Loading variables..." $KBELOG
-  source $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
-  source $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
-  source $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
-  source $CDF/resources/makedtb.sh; log -t "LoadResources: Loading writecoredevice script" $KBELOG
-  source $CDF/resources/other/writecoredevice.sh
-}
-export -f loadresources; log -f loadresources $KBELOG
-
 # Check CrossCompiler
 function checkcc() {
   log -t "CheckCC: Checking CrossCompiler..." $KBELOG

@@ -109,7 +109,13 @@ title; log -t "Displaying title" $KBELOG
 
 # Initialize KB-E Resources and Modules
 checktools; log -t "Checking tools" $KBELOG
-loadresources; log -t "Loading resources" $KBELOG
+log -t "LoadResources: Loading environment resources..." $KBELOG
+# Initialize KB-E Resources
+log -t "LoadResources: Loading variables..." $KBELOG
+source $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
+source $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
+source $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
+source $CDF/resources/makedtb.sh
 
 if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
   return 1
