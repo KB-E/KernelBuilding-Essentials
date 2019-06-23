@@ -24,6 +24,27 @@ if [ "$CWK" = "n" ]; then return 1; fi
 # Script Functions 
 #-------------------------
 
+# Save data
+function storedata () {
+  if [ ! -d $DPATH/$KERNELNAME ]; then
+    mkdir $DPATH/$KERNELNAME
+  fi
+  if [ ! -f $DPATH/$KERNELNAME/$KERNELNAME.data ]; then
+    touch $DPATH/$KERNELNAME/$KERNELNAME.data
+  fi
+  case $1 in
+    "-t") echo "$2" >> $DFPATH ;;
+    "-v") echo "export $2=$3" >> $DFPATH ;;
+    "-n") echo "# Configuration file for $KERNELNAME" > $DFPATH ;;
+    "-d") if [ ! -d $DPATH/$KERNELNAME ]; then
+            mkdir $DPATH/$KERNELNAME;
+          fi;
+          if [ ! -f $DPATH/$KERNELNAME/$KERNELNAME.data ]; then
+            touch $DPATH/$KERNELNAME/$KERNELNAME.data;
+          fi ;;
+  esac
+}
+
 # Essencial Data
 function promptdata() {
   unset ERR
@@ -33,30 +54,24 @@ function promptdata() {
   echo -e "$WHITE  -------------------------"
   echo " "
   read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; log -t "RunSettings: Kernel name: $KERNELNAME" $KBELOG; if [ "$KERNELNAME" = "" ]; then ERR=1; return 1; fi
-  if [ -f $CORED/$KERNELNAME.dev ]; then
-    echo -ne "   Load last settings for $THEME$BLD$KERNELNAME$WHITE? [Y/N]: "; read LLS; log -t "RunSettings: '$KERNELNAME' last config found" $KBELOG
-    if [ "$LLS" = "Y" ] || [ "$LLS" = "y" ]; then
-      log -t "RunSettings: Loading '$KERNELNAME' last config" $KBELOG
-      source $CORED/$KERNELNAME.dev
-      unset LLS
-      getcc
-      export RD=1
-      ERR=1
-      return 1
-    else
-      log -t "RunSettings: User decided not to load last '$KERNELNAME' config, removing it" $KBELOG
-      rm $CORED/$KERNELNAME.dev
-    fi
-  fi
+  storedata -d
+  export DFPATH=$DPATH/$KERNELNAME/$KERNELNAME.data
+  storedata -n
+  storedata -t "# User Data"
+  storedata -v KERNELNAME $KERNELNAME
   read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID; log -t "RunSettings: Target OS: $TARGETANDROID" $KBELOG;  if [ "$TARGETANDROID" = "" ]; then ERR=1; return 1; fi
+  storedata -v TARGETANDROID $TARGETANDROID
   read -p "   Version: " VERSION; export VERSION; log -t "RunSettings: Version: $VERSION" $KBELOG;  if [ "$VERSION" = "" ]; then ERR=1; return 1; fi
+  storedata -v VERSION $VERSION
   read -p "   Release Type ( 1 = Stable; 2 = Beta ): " RELEASETYPE; if [ "$RELEASETYPE" = "" ]; then ERR=1; return 1; fi
   if [ "$RELEASETYPE" = "1" ]; then RELEASETYPE="Stable"; elif [ "$RELEASETYPE" = "2" ]; then RELEASETYPE="Beta"; fi; export RELEASETYPE
+  storedata -v RELEASETYPE $RELEASETYPE
   log -t "Runsettings: Release Type: $RELEASETYPE" $KBELOG
 };
 
 # Arch selection
 function getarch() {
+  storedata -t "# Arch Type"
   # Get the ARCH Type
   echo -e "$WHITE  -------------------------"
   echo -e "$THEME$BLD - ARCH Type Selection:"
@@ -72,13 +87,14 @@ function getarch() {
     fi
   done
   case $ARMT in
-       "1") export ARCH=arm; log -t "RunSettings: ARCH=arm" $KBELOG ;;
-       "2") export ARCH=arm64; log -t "RunSettings: ARCH=arm64" $KBELOG ;;
+       "1") export ARCH=arm; storedata -v ARCH arm; log -t "RunSettings: ARCH=arm" $KBELOG ;;
+       "2") export ARCH=arm64; storedata -v ARCH arm64; log -t "RunSettings: ARCH=arm64" $KBELOG ;;
   esac 
 };
 
 # Download CC Based on Arch
 function getcc() {
+  storedata -t "# CrossCompiler"
   # This will export the correspondent CrossCompiler for the ARCH Type
   if [ "$ARCH" = "arm" ]; then
     CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
@@ -101,10 +117,12 @@ function getcc() {
       echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
     fi
   fi
+  storedata -v CROSSCOMPILE $CROSSCOMPILE
 };
 
 # Kernel Config
 function getkconfig() {
+  storedata -t "# Kernel Config"
   unset ERR
   echo -e "$WHITE  -------------------------"
   echo -e "$THEME$BLD - Kernel Selection and Config:"
@@ -132,14 +150,17 @@ function getkconfig() {
   fi
   cd $CDF
   export P=$CDF/source/$d; log -t "RunSettings: Exported kernel source to $P" $KBELOG
+  storedata -v P $P
   echo " "
   echo -ne "   Debug Kernel Building?$THEME$BLD [Y/N]:$WHITE "
   read KDEBUG
   if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
     export KDEBUG=1; log -t "RunSettings: Kernel debug enabled" $KBELOG
+    storedata -v KDEBUG 1
   fi
 
-  # Variant and Defconfig 
+  # Variant and Defconfig
+  storedata -t "# Variant and Defconfig" 
   unset UDF
   if [ -f $OTHERF/variants.sh ]; then
     log -t "RunSettings: Lastest defined multi variants found" $KBELOG 
@@ -163,12 +184,14 @@ function getkconfig() {
         echo " "
       fi
     done
+    storedata -v VARIANT1 $VARIANT1
     echo -e "   Select a Defconfig $THEME$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
     echo " "
     cd $P/arch/$ARCH/configs/; log -t "RunSettings: Entered in $P/arch/$ARCH/configs" $KBELOG
     select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
     cd $CDF
     export DEFCONFIG1=$DEF; log -t "RunSettings: Defconfig: $DEFCONFIG1" $KBELOG
+    storedata -v DEFCONFIG1 $DEF
     echo " "
     echo -ne "   Add more Variants?$THEME$BLD [Y/N]:$WHITE "
     read ADDMV
@@ -196,12 +219,14 @@ function getkconfig() {
         else
           export VARIANT$X=$VV; log -t "RunSettings: Exported additional Variant: $VV" $KBELOG
           echo "export VARIANT$X=$VV" >> $VF
+          storedata -v VARIANT$X $VV
           echo -e "   Choose a defconfig:"
           cd $P/arch/$ARCH/configs/
           select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
           cd $CDF
           export DEFCONFIG$X=$DEF; log -t "RunSettings: Exported additional Defconfig: $DEF" $KBELOG
           echo "export DEFCONFIG$X=$DEF" >> $VF
+          storedata -v DEFCONFIG$X $DEF
         fi
       done
     fi
@@ -212,20 +237,13 @@ function getkconfig() {
   if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
     log -t "RunSettings: Cleaning source on every build" $KBELOG
     export CLR=1
+    storedata -v CLR 1
   fi
-};
-
-# Save all data
-function saveconfig() {
-  export DFILE=$CORED/$KERNELNAME.dev
-  if [ ! -f $DFILE ]; then
-    touch $DFILE; log -t "RunSettings: Created $DFILE" $KBELOG
-  fi; log -t "RunSettings: Running writecoredevice..." $KBELOG
-  writecoredevice
 };
 
 # Modules function
 function getmodules() {
+  storedata -t "# Modules"
   log -t "RunSettings: Entering modules selection" $KBELOG
   echo -e "$WHITE  --------------------------"
   echo -e "$THEME$BLD   Modules selection:"
@@ -257,12 +275,12 @@ function getmodules() {
       log -t "RunSettings: Module '$(grep MODULE_NAME $i | cut -d '=' -f2)' enabled" $KBELOG
       echo "export MODULE$((k))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
       echo "export MPATH$((x))=$i" >> $MLIST
-      echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $DFILE
-      echo "export MPATH$((x++))=$i" >> $DFILE
+      storedata -t "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)"
+      storedata -t "export MPATH$((x++))=$i"
       log -t "RunSettings: Running '$(grep MODULE_NAME $i | cut -d '=' -f2)' module" $KBELOG
       source $i
       # Execute module on device kernel file
-      echo "source $i" >> $DFILE
+      storedata -t "source $i"
     fi
   done
   log -t "RunSettings: Exporting modules configuration" $KBELOG
@@ -275,8 +293,7 @@ function getmodules() {
 promptdata; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
 getarch; echo " "
 getcc;
-getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi
-saveconfig; echo " "
+getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
 getmodules;
 
 # Config process done
