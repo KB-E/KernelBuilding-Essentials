@@ -17,6 +17,7 @@ function checkfolders() {
   FD=source; folder
   FD=resources/logs; folder
   FD=resources/devices; folder
+  FD=devices; folder
   unset FD
   if [ "$1" != "--silent" ]; then
     echo -e "$WHITE Done$RATT"
