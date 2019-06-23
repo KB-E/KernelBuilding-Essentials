@@ -113,7 +113,19 @@ log -t "LoadResources: Loading environment resources..." $KBELOG
 # Initialize KB-E Resources
 log -t "LoadResources: Loading variables..." $KBELOG
 source $CDF/resources/variables.sh; log -t "LoadResources: Loading runsettings script" $KBELOG
-source $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
+for i in $CDF/devices/*/; do
+  if [ "$1" = "$(basename $i)" ]; then
+    echo -e "   $THEME$BLD$(basename $1)$WHITE found in devices/ folder$RATT"
+    source $i/"$(basename $i)".data
+    RD=1
+    NORS=1
+  fi
+done
+if [ "$NORS" = "1" ]; then
+  unset NORS
+else
+  source $CDF/resources/runsettings.sh; log -t "LoadResources: Loading buildkernel script" $KBELOG
+fi
 source $CDF/resources/buildkernel.sh; log -t "LoadResources: Loading makedtb script" $KBELOG
 source $CDF/resources/makedtb.sh
 
