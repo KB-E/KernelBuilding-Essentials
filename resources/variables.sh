@@ -9,6 +9,9 @@ export DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
 
 # Some scripts paths
 
+# Device paths
+export DPATH=$CDF/devices
+
 # Variants file
 export VF=$OTHERF/variants.sh
 
