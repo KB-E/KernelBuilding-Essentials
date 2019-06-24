@@ -134,22 +134,3 @@ else
 fi
 }
 export -f checkziptool; log -f checkziptool $KBELOG
-
-# Load auto.sh function into .bashrc
-function writeprogramconfig() {
-  log -t "WriteProgramConfig: Writting KB-E config to ~/.bashrc" $KBELOG
-  echo " "
-  echo -ne "$THEME$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
-  sudo sed -i '/# Load auto.sh function and path/d' ~/.bashrc
-  sudo sed -i '/CDF=/d' ~/.bashrc
-  sudo sed -i '/colors.sh/d' ~/.bashrc
-  sudo sed -i '/auto.sh/d' ~/.bashrc
-  echo "# Load auto.sh function and path" >> ~/.bashrc
-  echo "CDF=$CDF" >> ~/.bashrc
-  echo ". $CDF/resources/other/colors.sh" >> ~/.bashrc
-  echo ". $CDF/auto.sh" >> ~/.bashrc
-  source $CDF/auto.sh; log -t "WriteProgramConfig: Loading auto.sh script..." $KBELOG
-  echo -e " Done"
-  echo " "; log -t "WriteProgramConfig: Done" $KBELOG
-}
-export -f writeprogramconfig; log -f writeprogramconfig $KBELOG
