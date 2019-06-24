@@ -49,6 +49,13 @@ function makedtb() {
     $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/dts/qcom/ &> $LOGF/build-dtb_log.txt
   fi
 
+  # Define dt out path
+  DTOUT=$CDF/devices/$KERNELNAME/out/dt
+  # Create out folder for this device
+  if [ ! -d $DTOUT ]; then
+    mkdir $DTOUT
+  fi
+
   # Verify dt.img
   if [ ! -f $P/arch/$ARCH/boot/dt.img ]; then
     echo " "; log -t "MakeDTB: Error: DTB Build failed, exiting..." $KBELOG
@@ -64,7 +71,7 @@ function makedtb() {
     export DTBFAILED=1
     return 1
   else
-   mv $P/arch/$ARCH/boot/dt.img $DT/$VARIANT; log -t "MakeDTB: New DTB moved to '$DT' named '$VARIANT'" $KBELOG
+   mv $P/arch/$ARCH/boot/dt.img $DTOUT/$VARIANT; log -t "MakeDTB: New DTB moved to '$DTOUT' named '$VARIANT'" $KBELOG
    echo -e "$THEME$BLD Done$RATT"
    echo " "; log -t "MakeDTB: All done" $KBELOG
   fi
