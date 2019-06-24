@@ -37,7 +37,7 @@ echo -e "$THEME$BLD   --------------------------"
 echo -e "$WHITE - Initializing Kernel(s) upload...$RATT$WHITE"
 UPZIP=$ZIPNAME
 echo -e "$WHITE   Checking file to be uploaded..."
-if [ ! -f $NZIPS/$UPZIP ]; then
+if [ ! -f $AKOUT/$UPZIP ]; then
   echo " "
   echo -e "$RED   '$UPZIP' not found"
   echo -e "$RED$BLD   Did module 'makeanykernel' built it?"
@@ -53,7 +53,7 @@ megacheck
   # --------
   # Upload the Kernel Installer(s)
   echo -e "$WHITE   Uploading Zip for $VARIANT to MEGA..."
-  megaput $NZIPS/$UPZIP &> $MEGALOG
+  megaput $AKOUT/$UPZIP &> $MEGALOG
   echo -e "$WHITE   Done"
   echo -e "$THEME$BLD   --------------------------$WHITE"
 }

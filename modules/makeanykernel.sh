@@ -13,46 +13,38 @@
 # MODULE_FUNCTION_NAME=anykernel
 # ---------------------------
 
-# Variables and config
-AKFOLDER=$CDF/anykernelfiles
-AKSH=$AKFOLDER/anykernel.sh
+# Path variable
+AKFOLDER=$DPATH/$KERNELNAME/anykernelfiles
+AKOUT=$DPATH/$KERNELNAME/out/anykernel
 
-# AnyKernel Required Data by User
-echo " "
-echo -e "$THEME$BLD - Choose an option for AnyKernel Installer: "
-echo " "
-echo -e "$WHITE   1) Download the AnyKernel Source and use it"
-echo -e "   2) Manually set the AnyKernel files"
-echo " "
-until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
-  read -p "   Your option [1/2]: " AKBO
-  if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ]; then
-    echo " "
-    echo -e "$RED$BLD - Error, invalid option, try again..."
-    echo -e "$WHITE"
-  fi
-  if [ "$AKBO" = "1" ]; then
-    echo " "
-    if [ -f $AKSH ]; then
-      read -p "   AnyKernel Files Folder is not Empty, clean it? [Y/N]: " CLRAKF
-      if [ "$CLRAKF" = "y" ] || [ "$CLRAKF" = "Y" ]; then
-        rm -rf $AKFOLDER
-        echo -e "$THEMEBLD   Done$WHITE"
-      elif [ "$CLRAKF" = "n" ] || [ "$CLRAKF" = "N" ]; then
-        STOPD=1
-      fi
-    fi
-    if [ "$STOPD" != "1" ]; then
+# If the anykernelfiles folder is missing for the current
+# kernel, prompt for its configuration
+if [ ! -d $AKFOLDER ]; then
+  # AnyKernel Required Data by User
+  echo " "
+  echo -e "$THEME$BLD - Choose an option for AnyKernel Installer: "
+  echo " "
+  echo -e "$WHITE   1) Download the AnyKernel Source and use it"
+  echo -e "   2) Manually set the AnyKernel files"
+  echo " "
+  until [ "$AKBO" = "1" ] || [ "$AKBO" = "2" ]; do
+    read -p "   Your option [1/2]: " AKBO
+    if [ "$AKBO" != "1" ] && [ "$AKBO" != "2" ]; then
       echo " "
+      echo -e "$RED$BLD - Error, invalid option, try again..."
+      echo -e "$WHITE"
+    fi
+    if [ "$AKBO" = "1" ]; then
       echo -ne "$THEME$BLD - Downloading AnyKernel Source..."
       git clone https://github.com/osm0sis/AnyKernel2.git $AKFOLDER &> /dev/null
       echo -e "$WHITE Done"
-    else
-      echo -e "$RED$BLD - Download cancelled$WHITE"
     fi
-  fi
-done
-unset AKBO; unset STOPD; unset CLRAKF;
+    if [ "$AKBO" = "2" ]; then
+      mkdir $AKFOLDER
+    fi
+  done
+  unset AKBO
+fi
 
 function anykernel() {
 # Check if we're building for 1 or more Variants
@@ -105,20 +97,13 @@ fi
 
 # Setup MakeAnykernel
 checkfolders --silent
-# Check MakeAnykerel folders
+# Check MakeAnykerel out folder
 if [ "$1" != "--no-spam" ]; then echo -ne "$WHITE   Checking MakeAnykernel folders..."; fi
 sleep 0.5
-akfolder () {
-  if [ ! -d $CDF/$FD ]; then
-    mkdir $CDF/$FD
-  fi
-}
-FD=out/AnyKernel; akfolder
-unset FD
+if [ ! -d $AKOUT ]; then
+  mkdir $AKOUT
+fi
 if [ "$1" != "--no-spam" ]; then echo -ne "$THEME$BLD Done$RATT"; fi
-
-# Paths
-NZIPS=$CDF/"out/AnyKernel" # New Zips built output folder
 
 # Check Zip Tool
 checkziptool
@@ -141,24 +126,24 @@ fi
 while true
 do
   if [ "$ARCH" = "arm" ]; then
-    cp $ZI/$VARIANT $AKFOLDER/zImage
+    cp $KOUT/$VARIANT $AKFOLDER/zImage
     break
-  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT.gz-dtb ]; then 
-    cp $ZI/$VARIANT.gz-dtb $AKFOLDER/Image.gz-dtb
+  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.gz-dtb ]; then 
+    cp $KOUT/$VARIANT.gz-dtb $AKFOLDER/Image.gz-dtb
     break
-  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT.gz ]; then
-    cp $ZI/$VARIANT.gz $AKFOLDER/Image.gz
+  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.gz ]; then
+    cp $KOUT/$VARIANT.gz $AKFOLDER/Image.gz
     break
-  elif [ "$ARCH" = "arm64" ] && [ -f $ZI$VARIANT ]; then
-    cp $ZI/$VARIANT $AKFOLDER/Image
+  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT ]; then
+    cp $KOUT/$VARIANT $AKFOLDER/Image
     break
   fi
 done
 if [ "$1" != "--no-spam" ]; then
   echo -e "$WHITE$BLD   Kernel Updated"
 fi
-if [ -f $DT/$VARIANT ]; then
-  cp $DT/$VARIANT $AKFOLDER/dtb
+if [ -f $DTOUT/$VARIANT ]; then
+  cp $DTOUT/$VARIANT $AKFOLDER/dtb
   if [ "$1" != "--no-spam" ]; then
     echo -e "$WHITE$BLD   DTB Updated"
     echo -e "   Done"
@@ -170,7 +155,7 @@ fi
 
 # Make the kernel installer zip
 export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
-KREVF=$CDF/resources/core-devices/$KERNELNAME.rev
+KREVF=$CDF/devices/$KERNELNAME/$KERNELNAME.rev
 if [ $RELEASETYPE = "Beta" ]; then
   if [ ! -f $KREVF ]; then
     touch $KREVF
@@ -190,7 +175,7 @@ else
 fi
 cd $AKFOLDER
 zip -r9 $ZIPNAME * &> /dev/null
-mv $ZIPNAME $NZIPS/
+mv $ZIPNAME $AKOUT/
 echo -e "$THEME$BLD Done!$RATT"
 echo -e "$THEME$BLD   --------------------------$WHITE"
 # Clean anykernelfiles Folder
