@@ -110,3 +110,6 @@ else
 fi
 }
 
+function cdkbe () {
+cd $CDF
+}
