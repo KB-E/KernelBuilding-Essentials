@@ -12,7 +12,7 @@ function buildkernel() {
   echo -e "   _  __                 _ "
   echo -e "  | |/ /___ _ _ _ _  ___| |  "
   echo -e "  | ' </ -_) '_| ' \/ -_) |     "
-  echo -e "  |_-|\\___|_| |_||_\___|_| "
+  echo -e "  |_-|_\___|_| |_||_\___|_| "
   echo " "
   echo " "
   echo -e "$THEME$BLD - $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH)$RATT"
@@ -27,7 +27,7 @@ function buildkernel() {
 
   # Enter in the kernel source
   if [ -d $P ]; then # P = Path for Kernel defined by the user
-                      # in the process or defaultsettings.sh
+                     # in the process or defaultsettings.sh
     cd $P
     echo -e "$THEME$BLD   Entered in $WHITE'$P' $THEME$BLDSucessfully"
     echo " "; log -t "BuildKernel: Entered in '$P'" $KBELOG
@@ -40,13 +40,20 @@ function buildkernel() {
 
   # Export necessary things
   export KCONFIG_NOTIMESTAMP=true
-  export ARCH=$ARCH                   # If the program succed at this step, this means
+  export ARCH=$ARCH
   log -t "BuildKernel: Exported ARCH=$ARCH" $KBELOG
   export SUB_ARCH=$ARCH;
-  #echo -e "$WHITE   Exported $ARCH"
+  #echo -e "$WHITE   Exported $ARCH"  # If the program succeed at this step, this means
   export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
   log -t "BuildKernel: Exported CROSS_COMPILE=$CROSSCOMPILE" $KBELOG
   #echo -e "   Exported $CROSSCOMPILE"
+
+  # Define kernel out path
+  KOUT=$CDF/devices/$KERNELNAME/out/kernel
+  # Create out folders for this device
+  if [ ! -d $KOUT ]; then
+    mkdir $KOUT
+  fi
 
   #Start Building Process
   if [ "$CLR" = "1" ]; then make clean; log -t "BuildKernel: Source cleaned" $KBELOG; echo " "; fi # Clean Kernel source
@@ -76,9 +83,6 @@ function buildkernel() {
 
   # Get the number of CPU Cores
   JOBS=$(grep -c ^processor /proc/cpuinfo); log -t "BuildKernel: Number of Cores=$JOBS" $KBELOG
-  if [ "$BKB" = y ] || [ "$BKB" = Y ]; then
-    JOBS=$(( $JOBS + 2 )); log -t "BuildKernel: Cores number Boosted, Cores=$JOBS" $KBELOG
-  fi
   # Start compiling kernel
   echo -e "$THEME$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
   echo " "
@@ -117,7 +121,7 @@ function buildkernel() {
       log -t "BuildKernel: Error: No kernel built found, compiling process failed" $KBELOG
     fi
   fi
-  
+
   # If KFAIL=1 then exit the script
   if [ "$KFAIL" = "1" ]; then
     echo " "
@@ -135,23 +139,23 @@ function buildkernel() {
   do
     if [ $ARCH = arm ]; then
       KFNAME="$VARIANT"
-      cp $P/arch/arm/boot/zImage $ZI/$KFNAME; log -t "BuildKernel: zImage found, copying to $ZI with name '$KFNAME'" $KBELOG
+      cp $P/arch/arm/boot/zImage $KOUT/$KFNAME; log -t "BuildKernel: zImage found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then
       KFNAME="$VARIANT.gz-dtb"
-      cp $P/arch/arm64/boot/Image.gz-dtb $ZI/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
+      cp $P/arch/arm64/boot/Image.gz-dtb $KOUT/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz ]; then
       KFNAME="$VARIANT.gz"
-      cp $P/arch/arm64/boot/Image $ZI/$KFNAME; log -t "BuildKernel: Image.gz found, copying to $ZI with name '$KFNAME'" $KBELOG
+      cp $P/arch/arm64/boot/Image $KOUT/$KFNAME; log -t "BuildKernel: Image.gz found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image ]; then
       KFNAME="$VARIANT"
-      cp $P/arch/arm64/boot/Image $ZI/$KFNAME; log -t "BuildKernel: Image found, copying to $ZI with name '$KFNAME'" $KBELOG
+      cp $P/arch/arm64/boot/Image $KOUT/$KFNAME; log -t "BuildKernel: Image found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
     fi
   done
-  echo -e "$THEME$BLD   New Kernel ($KFNAME) Copied to$WHITE '$ZI'"
+  echo -e "$THEME$BLD   New Kernel ($KFNAME) Copied to$WHITE '$KOUT'"
   echo " "
   echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
