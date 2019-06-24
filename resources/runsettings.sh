@@ -289,6 +289,8 @@ getarch; echo " "
 getcc;
 getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
 getmodules;
+# After all its done, create an out folder for the configured kernel
+mkdir $DPATH/$KERNELNAME/out
 
 # Config process done
 export RD=1
