@@ -49,8 +49,6 @@ function makedtb() {
     $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/dts/qcom/ &> $LOGF/build-dtb_log.txt
   fi
 
-  # Define dt out path
-  DTOUT=$CDF/devices/$KERNELNAME/out/dt
   # Create out folder for this device
   if [ ! -d $DTOUT ]; then
     mkdir $DTOUT
@@ -77,3 +75,5 @@ function makedtb() {
   fi
 }
 export -f makedtb; log -f makedtb $KBELOG
+# Define dt out path
+DTOUT=$CDF/devices/$KERNELNAME/out/dt

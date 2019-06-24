@@ -48,8 +48,6 @@ function buildkernel() {
   log -t "BuildKernel: Exported CROSS_COMPILE=$CROSSCOMPILE" $KBELOG
   #echo -e "   Exported $CROSSCOMPILE"
 
-  # Define kernel out path
-  KOUT=$CDF/devices/$KERNELNAME/out/kernel
   # Create out folders for this device
   if [ ! -d $KOUT ]; then
     mkdir $KOUT
@@ -194,3 +192,5 @@ fi
 }
 export -f buildkernel; log -f buildkernel $KBELOG
 export -f readlog; log -f readlog $KBELOG
+# Define kernel out path
+KOUT=$CDF/devices/$KERNELNAME/out/kernel
