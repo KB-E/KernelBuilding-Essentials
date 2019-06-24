@@ -170,6 +170,10 @@ function kbe() {
       log -t "KB-E is Ready for its use" $KBELOG
       echo " "
     else
+      # Remove incomplete device
+      if [ -d $CDF/devices/$KERNELNAME ]; then
+        rm -rf $CDF/devices/$KERNELNAME
+      fi
       echo -e "$RED$BLD - Session cancelled$RATT"
       log -t "KB-E Session cancelled" $KBELOG
       echo " "
