@@ -134,10 +134,10 @@ function kbe() {
     log -t "LoadResources: Loading variables..." $KBELOG
     source $CDF/resources/variables.sh
     log -t "LoadResources: Loading runsettings script" $KBELOG
-    for i in $CDF/devices/*/; do
-      if [ "$2" = "$(basename $i)" ]; then
+    for i in $CDF/devices/*/*.data; do
+      if [ "$2".data = "$(basename $i)" ]; then
         echo -e "   $THEME$BLD$(basename $i)$WHITE found in devices/ folder$RATT"
-        source $i/"$(basename $i)".data
+        source $i
         RD=1
         NORS=1
       fi
@@ -171,8 +171,8 @@ function kbe() {
       echo " "
     else
       # Remove incomplete device
-      if [ -d $CDF/devices/$KERNELNAME ]; then
-        rm -rf $CDF/devices/$KERNELNAME
+      if [ -f $CDF/devices/$KERNELNAME/$KERNELNAME.data ]; then
+        rm $CDF/devices/$KERNELNAME/$KERNELNAME.data
       fi
       echo -e "$RED$BLD - Session cancelled$RATT"
       log -t "KB-E Session cancelled" $KBELOG
