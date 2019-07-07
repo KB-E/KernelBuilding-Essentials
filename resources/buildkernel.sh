@@ -157,7 +157,6 @@ function buildkernel() {
   echo " "
   echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
-  cd $CDF
 }
 
 function readlog() {
