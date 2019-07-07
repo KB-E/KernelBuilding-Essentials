@@ -31,18 +31,19 @@ function makedtb() {
   echo -e "  | |) || | | _ \ "
   echo -e "  |___/ |_| |___/ "
   echo " "
-  echo " "
-  echo -e "$THEME$BLD - Build DTB Script for $VARIANT "
-
+  echo -e "$THEME$BLD   --------------------------$WHITE"
+  echo -e "$WHITE$BLD - Build $THEME$BLD DTB$WHITE Script"
+  echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Date:$THEME$BLD $DATE$WHITE"
   # Remove old dt.img from kernel source
   if [ -f $P/arch/$ARCH/boot/dt.img ]; then
    rm $P/arch/$ARCH/boot/dt.img; log -t "MakeDTB: Removed old dt.img" $KBELOG
+   echo -e "   Removed old DTB"
   fi
 
   # Build with Lineage dtbTool 
   chmod 777 $DTB
-  echo " "; log -t "MakeDTB: Building DTB with dtbToolLineage" $KBELOG
-  echo -ne "$WHITE   Building DTB...$RATT$WHITE"
+  log -t "MakeDTB: Building DTB with dtbToolLineage" $KBELOG
+  echo -e "$WHITE   Building DTB...$RATT$WHITE"
   if [ $ARCH = arm ]; then
     $DTB -2 -o $P/arch/$ARCH/boot/dt.img -s 2048 -p $P/scripts/dtc/ $P/arch/$ARCH/boot/ &> $LOGF/build-dtb_log.txt
   elif [ $ARCH = arm64 ]; then
@@ -70,7 +71,8 @@ function makedtb() {
     return 1
   else
    mv $P/arch/$ARCH/boot/dt.img $DTOUT/$VARIANT; log -t "MakeDTB: New DTB moved to '$DTOUT' named '$VARIANT'" $KBELOG
-   echo -e "$THEME$BLD Done$RATT"
+   echo -e "   Done$RATT"
+   echo -e "$THEME$BLD   --------------------------$WHITE"
    echo " "; log -t "MakeDTB: All done" $KBELOG
   fi
 }
