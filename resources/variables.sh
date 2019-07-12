@@ -4,8 +4,8 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # Local Folders Paths
-export ZI=$CDF/"out/Images/" # Last Built zImages
-export DT=$CDF/"out/dt/" # New Device Tree Images for each variants (dtb)
+export ZI=$CDF/devices/$KERNELNAME/out/kernel/ # Last Built zImages
+export DT=$CDF/devices/$KERNELNAME/out/dt/ # New Device Tree Images for each variants (dtb)
 
 # Some scripts paths
 
