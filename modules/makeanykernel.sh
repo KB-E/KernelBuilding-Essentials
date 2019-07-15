@@ -67,7 +67,7 @@ if [ "$MULTIVARIANT" = false ]; then
 fi
 
 # Cancel if theres no Kernel built
-if [ -f $ZI$VARIANT.gz-dtb ] || [ -f $ZI$VARIANT.gz ] || [ -f $ZI$VARIANT ]; then
+if [ -f $KOUT/$VARIANT.gz-dtb ] || [ -f $KOUT/$VARIANT.gz ] || [ -f $KOUT/$VARIANT ]; then
   sleep 0.1
 else
   echo " "
