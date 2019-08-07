@@ -53,13 +53,15 @@ export -f checktools; log -f checktools $KBELOG
 # Check if theres a kernel source
 function checksource() {
   unset CWK
-  if [ ! -f $CDF/source/*/Makefile ]; then
-  echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
-  log -t "RunSettings: Error, no kernel source found, exiting KB-E..." $KBELOG
-  export CWK=n
-  echo " "
-  return 1
-fi
+  for folder in $CDF/source/*; do
+    if [ ! -f $folder/Makefile ]; then
+      echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
+      log -t "RunSettings: Error, no kernel source found, exiting KB-E..." $KBELOG
+      export CWK=n
+      echo " "
+      return 1
+    fi
+  done
 }
 
 function checkvariants() {
