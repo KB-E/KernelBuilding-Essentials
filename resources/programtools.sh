@@ -54,7 +54,10 @@ export -f checktools; log -f checktools $KBELOG
 function checksource() {
   unset CWK
   for folder in $CDF/source/*; do
-    if [ ! -f $folder/Makefile ]; then
+    if [ -f $folder/Makefile ]; then
+      log -t "RunSettings: Kernel source found" $KBELOG
+      return 1
+    else
       echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
       log -t "RunSettings: Error, no kernel source found, exiting KB-E..." $KBELOG
       export CWK=n
