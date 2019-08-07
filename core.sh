@@ -47,6 +47,10 @@ if [ ! -f ./resources/other/firstrun ] && [ "$1" != "--kbe" ]; then
   # Logging script
   source $CDF/resources/log.sh
   export KBELOG=$CDF/resources/logs/kbessentials.log
+  # Title
+  source $CDF/resources/other/programtitle.sh
+  # Program Tools
+  source $CDF/resources/programtools.sh
   log -t " " $KBELOG
   log -t "Installing KB-E..." $KBELOG
   # Load Colors
