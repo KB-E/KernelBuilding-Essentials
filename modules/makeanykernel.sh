@@ -154,7 +154,7 @@ fi
 # -----------------------
 
 # Make the kernel installer zip
-export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
+export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
 KREVF=$CDF/devices/$KERNELNAME/$KERNELNAME.rev
 if [ $RELEASETYPE = "Beta" ]; then
   if [ ! -f $KREVF ]; then
@@ -165,7 +165,7 @@ if [ $RELEASETYPE = "Beta" ]; then
   REVSUM=$((1+REVN))
   export REV=$REVSUM
   echo $REV > $KREVF
-  export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
+  export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
 fi
 echo -e "$THEME$BLD   Zip Name: $WHITE$ZIPNAME"
 if [ "$1" != "--no-spam" ]; then
