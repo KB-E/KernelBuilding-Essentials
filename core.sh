@@ -201,13 +201,21 @@ function kbe() {
           DEFCONFIG=${!def}
           VARIANT=${!var}
           log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
+          # Before start building, save the current folder path
+          CURF=$(pwd)
           buildkernel
+          # buildkernel process is done, head back to the previous path
+          cd $CURF; unset CURF
         done
       else
         VARIANT=$VARIANT1
         DEFCONFIG=$DEFCONFIG1
         log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
+        # Before start building, save the current folder path
+        CURF=$(pwd)
         buildkernel
+        # buildkernel process is done, head back to the previous path
+        cd $CURF; unset CURF
       fi
     fi
   done
@@ -245,7 +253,11 @@ function kbe() {
       if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$a" ] && [ "$RD" = "1" ]; then
         EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
         log -t "Executing '$(grep MODULE_NAME ${!path} | cut -d '=' -f2)' Module..." $KBELOG
+        # Before executing a module, save the current path
+        CURF=$(pwd)
         $EXEC
+        # Head back to the saved path
+        cd $CURF; unset CURF
       fi
     done
   done
