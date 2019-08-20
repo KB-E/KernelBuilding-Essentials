@@ -69,6 +69,7 @@ function kbe() {
       echo -e "$THEME$BLD - Usage:$WHITE kbe start $THEME$BLD(Starts KB-E Config process)$WHITE"
       echo -e "              start <kernelname> $THEME$BLD(Starts KB-E Config from a saved device file)$WHITE"
       echo -e "              clean $THEME$BLD(Wipes KB-E environment, except kernel sources)$WHITE"
+      echo -e "              update <setting> <newvalue> $THEME$BLD(Update a specific setting of the current kernel)$WHITE"
       echo " "
       echo -e "              --kernel or -k $THEME$BLD(Builds the kernel)$WHITE"
       echo -e "              --dtb or -dt $THEME$BLD(Builds device tree image)$WHITE"
@@ -142,6 +143,7 @@ function kbe() {
       if [ "$2".data = "$(basename $i)" ]; then
         echo -e "   $THEME$BLD$(basename $i)$WHITE found in devices/ folder$RATT"
         source $i
+        export KFILE=$i
         RD=1
         NORS=1
       fi
@@ -184,6 +186,25 @@ function kbe() {
       unset RD
     fi
     log -f kbe $KBELOG
+  fi
+
+  if [ "$1" = "update" ]; then
+    if [ -z "$KERNELNAME" ]; then
+      return 1
+    fi
+    if [ "$2" = "" ]; then
+      echo " "
+      echo "KB-E Update usage: kbe update <setting> <newvalue>"
+      echo " "
+      echo "Settings: - targetandroid (whatever)"
+      echo "          - version (only numbers preferred)"
+      echo "          - releasetype ( Beta | Stable )"
+      echo "          - arch ( arm | arm64 )"
+      echo "          - defconfig (Select from list if no newvalue)"
+      echo " "
+    else
+      updatedevice $2 $3
+    fi
   fi
 
   # First of all, the program buildkernel and makedtb
