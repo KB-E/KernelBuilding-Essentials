@@ -76,6 +76,8 @@ else
   echo -e "$RATT"
   return 1
 fi
+# Read version
+readfromdevice version
 # Tittle
 if [ "$1" != "--no-spam" ]; then
 echo -ne "$THEME$BLD"
