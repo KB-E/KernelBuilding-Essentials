@@ -15,6 +15,18 @@ BACK=.
 }
 export -f back; log -f back $KBELOG
 
+# Copy the DTB Image to a specified path
+function cpdtb() {
+if [ "$1" = "" ]; then
+  echo "Usage: cpdtb <path> (Copy your DTB to a specified path)"
+  return 1
+fi
+if [ ! -d $1 ]; then echo -e "$RED$BLD   Invalid path$RATT"; return 1; fi
+cp $DTOUT/$VARIANT $1/dt.img
+echo -e "   DTB for $VARIANT copied to ($1) named 'dt.img'"
+}
+export -f cpdtb; log -f cpdtb $KBELOG
+
 # Copy the Kernel binary to a specified path
 function cpkernel() {
 if [ "$1" = "" ]; then
