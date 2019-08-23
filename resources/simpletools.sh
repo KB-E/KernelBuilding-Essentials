@@ -18,12 +18,19 @@ export -f back; log -f back $KBELOG
 # Copy the DTB Image to a specified path
 function cpdtb() {
 if [ "$1" = "" ]; then
-  echo "Usage: cpdtb <path> (Copy your DTB to a specified path)"
+  echo "Usage: cpdtb <path> <name> (Copy your DTB to a specified path)"
   return 1
 fi
 if [ ! -d $1 ]; then echo -e "$RED$BLD   Invalid path$RATT"; return 1; fi
-cp $DTOUT/$VARIANT $1/dt.img
-echo -e "   DTB for $VARIANT copied to ($1) named 'dt.img'"
+if [ -z "$2" ]; then
+  # Use default name
+  cp $DTOUT/$VARIANT $1/dt.img
+  echo -e "   DTB for $VARIANT copied to ($1) named 'dt.img'"
+else
+  # Use name provided by user
+  cp $DTOUT/$VARIANT $1/$2
+  echo -e "   DTB for $VARIANT copied to ($1) named '$2'"
+fi
 }
 export -f cpdtb; log -f cpdtb $KBELOG
 
