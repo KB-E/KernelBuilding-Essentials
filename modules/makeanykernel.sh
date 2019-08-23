@@ -180,12 +180,5 @@ zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $AKOUT/
 echo -e "$THEME$BLD Done!$RATT"
 echo -e "$THEME$BLD   --------------------------$WHITE"
-# Clean anykernelfiles Folder
-#rm $AKFOLDER/zImage &> /dev/null
-#rm $AKFOLDER/Image.gz-dtb &> /dev/null
-#rm $AKFOLDER/Image.gz &> /dev/null
-#rm $AKFOLDER/Image &> /dev/null
-rm $AKFOLDER/dtb &> /dev/null
-cd $CDF
 }
 export -f anykernel; log -f anykernel $KBELOG
