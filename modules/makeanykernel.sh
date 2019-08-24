@@ -47,39 +47,19 @@ if [ ! -d $AKFOLDER ]; then
 fi
 
 function anykernel() {
-# Check if we're building for 1 or more Variants
-checkvariants
-if [ "$MULTIVARIANT" = true ] && [ "$LOCKMA" != true ]; then
-  i=1
-  LOCKMA=true
-  while var=VARIANT$((i++)); [[ ${!var} ]]; do
-    def=DEFCONFIG$(($i-1)); [[ ${!def} ]];
-    DEFCONFIG=${!def}
-    VARIANT=${!var}
-    anykernel --no-spam
-  done
-unset LOCKMA
-return 1
-fi
-if [ "$MULTIVARIANT" = false ]; then
-  DEFCONFIG=$DEFCONFIG1
-  VARIANT=$VARIANT1
-fi
-
 # Cancel if theres no Kernel built
 if [ -f $KOUT/$VARIANT.gz-dtb ] || [ -f $KOUT/$VARIANT.gz ] || [ -f $KOUT/$VARIANT ]; then
   sleep 0.1
 else
   echo " "
   echo -e "$RED$BLD   There's no Kernel built for $VARIANT, aborting..."
-  echo -e "$WHITE   Did you built the Kernel?"
+  echo -e "$WHITE   Did you build the Kernel?"
   echo -e "$RATT"
   return 1
 fi
 # Read version
 readfromdevice version
 # Tittle
-if [ "$1" != "--no-spam" ]; then
 echo -ne "$THEME$BLD"
 echo -e "     _            _  __                 _ "
 echo -e "    /_\  _ _ _  _| |/ /___ _ _ _ _  ___| | "
@@ -91,21 +71,16 @@ echo -e "$THEME$BLD   --------------------------$WHITE"
 echo -e "$WHITE - AnyKernel Installer Building Script  $RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
 echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Date:$THEME$BLD $DATE$WHITE"
-else
-echo " "
-echo -e "$THEME$BLD   --------------------------$WHITE"
-echo -ne " - Building AnyKernel for $VARIANT... "
-fi
 
 # Setup MakeAnykernel
 checkfolders --silent
 # Check MakeAnykerel out folder
-if [ "$1" != "--no-spam" ]; then echo -ne "$WHITE   Checking MakeAnykernel folders..."; fi
+echo -ne "$WHITE   Checking MakeAnykernel folders..."
 sleep 0.5
 if [ ! -d $AKOUT ]; then
   mkdir $AKOUT
 fi
-if [ "$1" != "--no-spam" ]; then echo -ne "$THEME$BLD Done$RATT"; fi
+echo -ne "$THEME$BLD Done$RATT"
 
 # Check Zip Tool
 checkziptool
@@ -113,10 +88,10 @@ checkziptool
 if [ "$KBUILDFAILED" = "1" ]; then
   echo -e "$RED$BLD   Warning:$WHITE the previous kernel were not built successfully"
   read -p "Ignore this warning and continue? [Y/N]: " CAB           # KBUILDFAILED tell us if the lastest kernel
-  if [ "$CAB" = "y" ] || [ "$CAB" = "Y" ]; then                     # building failed, but, we still have the 
+  if [ "$CAB" = "y" ] || [ "$CAB" = "Y" ]; then                     # building failed, but, we still have the
     echo -e "$WHITE   Using last built Kernel for $VARIANT..."      # last successfully built kernel so this will
   else                                                              # ask the user if he wants to continue building
-    echo -e "$WHITE   Aborting..."                                  # the anykernel installer, if not, exit the 
+    echo -e "$WHITE   Aborting..."                                  # the anykernel installer, if not, exit the
     echo -e "$THEME$BLD   --------------------------$WHITE"         # module.
     cd $CDF
     return 1
@@ -141,15 +116,11 @@ do
     break
   fi
 done
-if [ "$1" != "--no-spam" ]; then
-  echo -e "$WHITE$BLD   Kernel Updated"
-fi
+echo -e "$WHITE$BLD   Kernel Updated"
 if [ -f $DTOUT/$VARIANT ]; then
   cp $DTOUT/$VARIANT $AKFOLDER/dtb
-  if [ "$1" != "--no-spam" ]; then
-    echo -e "$WHITE$BLD   DTB Updated"
-    echo -e "   Done"
-  fi
+  echo -e "$WHITE$BLD   DTB Updated"
+  echo -e "   Done"
 else
   echo -e "$RED$BLD   DTB not found for $VARIANT, skipping..."
 fi
@@ -170,11 +141,7 @@ if [ $RELEASETYPE = "Beta" ]; then
   export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
 fi
 echo -e "$THEME$BLD   Zip Name: $WHITE$ZIPNAME"
-if [ "$1" != "--no-spam" ]; then
-  echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
-else
-  echo -ne "$WHITE   Building Installer..."
-fi
+echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
 cd $AKFOLDER
 zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $AKOUT/
