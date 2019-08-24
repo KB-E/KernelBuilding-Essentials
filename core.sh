@@ -136,12 +136,6 @@ function kbe() {
     log -t "KB-E Version: $KBV" $KBELOG
     clear # Clear user UI for KB-E Summoning
     unset CWK
-    # Remove extra variants that might be exported
-    X=0
-    until [ $X = 21 ]; do
-      X=$((X + 1))
-      unset VARIANT$X
-    done
 
     # DisplayTitle >:D
     title
@@ -186,9 +180,6 @@ function kbe() {
       return 1
     fi
     echo " "
-
-    # Clear some filthy variables
-    unset bool; unset VV; unset VARIANT; unset DEFCONFIG; unset X
 
     # --------------------
     # Done, KB-E is ready!
@@ -245,61 +236,21 @@ function kbe() {
   # ones are top priority
   for g in $@; do
     if [ "$g" = "--kernel" ] || [ "$g" = "-k" ] && [ "$RD" = "1" ]; then
-      log -t "Checking variants..." $KBELOG
-      # Check if we have multiple variants
-      checkvariants
-      # If we have multiple variants, build kernel for each one
-      # else, just build the kernel for the sole variant we have
-      if [ "$MULTIVARIANT" = "true" ]; then
-        while
-          var=VARIANT$((i++))
-          [[ ${!var} ]]
-        do
-          def=DEFCONFIG$(($i - 1))
-          [[ ${!def} ]]
-          DEFCONFIG=${!def}
-          VARIANT=${!var}
-          log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
-          # Before start building, save the current folder path
-          CURF=$(pwd)
-          buildkernel
-          # buildkernel process is done, head back to the previous path
-          cd $CURF; unset CURF
-        done
-      else
-        VARIANT=$VARIANT1
-        DEFCONFIG=$DEFCONFIG1
-        log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
-        # Before start building, save the current folder path
-        CURF=$(pwd)
-        buildkernel
-        # buildkernel process is done, head back to the previous path
-        cd $CURF; unset CURF
-      fi
+      # User wants his kernel... If it builds...
+      log -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" $KBELOG
+      # Before start building, save the current folder path
+      CURF=$(pwd)
+      buildkernel
+      # buildkernel process is done, head back to the previous path
+      cd $CURF; unset CURF
     fi
   done
 
   for s in $@; do
     if [ "$s" = "--dtb" ] || [ "$s" = "-dt" ] && [ "$RD" = "1" ]; then
-      log -t "Checking variants..." $KBELOG
-      # Check if we have multiple variants
-      checkvariants
-      # If we have multiple variants, build DTB Image for each one
-      # else, just build the DTB Image for the sole variant we have
-      if [ "$MULTIVARIANT" = "true" ]; then
-        while
-          var=VARIANT$((i++))
-          [[ ${!var} ]]
-        do
-          VARIANT=${!var}
-          log -t "Building DTB for $VARIANT" $KBELOG
-          makedtb
-        done
-      else
-        VARIANT=$VARIANT1
-        log -t "Building DTB for $VARIANT" $KBELOG
-        makedtb
-      fi
+      # User wants dtb
+      log -t "Building DTB for $VARIANT" $KBELOG
+      makedtb
     fi
   done
 

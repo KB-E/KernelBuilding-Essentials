@@ -154,77 +154,26 @@ function getkconfig() {
   fi
 
   # Variant and Defconfig
-  storedata -t "# Variant and Defconfig" 
-  unset UDF
-  if [ -f $OTHERF/variants.sh ]; then
-    log -t "RunSettings: Lastest defined multi variants found" $KBELOG 
-    echo -ne "   Use lastest defined variants?$THEME$BLD [Y/N]:$WHITE "
-    read UDF
-    if [ "$UDF" = y ] || [ "$UDF" = Y ]; then
-      echo -e "   Using lastest defined variants..."; log -t "RunSettings: Using lastest defined multi variants" $KBELOG
-      bash $OTHERF/variants.sh
-      UDF=1
-    else
-      log -t "RunSettings: Skipping lastest defined multi variants" $KBELOG
+  storedata -t "# Variant and Defconfig"
+  until [ "$VARIANT" != "" ]; do
+    echo -ne "   Device Variant $THEME$BLD($WHITE Device Codename, e.g., 'bacon'$THEME$BLD ):$WHITE "
+    read VARIANT; export VARIANT; log -t "RunSettings: Variant: $VARIANT defined" $KBELOG
+    if [ "$VARIANT" = "" ]; then
+      echo " "
+      echo -e "$RED$BLD   Please write device variant (Device codename or device name)$WHITE"
+      echo " "
     fi
-  fi
-  if [ "$UDF" != "1" ]; then
-    until [ "$VARIANT1" != "" ]; do
-      echo -ne "   Device Variant $THEME$BLD($WHITE Device Codename, e.g., 'bacon'$THEME$BLD ):$WHITE "
-      read VARIANT1; export VARIANT1; log -t "RunSettings: Variant: $VARIANT1 defined" $KBELOG
-      if [ "$VARIANT1" = "" ]; then
-        echo " "
-        echo -e "$RED$BLD   Please write device variant (Device codename or device name)$WHITE"
-        echo " "
-      fi
-    done
-    storedata -v VARIANT1 $VARIANT1
-    echo -e "   Select a Defconfig $THEME$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
-    echo " "
-    cd $P/arch/$ARCH/configs/; log -t "RunSettings: Entered in $P/arch/$ARCH/configs" $KBELOG
-    select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-    cd $CDF
-    export DEFCONFIG1=$DEF; log -t "RunSettings: Defconfig: $DEFCONFIG1" $KBELOG
-    storedata -v DEFCONFIG1 $DEF
-    echo " "
-    echo -ne "   Add more Variants?$THEME$BLD [Y/N]:$WHITE "
-    read ADDMV
-    if [ "$ADDMV" = y ] || [ "$ADDMV" = Y ]; then
-      log -t "RunSettings: Adding more variants and defconfigs..." $KBELOG
-      X=1
-      if [ ! -f $VF ]; then
-        log -t "RunSettings: Creating variants file" $KBELOG
-        touch $VF
-        echo "export VARIANT$X=$VARIANT1" > $VF
-        echo "export DEFCONFIG$X=$DEF" >> $VF
-      else
-        log -t "RunSettings: Removing last variants file and creating it again" $KBELOG
-        rm $VF
-        touch $VF
-        echo "export VARIANT$X=$VARIANT1" > $VF
-        echo "export DEFCONFIG$X=$DEF" >> $VF
-      fi
-      bool=true
-      while [ "$bool" = true ]; do
-        X=$((X+1))
-        read -p "   Variant $X: " VV
-        if [ "$VV" = "" ]; then
-          export bool=false
-        else
-          export VARIANT$X=$VV; log -t "RunSettings: Exported additional Variant: $VV" $KBELOG
-          echo "export VARIANT$X=$VV" >> $VF
-          storedata -v VARIANT$X $VV
-          echo -e "   Choose a defconfig:"
-          cd $P/arch/$ARCH/configs/
-          select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED>>> Invalid Selection$WHITE"; echo " "; done
-          cd $CDF
-          export DEFCONFIG$X=$DEF; log -t "RunSettings: Exported additional Defconfig: $DEF" $KBELOG
-          echo "export DEFCONFIG$X=$DEF" >> $VF
-          storedata -v DEFCONFIG$X $DEF
-        fi
-      done
-    fi
-  fi
+  done
+  storedata -v VARIANT $VARIANT
+  echo -e "   Select a Defconfig $THEME$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
+  echo " "
+  cd $P/arch/$ARCH/configs/; log -t "RunSettings: Entered in $P/arch/$ARCH/configs" $KBELOG
+  select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
+  cd $CDF
+  export DEFCONFIG=$DEF; log -t "RunSettings: Defconfig: $DEFCONFIG" $KBELOG
+  storedata -v DEFCONFIG $DEF
+  echo " "
+
   # Clear source on each build?
   echo -ne "   Clear Source on every Build?$THEME$BLD [Y/N]:$WHITE "
   read CLRS

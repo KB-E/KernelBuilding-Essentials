@@ -67,18 +67,6 @@ function checksource() {
   done
 }
 
-function checkvariants() {
-  log -t "CheckVariants: Checking Multivariants..." $KBELOG
-  if [ -z "$VARIANT2" ]; then
-    # We have only one Variant to Build
-    MULTIVARIANT=false; log -t "CheckVariants: Config is set for a single variant" $KBELOG
-  else
-    # We have more than one Variant to Build
-    MULTIVARIANT=true; log -t "CheckVariants: Config is set for multiple variants" $KBELOG
-  fi
-}
-export -f checkvariants; log -f checkvariants $KBELOG
-
 # Help command
 function kbhelp() {
   log -t "kbehelp: Displaying help file to user" $KBELOG
@@ -150,8 +138,8 @@ function readfromdevice() {
      "crosscompile") export CROSSCOMPILE=$(grep CROSSCOMPILE $KFILE | cut -d '=' -f2) ;;
             "kpath") export P=$(grep P $KFILE | cut -d '=' -f2) ;;
            "kdebug") export KDEBUG=$(grep KDEBUG $KFILE | cut -d '=' -f2) ;;
-          "variant") export VARIANT1=$(grep VARIANT $KFILE | cut -d '=' -f2) ;;
-        "defconfig") export DEFCONFIG1=$(grep DEFCONFIG1 $KFILE | cut -d '=' -f2) ;;
+          "variant") export VARIANT=$(grep VARIANT $KFILE | cut -d '=' -f2) ;;
+        "defconfig") export DEFCONFIG=$(grep DEFCONFIG $KFILE | cut -d '=' -f2) ;;
   esac
 }
 function updatedevice() {
@@ -222,14 +210,14 @@ function updatedevice() {
                        echo "KB-E: Update: Select a defconfig:";
                        cd $P/arch/$ARCH/configs/;
                        select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-                       sed -i "s/export DEFCONFIG1=$DEFCONFIG1/export DEFCONFIG1=$DEF/g" $KFILE;
-                       export DEFCONFIG1=$DEF; unset DEF;
-                       cd $CURF; unset CURF; echo "KB-E: Update: defconfig updated to '$DEFCONFIG1'";
+                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$DEF/g" $KFILE;
+                       export DEFCONFIG=$DEF; unset DEF;
+                       cd $CURF; unset CURF; echo "KB-E: Update: defconfig updated to '$DEFCONFIG'";
                        return 1;
                      fi
                      if [ -f $P/arch/$ARCH/configs/"$2" ]; then
-                       sed -i "s/export DEFCONFIG1=$DEFCONFIG1/export DEFCONFIG1=$2/g" $KFILE;
-                       export DEFCONFIG1=$2;
+                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$2/g" $KFILE;
+                       export DEFCONFIG=$2;
                        echo "KB-E: Update: defconfig updated to '$2'"; return 1;
                      else
                        echo "KB-E: Update: supplied defconfig file name doesn't exist in kernel source";
