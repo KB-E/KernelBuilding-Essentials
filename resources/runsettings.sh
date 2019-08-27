@@ -256,6 +256,8 @@ if [ $CLRS = 1 ]; then
   storedata -v CLR 1
 fi
 cat $MLIST >> $DFPATH
+KDPATH=$CDF/devices/$VARIANT/$KERNELNAME/                 # Build Kernel Directory path
+KFPATH=$CDF/devices/$VARIANT/$KERNELNAME/$KERNELNAME.data # Build Kernel File path
 
 # Create an out folder for this device kernelname folder
 if [ ! -f $DPATH/$VARIANT/$KERNELNAME/out ]; then
