@@ -109,26 +109,6 @@ esac
 source $CDF/resources/other/colors.sh
 }
 
-function backupdef () {
-if [ ! -d $CDF/backup ]; then
-  mkdir $CDF/backup
-fi
-if [ ! -d $CDF/backup/$KERNELNAME ]; then
-  mkdir $CDF/backup/$KERNELNAME
-fi
-cp $P/arch/$ARCH/configs/$DEFCONFIG $CDF/backup/$KERNELNAME/$DEFCONFIG
-echo "BackupDef: Done, located at $CDF/backup/$KERNELNAME/$DEFCONFIG"
-}
-
-function restoredef () {
-if [ ! -f $CDF/backup/$KERNELNAME/$DEFCONFIG ]; then
-  echo "RestoreDef: Error, no defconfig backup found for $KERNELNAME"
-else
-  cp $CDF/backup/$KERNELNAME/$DEFCONFIG $P/arch/$ARCH/configs/$DEFCONFIG
-  echo "RestoreDef: Done, restored $KERNELNAME defconfig"
-fi
-}
-
 function cdkbe () {
 cd $CDF
 }
