@@ -188,9 +188,9 @@ function updatedevice() {
                        echo "KB-E: Update: arch type updated to '$2'";
                        if [ "$2" = "arm" ]; then
                          readfromdevice crosscompile;
-                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-+g" $KFPATH;
+                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi-+g" $KFPATH;
                          echo "KB-E: Update: crosscompile updated to arm to match arch type";
-                         export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-
+                         export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi-
                        elif [ "$2" = "arm64" ]; then
                          readfromdevice crosscompile;
                          sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $KFPATH;

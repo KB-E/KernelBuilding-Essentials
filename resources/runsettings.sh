@@ -84,13 +84,13 @@ function getarch() {
 function getcc() {
   # This will export the correspondent CrossCompiler for the ARCH Type
   if [ "$ARCH" = "arm" ]; then
-    CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
+    CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi- # arm CrossCompiler
     log -t "RunSettings: Exported CROSSCOMPILE to $CROSSCOMPILE" $KBELOG
     # Check
     if [ ! -f "$CROSSCOMPILE"gcc ]; then
       log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-      echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD (22.35MB, 'Ctrl + C' to Cancel)..."
-      git clone https://github.com/KB-E/gcc-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+      echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
+      git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null
       echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
     fi
   elif [ "$ARCH" = "arm64" ]; then
@@ -99,8 +99,8 @@ function getcc() {
     # Check 
     if [ ! -f "$CROSSCOMPILE"gcc ]; then
       log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-      echo -ne "$WHITE   Downloading the$THEME$BLD ARM64$WHITE CrossCompiler$THEME$BLD (144.20MB, 'Ctrl + C' to Cancel)..."
-      git clone https://github.com/KB-E/linaro-$ARCH $CDF/resources/crosscompiler/$ARCH/ &> /dev/null
+      echo -ne "$WHITE   Downloading the$THEME$BLD ARM64$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
+      git clone https://github.com/KB-E/aarch64-linux-android-4.9 $CDF/resources/crosscompiler/arm64/ &> /dev/null
       echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
     fi
   fi
