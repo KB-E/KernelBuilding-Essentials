@@ -45,6 +45,7 @@ function buildkernel() {
   export SUB_ARCH=$ARCH;
   #echo -e "$WHITE   Exported $ARCH"  # If the program succeed at this step, this means
   export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
+  export CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
   log -t "BuildKernel: Exported CROSS_COMPILE=$CROSSCOMPILE" $KBELOG
   #echo -e "   Exported $CROSSCOMPILE"
 

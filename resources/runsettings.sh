@@ -103,6 +103,13 @@ function getcc() {
       git clone https://github.com/KB-E/aarch64-linux-android-4.9 $CDF/resources/crosscompiler/arm64/ &> /dev/null
       echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
     fi
+    # Also, some arm64 kernels needs arm crosscompiler too
+    if [ ! -f "$CROSSCOMPILE"gcc ]; then
+      log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
+      echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
+      git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null
+      echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
+    fi
   fi
 };
 
@@ -233,6 +240,10 @@ storedata -t "# Arch Type"
 storedata -v ARCH $ARCH
 storedata -t "# CrossCompiler"
 storedata -v CROSSCOMPILE $CROSSCOMPILE
+if [ "$ARCH" = arm64 ]; then
+  CROSS_COMPILE_ARM32=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi- # arm CrossCompiler
+  storedata -v CROSS_COMPILE_ARM32 $CROSS_COMPILE_ARM32
+fi
 storedata -t "# Kernel Config"
 storedata -v P $P
 if [ $KDEBUG = 1 ]; then
