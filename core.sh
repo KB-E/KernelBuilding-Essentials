@@ -106,6 +106,22 @@ function kbe() {
     fi
   fi
 
+  if [ "$1" = "status" ] && [ ! -z "$VARIANT" ]; then
+    echo " "
+    echo -e "$THEME$BLD   --------------------------------------------"
+    echo -e "$THEME$BLD - Currently working on device:$WHITE $VARIANT"
+    echo -e "$THEME$BLD   Kernel name:$WHITE $KERNELNAME"
+    echo -e "$THEME$BLD   Target Android:$WHITE $TARGETANDROID"
+    echo -e "$THEME$BLD   Version:$WHITE $VERSION"
+    echo -e "$THEME$BLD   Release Type:$WHITE $RELEASETYPE"
+    echo -e "$THEME$BLD   --------------------------------------------"
+    echo -e "$THEME$BLD   Arch Type:$WHITE $ARCH"
+    echo -e "$THEME$BLD   --------------------------------------------"
+    echo " "
+    echo -e "$WHITE - To update these values run 'kbe update' for more information$RATT"
+    echo " "
+  fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------
