@@ -21,7 +21,7 @@ checksource;           # Check if theres a Kernel source to work with
 if [ "$CWK" = "n" ]; then return 1; fi
 
 #-------------------------
-# Script Functions 
+# Script Functions
 #-------------------------
 
 # Save data
@@ -30,11 +30,14 @@ function storedata () {
     "-t") echo "$2" >> $DFPATH ;;
     "-v") echo "export $2=$3" >> $DFPATH ;;
     "-n") echo "# Configuration file for $KERNELNAME" > $DFPATH ;;
-    "-d") if [ ! -d $DPATH/$KERNELNAME ]; then
-            mkdir $DPATH/$KERNELNAME;
+    "-d") if [ ! -d $DPATH/$VARIANT ]; then
+            mkdir $DPATH/$VARIANT
+          fi
+          if [ ! -d $DPATH/$VARIANT/$KERNELNAME ]; then
+            mkdir $DPATH/$VARIANT/$KERNELNAME;
           fi;
-          if [ ! -f $DPATH/$KERNELNAME/$KERNELNAME.data ]; then
-            touch $DPATH/$KERNELNAME/$KERNELNAME.data;
+          if [ ! -f $DPATH/$VARIANT/$KERNELNAME/$KERNELNAME.data ]; then
+            touch $DPATH/$VARIANT/$KERNELNAME/$KERNELNAME.data;
           fi ;;
   esac
 }
@@ -48,24 +51,15 @@ function promptdata() {
   echo -e "$WHITE  -------------------------"
   echo " "
   read -p "   Kernel Name: " KERNELNAME; export KERNELNAME; log -t "RunSettings: Kernel name: $KERNELNAME" $KBELOG; if [ "$KERNELNAME" = "" ]; then ERR=1; return 1; fi
-  storedata -d
-  export DFPATH=$DPATH/$KERNELNAME/$KERNELNAME.data
-  storedata -n
-  storedata -t "# User Data"
-  storedata -v KERNELNAME $KERNELNAME
   read -p "   Target Android OS: " TARGETANDROID; export TARGETANDROID; log -t "RunSettings: Target OS: $TARGETANDROID" $KBELOG;  if [ "$TARGETANDROID" = "" ]; then ERR=1; return 1; fi
-  storedata -v TARGETANDROID $TARGETANDROID
   read -p "   Version: " VERSION; export VERSION; log -t "RunSettings: Version: $VERSION" $KBELOG;  if [ "$VERSION" = "" ]; then ERR=1; return 1; fi
-  storedata -v VERSION $VERSION
   read -p "   Release Type ( 1 = Stable; 2 = Beta ): " RELEASETYPE; if [ "$RELEASETYPE" = "" ]; then ERR=1; return 1; fi
   if [ "$RELEASETYPE" = "1" ]; then RELEASETYPE="Stable"; elif [ "$RELEASETYPE" = "2" ]; then RELEASETYPE="Beta"; fi; export RELEASETYPE
-  storedata -v RELEASETYPE $RELEASETYPE
   log -t "Runsettings: Release Type: $RELEASETYPE" $KBELOG
 };
 
 # Arch selection
 function getarch() {
-  storedata -t "# Arch Type"
   # Get the ARCH Type
   echo -e "$WHITE  -------------------------"
   echo -e "$THEME$BLD - ARCH Type Selection:"
@@ -81,14 +75,13 @@ function getarch() {
     fi
   done
   case $ARMT in
-       "1") export ARCH=arm; storedata -v ARCH arm; log -t "RunSettings: ARCH=arm" $KBELOG ;;
-       "2") export ARCH=arm64; storedata -v ARCH arm64; log -t "RunSettings: ARCH=arm64" $KBELOG ;;
-  esac 
+       "1") export ARCH=arm; log -t "RunSettings: ARCH=arm" $KBELOG ;;
+       "2") export ARCH=arm64; log -t "RunSettings: ARCH=arm64" $KBELOG ;;
+  esac
 };
 
 # Download CC Based on Arch
 function getcc() {
-  storedata -t "# CrossCompiler"
   # This will export the correspondent CrossCompiler for the ARCH Type
   if [ "$ARCH" = "arm" ]; then
     CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi- # arm CrossCompiler
@@ -111,12 +104,10 @@ function getcc() {
       echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
     fi
   fi
-  storedata -v CROSSCOMPILE $CROSSCOMPILE
 };
 
 # Kernel Config
 function getkconfig() {
-  storedata -t "# Kernel Config"
   unset ERR
   echo -e "$WHITE  -------------------------"
   echo -e "$THEME$BLD - Kernel Selection and Config:"
@@ -144,17 +135,14 @@ function getkconfig() {
   fi
   cd $CDF
   export P=$CDF/source/$d; log -t "RunSettings: Exported kernel source to $P" $KBELOG
-  storedata -v P $P
   echo " "
   echo -ne "   Debug Kernel Building?$THEME$BLD [Y/N]:$WHITE "
   read KDEBUG
   if [ $KDEBUG = y ] || [ $KDEBUG = Y ]; then
     export KDEBUG=1; log -t "RunSettings: Kernel debug enabled" $KBELOG
-    storedata -v KDEBUG 1
   fi
 
   # Variant and Defconfig
-  storedata -t "# Variant and Defconfig"
   until [ "$VARIANT" != "" ]; do
     echo -ne "   Device Variant $THEME$BLD($WHITE Device Codename, e.g., 'bacon'$THEME$BLD ):$WHITE "
     read VARIANT; export VARIANT; log -t "RunSettings: Variant: $VARIANT defined" $KBELOG
@@ -164,14 +152,12 @@ function getkconfig() {
       echo " "
     fi
   done
-  storedata -v VARIANT $VARIANT
   echo -e "   Select a Defconfig $THEME$BLD($WHITE Device Config File, e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
   echo " "
   cd $P/arch/$ARCH/configs/; log -t "RunSettings: Entered in $P/arch/$ARCH/configs" $KBELOG
   select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
   cd $CDF
   export DEFCONFIG=$DEF; log -t "RunSettings: Defconfig: $DEFCONFIG" $KBELOG
-  storedata -v DEFCONFIG $DEF
   echo " "
 
   # Clear source on each build?
@@ -180,13 +166,11 @@ function getkconfig() {
   if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
     log -t "RunSettings: Cleaning source on every build" $KBELOG
     export CLR=1
-    storedata -v CLR 1
   fi
 };
 
 # Modules function
 function getmodules() {
-  storedata -t "# Modules"
   log -t "RunSettings: Entering modules selection" $KBELOG
   echo -e "$WHITE  --------------------------"
   echo -e "$THEME$BLD   Modules selection:"
@@ -216,14 +200,12 @@ function getmodules() {
     read  EM
     if [ "$EM" = y ] || [ "$EM" = Y ]; then
       log -t "RunSettings: Module '$(grep MODULE_NAME $i | cut -d '=' -f2)' enabled" $KBELOG
-      echo "export MODULE$((k))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
-      echo "export MPATH$((x))=$i" >> $MLIST
-      storedata -t "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)"
-      storedata -t "export MPATH$((x++))=$i"
+      echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
+      echo "export MPATH$((x++))=$i" >> $MLIST
       log -t "RunSettings: Running '$(grep MODULE_NAME $i | cut -d '=' -f2)' module" $KBELOG
       source $i
-      # Execute module on device kernel file
-      storedata -t "source $i"
+      # Save the path to execute the module, needed by device kernelname file
+      echo "source $i" >> $MLIST
     fi
   done
   log -t "RunSettings: Exporting modules configuration" $KBELOG
@@ -238,8 +220,36 @@ getarch; echo " "
 getcc;
 getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
 getmodules;
-# After all its done, create an out folder for the configured kernel
-mkdir $DPATH/$KERNELNAME/out
+
+# After all its done, store all the data collected
+export DFPATH=$DPATH/$VARIANT/$KERNELNAME/$KERNELNAME.data
+storedata -d; storedata -n
+storedata -t "# User Data"
+storedata -v KERNELNAME $KERNELNAME
+storedata -v TARGETANDROID $TARGETANDROID
+storedata -v VERSION $VERSION
+storedata -v RELEASETYPE $RELEASETYPE
+storedata -t "# Arch Type"
+storedata -v ARCH $ARCH
+storedata -t "# CrossCompiler"
+storedata -v CROSSCOMPILE $CROSSCOMPILE
+storedata -t "# Kernel Config"
+storedata -v P $P
+if [ $KDEBUG = 1 ]; then
+  storedata -v KDEBUG 1
+fi
+storedata -t "# Variant and Defconfig"
+storedata -v VARIANT $VARIANT
+storedata -v DEFCONFIG $DEF
+if [ $CLRS = 1 ]; then
+  storedata -v CLR 1
+fi
+cat $MLIST >> $DFPATH
+
+# Create an out folder for this device kernelname folder
+if [ ! -f $DPATH/$VARIANT/$KERNELNAME/out ]; then
+  mkdir $DPATH/$VARIANT/$KERNELNAME/out
+fi
 
 # Config process done
 export RD=1

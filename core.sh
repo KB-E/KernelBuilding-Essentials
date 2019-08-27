@@ -153,14 +153,47 @@ function kbe() {
     source $CDF/resources/variables.sh
     log -t "LoadResources: Loading runsettings script" $KBELOG
     # Check for a stored device file specified by the user
-    for i in $CDF/devices/*/*.data; do
-      if [ "$2".data = "$(basename $i)" ]; then
-        echo -e "   $THEME$BLD$(basename $i)$WHITE found in devices/ folder$RATT"
-        source $i # Export the device settings to KB-E environment
-        export KFILE=$i # Export the path for the stored device file that
-                        # might be needed by other scripts/modules
-        RD=1 # Mark KB-E as ready
-        NORS=1 # Device found, don't run RS (runsettings.sh)
+    for c in $CDF/devices/*; do
+      if [ "$2" = "$(basename $c)" ]; then
+        DEVICE=$(basename $c)
+        echo -e "   $THEME$BLD$DEVICE$WHITE device found...!$RATT"
+        # Count directories in that device folder
+        DNUMBER=$(find $CDF/devices/"$DEVICE"/* -maxdepth 0 -type d -print| wc -l)
+        if [ "$DNUMBER" = "1" ]; then
+          DATAFOLDER=$(basename $CDF/devices/$DEVICE/*)
+          echo -e "$THEME$BLD   Info:$WHITE This device only contains one Kernel configured"
+          echo -e "   $THEME$BLD$DATAFOLDER$WHITE found and sourced$RATT"
+          # The name of the data folder is the "kernelname"
+          # and inside that folder theres another "kernelname.data"
+          KDPATH=$CDF/devices/$DEVICE/$DATAFOLDER/                 # Build Kernel Directory path
+          KFPATH=$CDF/devices/$DEVICE/$DATAFOLDER/$DATAFOLDER.data # Build Kernel File path
+        else
+          echo -e "$THEME$BLD   Info:$WHITE This device has more than one Kernel configured"
+          # If the user didn't specified the <kernelname> or is invalid, pick from list
+          if [ -z "$3" ] || [ ! -d $CDF/devices/$DEVICE/$3 ]; then
+            echo -e "   Please select one from the list"
+            # Remember last path position
+            CURF=$(pwd); cd $c
+            # Make the list
+            select kf in */; do test -n "$kf" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
+            DATAFOLDER=$(basename $kf)
+            # Head back
+            cd $CURF; unset CURF
+          # Else, if the <kernelname> provided by user exist, load it
+          elif [ -d $CDF/devices/$DEVICE/$3 ]; then
+            DATAFOLDER=$3
+          fi
+          echo -e "   $THEME$BLD$DATAFOLDER$WHITE sourced$RATT"
+          KDPATH=$CDF/devices/$DEVICE/$DATAFOLDER                  # Build Kernel Directory Path
+          KFPATH=$CDF/devices/$DEVICE/$DATAFOLDER/$DATAFOLDER.data # Build Kernel File path
+        fi
+        source $KFPATH # Source the device settings to KB-E environment
+        export KDPATH  # Export the path for the saved Kernel directory path
+        export KFPATH  # Export the path for the saved Kernel file path
+        RD=1           # Mark KB-E as ready
+        NORS=1         # Device found, don't run RS (runsettings.sh)
+        # Clear some variables
+        unset DATAFOLDER; unset DEVICE; unset DNUMBER; unset kf; unset c
       fi
     done
     if [ "$NORS" = "1" ]; then

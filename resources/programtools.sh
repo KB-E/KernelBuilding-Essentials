@@ -131,15 +131,15 @@ export -f checkziptool; log -f checkziptool $KBELOG
 function readfromdevice() {
   # Read and export the desired value from the device file
   case $1 in
-    "targetandroid") export TARGETANDROID=$(grep TARGETANDROID $KFILE | cut -d '=' -f2) ;;
-          "version") export VERSION=$(grep VERSION $KFILE | cut -d '=' -f2) ;;
-      "releasetype") export RELEASETYPE=$(grep RELEASETYPE $KFILE | cut -d '=' -f2) ;;
-             "arch") export ARCH=$(grep ARCH $KFILE | cut -d '=' -f2) ;;
-     "crosscompile") export CROSSCOMPILE=$(grep CROSSCOMPILE $KFILE | cut -d '=' -f2) ;;
-            "kpath") export P=$(grep P $KFILE | cut -d '=' -f2) ;;
-           "kdebug") export KDEBUG=$(grep KDEBUG $KFILE | cut -d '=' -f2) ;;
-          "variant") export VARIANT=$(grep VARIANT $KFILE | cut -d '=' -f2) ;;
-        "defconfig") export DEFCONFIG=$(grep DEFCONFIG $KFILE | cut -d '=' -f2) ;;
+    "targetandroid") export TARGETANDROID=$(grep TARGETANDROID $KFPATH | cut -d '=' -f2) ;;
+          "version") export VERSION=$(grep VERSION $KFPATH | cut -d '=' -f2) ;;
+      "releasetype") export RELEASETYPE=$(grep RELEASETYPE $KFPATH | cut -d '=' -f2) ;;
+             "arch") export ARCH=$(grep ARCH $KFPATH | cut -d '=' -f2) ;;
+     "crosscompile") export CROSSCOMPILE=$(grep CROSSCOMPILE $KFPATH | cut -d '=' -f2) ;;
+            "kpath") export P=$(grep P $KFPATH | cut -d '=' -f2) ;;
+           "kdebug") export KDEBUG=$(grep KDEBUG $KFPATH | cut -d '=' -f2) ;;
+          "variant") export VARIANT=$(grep VARIANT $KFPATH | cut -d '=' -f2) ;;
+        "defconfig") export DEFCONFIG=$(grep DEFCONFIG $KFPATH | cut -d '=' -f2) ;;
   esac
 }
 function updatedevice() {
@@ -148,14 +148,14 @@ function updatedevice() {
                      # Update targetandroid in devicefile
     "targetandroid") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for targetandroid"; return 1; fi
                      readfromdevice targetandroid;
-                     sed -i "s/export TARGETANDROID=$TARGETANDROID/export TARGETANDROID=$2/g" $KFILE;
+                     sed -i "s/export TARGETANDROID=$TARGETANDROID/export TARGETANDROID=$2/g" $KFPATH;
                      export TARGETANDROID=$2;
                      echo "KB-E: Update: targetandroid updated to '$2'"; return 1 ;;
                      # Update version in devicefile
 
           "version") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for version"; return 1; fi
                      readfromdevice version;
-                     sed -i "s/export VERSION=$VERSION/export VERSION=$2/g" $KFILE;
+                     sed -i "s/export VERSION=$VERSION/export VERSION=$2/g" $KFPATH;
                      export VERSION=$2;
                      echo "KB-E: Update: version updated to '$2'"; return 1 ;;
 
@@ -163,7 +163,7 @@ function updatedevice() {
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for releasetype"; return 1; fi
                      if [ "$2" = "Stable" ] || [ "$2" = "Beta" ]; then
                        readfromdevice releasetype
-                       sed -i "s/export RELEASETYPE=$RELEASETYPE/export RELEASETYPE=$2/g" $KFILE;
+                       sed -i "s/export RELEASETYPE=$RELEASETYPE/export RELEASETYPE=$2/g" $KFPATH;
                        export RELEASETYPE=$2;
                        echo "KB-E: Update: releasetype updated to '$2'"; return 1;
                      else
@@ -183,17 +183,17 @@ function updatedevice() {
                          echo "KB-E: Update: error, you are trying to switch to 'arm64' but your source doesnt support it";
                          return 1
                        fi
-                       sed -i "s/export ARCH=$ARCH/export ARCH=$2/" $KFILE;
+                       sed -i "s/export ARCH=$ARCH/export ARCH=$2/" $KFPATH;
                        export ARCH=$2;
                        echo "KB-E: Update: arch type updated to '$2'";
                        if [ "$2" = "arm" ]; then
                          readfromdevice crosscompile;
-                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-+g" $KFILE;
+                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-+g" $KFPATH;
                          echo "KB-E: Update: crosscompile updated to arm to match arch type";
                          export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-eabi-
                        elif [ "$2" = "arm64" ]; then
                          readfromdevice crosscompile;
-                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $KFILE;
+                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $KFPATH;
                          echo "KB-E: Update: crosscompile updated to arm64 to match arch type";
                          export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
                        fi
@@ -210,13 +210,13 @@ function updatedevice() {
                        echo "KB-E: Update: Select a defconfig:";
                        cd $P/arch/$ARCH/configs/;
                        select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$DEF/g" $KFILE;
+                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$DEF/g" $KFPATH;
                        export DEFCONFIG=$DEF; unset DEF;
                        cd $CURF; unset CURF; echo "KB-E: Update: defconfig updated to '$DEFCONFIG'";
                        return 1;
                      fi
                      if [ -f $P/arch/$ARCH/configs/"$2" ]; then
-                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$2/g" $KFILE;
+                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$2/g" $KFPATH;
                        export DEFCONFIG=$2;
                        echo "KB-E: Update: defconfig updated to '$2'"; return 1;
                      else

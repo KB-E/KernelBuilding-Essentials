@@ -192,4 +192,4 @@ fi
 export -f buildkernel; log -f buildkernel $KBELOG
 export -f readlog; log -f readlog $KBELOG
 # Define kernel out path
-KOUT=$CDF/devices/$KERNELNAME/out/kernel
+KOUT=$KDPATH/out/kernel

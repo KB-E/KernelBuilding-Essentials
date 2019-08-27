@@ -78,4 +78,4 @@ function makedtb() {
 }
 export -f makedtb; log -f makedtb $KBELOG
 # Define dt out path
-DTOUT=$CDF/devices/$KERNELNAME/out/dt
+DTOUT=$KDPATH/out/dt

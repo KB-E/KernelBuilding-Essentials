@@ -14,8 +14,8 @@
 # ---------------------------
 
 # Path variable
-AKFOLDER=$DPATH/$KERNELNAME/anykernelfiles
-AKOUT=$DPATH/$KERNELNAME/out/anykernel
+AKFOLDER=$KDPATH/anykernelfiles
+AKOUT=$KDPATH/out/anykernel
 
 # If the anykernelfiles folder is missing for the current
 # kernel, prompt for its configuration
@@ -128,7 +128,7 @@ fi
 
 # Make the kernel installer zip
 export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
-KREVF=$CDF/devices/$KERNELNAME/$KERNELNAME.rev
+KREVF=$KDPATH/$KERNELNAME.rev
 if [ $RELEASETYPE = "Beta" ]; then
   if [ ! -f $KREVF ]; then
     touch $KREVF
