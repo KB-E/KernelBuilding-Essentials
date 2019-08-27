@@ -105,6 +105,9 @@ do
   if [ "$ARCH" = "arm" ]; then
     cp $KOUT/$VARIANT $AKFOLDER/zImage
     break
+  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.lz4 ]; then
+    cp $KOUT/$VARIANT.lz4 $AKFOLDER/Image.lz4
+    break
   elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.gz-dtb ]; then 
     cp $KOUT/$VARIANT.gz-dtb $AKFOLDER/Image.gz-dtb
     break

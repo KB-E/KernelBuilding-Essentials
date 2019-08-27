@@ -140,6 +140,10 @@ function buildkernel() {
       KFNAME="$VARIANT"
       cp $P/arch/arm/boot/zImage $KOUT/$KFNAME; log -t "BuildKernel: zImage found, copying to $ZI with name '$KFNAME'" $KBELOG
       break
+    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.lz4 ]; then
+      KFNAME="$VARIANT.lz4"
+      cp $P/arch/arm64/boot/Image.lz4 $KOUT/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
+      break
     elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then
       KFNAME="$VARIANT.gz-dtb"
       cp $P/arch/arm64/boot/Image.gz-dtb $KOUT/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
