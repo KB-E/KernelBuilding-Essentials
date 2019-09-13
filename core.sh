@@ -122,6 +122,21 @@ function kbe() {
     echo " "
   fi
 
+  # ---------------------------------
+  # Get latest updates from KB-E repo
+  # ---------------------------------
+  if [ "$1" = "update" ]; then
+    # git pull KB-E repo
+    echo " "; echo "KB-E: Getting latest changes from the repository"
+    git pull https://github.com/KB-E/KernelBuilding-Essentials
+    source $CDF/resources/other/colors.sh
+    echo -n "KB-E: Loading programtool.sh..."; source $CDF/resources/programtools.sh; echo " Done"
+    echo -n "KB-E: Patching ~/.bashrc ..."; kbepatch; echo " Done"
+    echo -n "KB-E: Reloading ~/.bashrc ..."; source ~/.bashrc; echo " Done"
+    echo -n "KB-E: Checking Dependencies..."; checktools; echo " Done"
+
+    echo " "; fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------
