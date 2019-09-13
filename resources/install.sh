@@ -10,20 +10,7 @@ log -t "Install: Starting a new first run config process..." $KBELOG
 echo -e "$THEME$BLD - Install: Starting new first run config process... $WHITE"
 
 # Load auto.sh function into .bashrc
-log -t "Install: Writting KB-E config to ~/.bashrc" $KBELOG
-echo " "
-echo -ne "$THEME$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
-sudo sed -i '/# Load KB-E Function and Path/d' ~/.bashrc
-sudo sed -i '/CDF=/d' ~/.bashrc
-sudo sed -i '/colors.sh/d' ~/.bashrc
-sudo sed -i '/core.sh/d' ~/.bashrc
-sudo sed -i '/log.sh/d' ~/.bashrc
-echo "# Load KB-E Function and Path" >> ~/.bashrc
-echo "CDF=$CDF" >> ~/.bashrc
-echo "source $CDF/resources/other/colors.sh" >> ~/.bashrc
-echo "source $CDF/resources/log.sh" >> ~/.bashrc
-echo "source $CDF/core.sh --kbe" >> ~/.bashrc
-echo -e " Done"
+kbepatch
 
 # Install necessary stuff
 log -t "Install: Running InstallTools..." $KBELOG
