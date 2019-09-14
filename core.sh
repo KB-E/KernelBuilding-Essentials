@@ -79,6 +79,7 @@ function kbe() {
       echo -e "              start <kernelname> $THEME$BLD(Starts KB-E Config from a saved device file)$WHITE"
       echo -e "              clean $THEME$BLD(Wipes KB-E environment, except kernel sources)$WHITE"
       echo -e "              update <setting> <newvalue> $THEME$BLD(Update a specific setting of the current kernel)$WHITE"
+      echo -e "              upgrade $THEME$BLD(Upgrade KB-E to the latest version/changes)"
       echo " "
       echo -e "              --kernel or -k $THEME$BLD(Builds the kernel)$WHITE"
       echo -e "              --dtb or -dt $THEME$BLD(Builds device tree image)$WHITE"
@@ -102,6 +103,7 @@ function kbe() {
       echo " - Usage: kbe start (Starts KB-E Config process)"
       echo "              start <kernelname> (Starts KB-E Config from a saved device file)"
       echo "              clean (Wipes KB-E environment, except kernel sources)"
+      echo "              upgrade (Upgrade KB-E to the latest version/changes)"
       echo " "
     fi
   fi
@@ -125,7 +127,7 @@ function kbe() {
   # ---------------------------------
   # Get latest updates from KB-E repo
   # ---------------------------------
-  if [ "$1" = "update" ]; then
+  if [ "$1" = "upgrade" ]; then
     # git pull KB-E repo
     echo " "; echo "KB-E: Getting latest changes from the repository"
     git pull https://github.com/KB-E/KernelBuilding-Essentials

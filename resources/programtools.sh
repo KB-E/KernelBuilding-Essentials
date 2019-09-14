@@ -243,13 +243,13 @@ function kbepatch() {
   sudo sed -i '/colors.sh/d' ~/.bashrc
   sudo sed -i '/core.sh/d' ~/.bashrc
   sudo sed -i '/log.sh/d' ~/.bashrc
-  sudo sed -i "/complete -W 'start update' kbe/d" ~/.bashrc
+  sudo sed -i "/complete -W 'start upgrade' kbe/d" ~/.bashrc
   echo "# Load KB-E Function and Path" >> ~/.bashrc
   echo "CDF=$CDF" >> ~/.bashrc
   echo "source $CDF/resources/other/colors.sh" >> ~/.bashrc
   echo "source $CDF/resources/log.sh" >> ~/.bashrc
   echo "source $CDF/core.sh --kbe" >> ~/.bashrc
-  echo "complete -W 'start update' kbe" >> ~/.bashrc
+  echo "complete -W 'start upgrade' kbe" >> ~/.bashrc
   echo -e " Done$RATT"
 }
 export -f kbepatch
