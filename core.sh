@@ -76,7 +76,7 @@ function kbe() {
     if [ "$RD" = "1" ]; then
       echo " "
       echo -e "$THEME$BLD - Usage:$WHITE kbe start $THEME$BLD(Starts KB-E Config process)$WHITE"
-      echo -e "              start <kernelname> $THEME$BLD(Starts KB-E Config from a saved device file)$WHITE"
+      echo -e "              start <device> $THEME$BLD(Starts KB-E Config from a saved device)$WHITE"
       echo -e "              clean $THEME$BLD(Wipes KB-E environment, except kernel sources)$WHITE"
       echo -e "              update <setting> <newvalue> $THEME$BLD(Update a specific setting of the current kernel)$WHITE"
       echo -e "              upgrade $THEME$BLD(Upgrade KB-E to the latest version/changes)"
