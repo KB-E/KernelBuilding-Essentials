@@ -226,7 +226,6 @@ promptdata; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
 getarch; echo " "
 getcc;
 getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
-getmodules;
 
 # After all its done, store all the data collected
 export DFPATH=$DPATH/$VARIANT/$KERNELNAME/$KERNELNAME.data
@@ -255,9 +254,10 @@ storedata -v DEFCONFIG $DEF
 if [ $CLRS = 1 ]; then
   storedata -v CLR 1
 fi
-cat $MLIST >> $DFPATH
 KDPATH=$CDF/devices/$VARIANT/$KERNELNAME/                 # Build Kernel Directory path
 KFPATH=$CDF/devices/$VARIANT/$KERNELNAME/$KERNELNAME.data # Build Kernel File path
+getmodules;
+cat $MLIST >> $DFPATH
 
 # Create an out folder for this device kernelname folder
 if [ ! -f $DPATH/$VARIANT/$KERNELNAME/out ]; then
