@@ -251,6 +251,8 @@ function kbe() {
     # Done, KB-E is ready!
     # --------------------
     if [ "$RD" = "1" ]; then
+     # Update kbe command completion
+      updatecompletion
       echo -e "$THEME$BLD - Kernel-Building Essentials it's ready!$RATT"
       log -t "KB-E is Ready for its use" $KBELOG
       echo " "

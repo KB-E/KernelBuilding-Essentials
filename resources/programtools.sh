@@ -253,3 +253,20 @@ function kbepatch() {
   echo -e " Done$RATT"
 }
 export -f kbepatch
+
+function updatecompletion() {
+  # Update the completion for kbe command
+  # Get all active modules
+  X=1; module=MODULE$X
+  unset moduleargs
+  while :; do
+    if [ -z "${!module}" ]; then
+      break
+    else
+      moduleargs="$moduleargs --${!module}"
+      ((X++))
+      module=MODULE$X
+    fi
+  done
+  complete -W "start clean update upgrade status help --kernel --dtb $moduleargs" kbe
+}
