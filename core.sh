@@ -4,6 +4,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 # KB-E Version
 KBV=4.0
+REV=00
 
 # Make sure this scripts only runs with bash,
 # for example: . core.sh or source core.sh
