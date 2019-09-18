@@ -133,6 +133,7 @@ function kbe() {
     echo " "; echo "KB-E: Getting latest changes from the repository"
     git pull https://github.com/KB-E/KernelBuilding-Essentials
     source $CDF/resources/other/colors.sh
+    echo -n "KB-E: Loading Updater Script..."; source $CDF/resources/updater.sh; echo " Done"
     echo -n "KB-E: Loading programtool.sh..."; source $CDF/resources/programtools.sh; echo " Done"
     echo -n "KB-E: Patching ~/.bashrc ..."; kbepatch; echo " Done"
     echo -n "KB-E: Reloading ~/.bashrc ..."; source ~/.bashrc; echo " Done"
