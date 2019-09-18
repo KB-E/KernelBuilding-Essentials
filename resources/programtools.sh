@@ -233,24 +233,42 @@ function updatedevice() {
   fi
 }
 
+function bashrcpatch() {
+  # Patch ~/.bashrc to load KB-E init file
+  if grep -q "# Load KB-E init file" ~/.bashrc; then
+    echo " "; echo -e "$THEME$BLD - ~/.bashrc is already patched..!$RATT"
+  else
+    log -t "Install: Patching ~/.bashrc" $KBELOG; echo " "
+    echo -ne "$THEME$BLD - Patching ~/.bashrc to load init file...$WHITE"
+    echo "# Load KB-E init file" >> ~/.bashrc
+    echo "source $CDF/resources/init/init.sh" >> ~/.bashrc
+    echo -e " Done$RATT"
+  fi
+}
+export -f bashrcpatch
+
 function kbepatch() {
-  # Load auto.sh function into .bashrc
-  log -t "Install: Writting KB-E config to ~/.bashrc" $KBELOG
-  echo " "
-  echo -ne "$THEME$BLD - Writting KB-E Config in ~/.bashrc...$WHITE"
-  sudo sed -i '/# Load KB-E Function and Path/d' ~/.bashrc
-  sudo sed -i '/CDF=/d' ~/.bashrc
-  sudo sed -i '/colors.sh/d' ~/.bashrc
-  sudo sed -i '/core.sh/d' ~/.bashrc
-  sudo sed -i '/log.sh/d' ~/.bashrc
-  sudo sed -i "/complete -W 'start upgrade' kbe/d" ~/.bashrc
-  echo "# Load KB-E Function and Path" >> ~/.bashrc
-  echo "CDF=$CDF" >> ~/.bashrc
-  echo "source $CDF/resources/other/colors.sh" >> ~/.bashrc
-  echo "source $CDF/resources/log.sh" >> ~/.bashrc
-  echo "source $CDF/core.sh --kbe" >> ~/.bashrc
-  echo "complete -W 'start upgrade' kbe" >> ~/.bashrc
-  echo -e " Done$RATT"
+  # Create a init file for KB-E
+  INITPATH=$CDF/resources/init/init.sh
+  if [ ! -f $INITPATH ]; then
+    touch $INITPATH
+  fi
+  echo "#!/bin/bash" > $INITPATH
+  echo "" >> $INITPATH
+  echo "# KB-E init script" >> $INITPATH
+  echo "# This is automatically generated, do not edit" >> $INITPATH
+  echo "" >> $INITPATH
+  echo "# Load KB-E Function and Path" >> $INITPATH
+  echo "CDF=$CDF" >> $INITPATH
+  echo "source $CDF/resources/other/colors.sh" >> $INITPATH
+  echo "source $CDF/resources/log.sh" >> $INITPATH
+  echo "source $CDF/core.sh --kbe" >> $INITPATH
+  echo "complete -W 'start upgrade' kbe" >> $INITPATH
+  echo "" >> $INITPATH
+  echo "# Load configurable init script" >> $INITPATH
+  echo "if [ -f $CDF/resources/init/kbeinit.sh ]; then" >> $INITPATH
+  echo "  source $CDF/resources/init/kbeinit.sh" >> $INITPATH
+  echo "fi" >> $INITPATH
 }
 export -f kbepatch
 

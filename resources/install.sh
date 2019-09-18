@@ -9,7 +9,9 @@ echo " "
 log -t "Install: Starting a new first run config process..." $KBELOG
 echo -e "$THEME$BLD - Install: Starting new first run config process... $WHITE"
 
-# Load auto.sh function into .bashrc
+# Patch ~/.bashrc
+bashrcpatch
+# Generate KB-E init file
 kbepatch
 
 # Install necessary stuff

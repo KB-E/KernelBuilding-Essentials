@@ -3,7 +3,7 @@
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 # KB-E Version
-KBV=4.0
+KBV=4.1
 REV=00
 
 # Make sure this scripts only runs with bash,
@@ -129,17 +129,25 @@ function kbe() {
   # Get latest updates from KB-E repo
   # ---------------------------------
   if [ "$1" = "upgrade" ]; then
-    # git pull KB-E repo
-    echo " "; echo "KB-E: Getting latest changes from the repository"
-    git pull https://github.com/KB-E/KernelBuilding-Essentials
-    source $CDF/resources/other/colors.sh
-    echo -n "KB-E: Loading Updater Script..."; source $CDF/resources/updater.sh; echo " Done"
-    echo -n "KB-E: Loading programtool.sh..."; source $CDF/resources/programtools.sh; echo " Done"
-    echo -n "KB-E: Patching ~/.bashrc ..."; kbepatch; echo " Done"
-    echo -n "KB-E: Reloading ~/.bashrc ..."; source ~/.bashrc; echo " Done"
-    echo -n "KB-E: Checking Dependencies..."; checktools; echo " Done"
-
-    echo " "; fi
+    if [ -f core.sh ]; then
+      CDF=$(pwd)
+      # git pull KB-E repo
+      echo " "; echo "KB-E: Getting latest changes from the repository"
+      git pull https://github.com/KB-E/KernelBuilding-Essentials
+      source $CDF/resources/other/colors.sh
+      export KBELOG=$CDF/resources/logs/kbessentials.log; source $CDF/resources/log.sh
+      echo -n "KB-E: Loading Updater Script..."; source $CDF/resources/updates.sh; echo " Done"
+      echo -n "KB-E: Loading programtool.sh..."; source $CDF/resources/programtools.sh; echo " Done"
+      echo -n "KB-E: Generating new init file..."; kbepatch; echo " Done"
+      echo -n "KB-E: Patching ~/.bashrc ..."; bashrcpatch; echo " Done"
+      echo -n "KB-E: Reloading ~/.bashrc ..."; source ~/.bashrc; echo " Done"
+      echo -n "KB-E: Checking Dependencies..."; checktools; echo " Done"
+      echo " "
+    else
+      echo " "; echo "KB-E: Error, you must run this command inside kb-e folder"
+      echo "KB-E: run 'cdkbe' and try again"; echo " "
+    fi
+  fi
 
   # ----------------------------
   # Start a new KB-E Session...!
