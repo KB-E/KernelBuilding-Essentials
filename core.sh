@@ -177,7 +177,7 @@ function kbe() {
     # -------
     log -t "KB-E Version: $KBV" $KBELOG
     clear # Clear user UI for KB-E Summoning
-    unset CWK
+    unset CWK; unset CLRS
 
     # DisplayTitle >:D
     title
