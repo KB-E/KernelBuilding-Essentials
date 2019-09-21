@@ -83,7 +83,6 @@ function kbe() {
       echo -e "              upgrade $THEME$BLD(Upgrade KB-E to the latest version/changes)"
       echo " "
       echo -e "              --kernel or -k $THEME$BLD(Builds the kernel)$WHITE"
-      echo -e "              --dtb or -dt $THEME$BLD(Builds device tree image)$WHITE"
       i=1
       while
         var=MODULE$((i++))
@@ -321,14 +320,11 @@ function kbe() {
       buildkernel
       # buildkernel process is done, head back to the previous path
       cd $CURF; unset CURF
-    fi
-  done
-
-  for s in $@; do
-    if [ "$s" = "--dtb" ] || [ "$s" = "-dt" ] && [ "$RD" = "1" ]; then
-      # User wants dtb
-      log -t "Building DTB for $VARIANT" $KBELOG
-      makedtb
+      if [ "$BDTB" = "1" ]; then
+        # User wants dtb
+        log -t "Building DTB for $VARIANT" $KBELOG
+        makedtb
+      fi
     fi
   done
 
