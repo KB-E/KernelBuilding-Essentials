@@ -13,7 +13,7 @@ fi
 # Clear Variables (Just in case)
 log -t "RunSettings: Clearing variables" $KBELOG
 unset KERNELNAME; unset TARGETANDROID; unset VERSION; unset VARIANT;
-unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH;
+unset BLDTYPE; unset P; unset; unset CLR; unset ARMT; unset ARCH; unset BDTB;
 unset BTYPE; unset AKBO; unset KDEBUG; unset RD; unset RELEASETYPE;
 
 checkfolders --silent  # Check environment folders silently
@@ -174,6 +174,16 @@ function getkconfig() {
     log -t "RunSettings: Cleaning source on every build" $KBELOG
     export CLR=1
   fi
+
+  # Build DTB Manually?
+  echo -ne "   Build DTB manually? [Y/N]:$WHITE "
+  read BDTB
+  if [ "$BDTB" = "y" ] || [ "$BDTB" = "Y" ]; then
+    log -t "RunSettings: Building DTB Manually" $KBELOG
+    export BDTB=1
+  else
+    export BDTB=0
+  fi
 };
 
 # Modules function
@@ -254,6 +264,7 @@ storedata -v DEFCONFIG $DEF
 if [ $CLRS = 1 ]; then
   storedata -v CLR 1
 fi
+storedata -v BDTB $BDTB
 KDPATH=$CDF/devices/$VARIANT/$KERNELNAME/                 # Build Kernel Directory path
 KFPATH=$CDF/devices/$VARIANT/$KERNELNAME/$KERNELNAME.data # Build Kernel File path
 getmodules;
