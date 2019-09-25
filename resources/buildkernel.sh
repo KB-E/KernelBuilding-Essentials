@@ -216,7 +216,7 @@ function selectimage() {
   # available kernel images
   for i in ${kernel_images[@]}
   do
-    if [ -f $P/arch/$ARCH/boot/"$i" ]; then
+    if [ -f $KOUT/"$i" ]; then
       built_images+=("$i")
     fi
   done
