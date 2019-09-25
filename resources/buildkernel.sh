@@ -133,32 +133,17 @@ function buildkernel() {
     return 1
   fi
 
-  # Move the Kernel to out/Images
-  while true
-  do
-    if [ $ARCH = arm ]; then
-      KFNAME="$VARIANT"
-      cp $P/arch/arm/boot/zImage $KOUT/$KFNAME; log -t "BuildKernel: zImage found, copying to $ZI with name '$KFNAME'" $KBELOG
-      break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.lz4 ]; then
-      KFNAME="$VARIANT.lz4"
-      cp $P/arch/arm64/boot/Image.lz4 $KOUT/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
-      break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz-dtb ]; then
-      KFNAME="$VARIANT.gz-dtb"
-      cp $P/arch/arm64/boot/Image.gz-dtb $KOUT/$KFNAME; log -t "BuildKernel: Image.gz-dtb found, copying to $ZI with name '$KFNAME'" $KBELOG
-      break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image.gz ]; then
-      KFNAME="$VARIANT.gz"
-      cp $P/arch/arm64/boot/Image $KOUT/$KFNAME; log -t "BuildKernel: Image.gz found, copying to $ZI with name '$KFNAME'" $KBELOG
-      break
-    elif [ $ARCH = arm64 ] && [ -f $P/arch/arm64/boot/Image ]; then
-      KFNAME="$VARIANT"
-      cp $P/arch/arm64/boot/Image $KOUT/$KFNAME; log -t "BuildKernel: Image found, copying to $ZI with name '$KFNAME'" $KBELOG
-      break
+  # Clean device out folder
+  rm -rf $KOUT/*
+  # Declare array with all possible Kernel Images
+  kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
+  # Move the Kernel Images to the device out folder
+  for i in "${kernel_images[@]}"; do
+    if [ -f $P/arch/$ARCH/boot/$i ]; then
+      cp $P/arch/$ARCH/boot/$i $KOUT/; log -t "BuildKernel: Kernel Image '$i' found" $KBELOG
     fi
   done
-  echo -e "$THEME$BLD   New Kernel ($KFNAME) Copied to$WHITE '$KOUT'"
+  echo -e "$THEME$BLD   Kernel Images copied to$WHITE '$KOUT'"
   echo " "
   echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
