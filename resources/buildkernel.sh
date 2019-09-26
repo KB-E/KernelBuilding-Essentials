@@ -220,7 +220,6 @@ function selectimage() {
       built_images+=("$i")
     fi
   done
-  echo "${built_images[@]}"
   # Now for each image available check if it exist, those images
   # that exist will be marked as true
   for i in "${built_images[@]}"
