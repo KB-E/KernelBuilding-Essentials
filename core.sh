@@ -3,8 +3,8 @@
 # Main Script
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 # KB-E Version
-KBV=4.1
-REV=10
+KBV=4.2
+REV=15
 
 # Make sure this scripts only runs with bash,
 # for example: . core.sh or source core.sh
