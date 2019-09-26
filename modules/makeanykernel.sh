@@ -47,16 +47,6 @@ if [ ! -d $AKFOLDER ]; then
 fi
 
 function anykernel() {
-# Cancel if theres no Kernel built
-if [ -f $KOUT/$VARIANT.gz-dtb ] || [ -f $KOUT/$VARIANT.gz ] || [ -f $KOUT/$VARIANT ]; then
-  sleep 0.1
-else
-  echo " "
-  echo -e "$RED$BLD   There's no Kernel built for $VARIANT, aborting..."
-  echo -e "$WHITE   Did you build the Kernel?"
-  echo -e "$RATT"
-  return 1
-fi
 # Read version
 readfromdevice version
 # Tittle
@@ -100,26 +90,14 @@ fi
 # Starting the real process!
 # -----------------------
 # Kernel Update
-while true
-do
-  if [ "$ARCH" = "arm" ]; then
-    cp $KOUT/$VARIANT $AKFOLDER/zImage
-    break
-  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.lz4 ]; then
-    cp $KOUT/$VARIANT.lz4 $AKFOLDER/Image.lz4
-    break
-  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.gz-dtb ]; then 
-    cp $KOUT/$VARIANT.gz-dtb $AKFOLDER/Image.gz-dtb
-    break
-  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT.gz ]; then
-    cp $KOUT/$VARIANT.gz $AKFOLDER/Image.gz
-    break
-  elif [ "$ARCH" = "arm64" ] && [ -f $KOUT/$VARIANT ]; then
-    cp $KOUT/$VARIANT $AKFOLDER/Image
-    break
-  fi
-done
-echo -e "$WHITE$BLD   Kernel Updated"
+selectimage
+if [ "$selected_image" = "none" ] || [ -z "$selected_image" ]; then
+  echo -e "$RED$BLD Error:$WHITE Kernel is not built, aborting..."
+  return 1
+else
+  cp $KOUT/$selected_image $AKFOLDER/
+fi
+echo -e "$WHITE$BLD   Kernel Updated. $selected_image Automatically selected"
 if [ -f $DTOUT/$VARIANT ]; then
   cp $DTOUT/$VARIANT $AKFOLDER/dtb
   echo -e "$WHITE$BLD   DTB Updated"
