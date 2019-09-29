@@ -46,9 +46,23 @@ if [ ! -d $AKFOLDER ]; then
   unset AKBO
 fi
 
+# Enable/Disable Kernel Update
+if [ ! -f $KDPATH/akconfig ]; then
+  echo " "
+  touch $KDPATH/akconfig
+  echo -ne "$WHITE   Automatically update the Kernel image while building the AnyKernel? [Y/N]: "
+  read anykernel_kupdate
+  if [ "$anykernel_kupdate" = "Y" ] || [ "$anykernel_kupdate" = "y" ]; then
+    echo "export enable_kupdate=y" >> $KDPATH/akconfig
+  fi
+  echo -e "$RATT"
+fi
+
 function anykernel() {
 # Read version
 readfromdevice version
+# Load AK Config file
+source $KDPATH/akconfig
 # Tittle
 echo -ne "$THEME$BLD"
 echo -e "     _            _  __                 _ "
@@ -65,15 +79,12 @@ echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHI
 # Setup MakeAnykernel
 checkfolders --silent
 # Check MakeAnykerel out folder
-echo -ne "$WHITE   Checking MakeAnykernel folders..."
-sleep 0.5
 if [ ! -d $AKOUT ]; then
   mkdir $AKOUT
 fi
-echo -ne "$THEME$BLD Done$RATT"
 
 # Check Zip Tool
-checkziptool
+checkziptool &> /dev/null
 # Check buildkernel.sh KBUILDFAILED variable
 if [ "$KBUILDFAILED" = "1" ]; then
   echo -e "$RED$BLD   Warning:$WHITE the previous kernel were not built successfully"
@@ -87,25 +98,28 @@ if [ "$KBUILDFAILED" = "1" ]; then
     return 1
   fi
 fi
-# Starting the real process!
-# -----------------------
-# Kernel Update
-selectimage
-if [ "$selected_image" = "none" ] || [ -z "$selected_image" ]; then
-  echo -e "$RED$BLD Error:$WHITE Kernel is not built, aborting..."
-  return 1
+# Update Kernel image and DTB when its enabled
+if [ "$enable_kupdate" = "y" ]; then
+  # Starting the real process!
+  # -----------------------
+  # Kernel Update
+  selectimage
+  if [ "$selected_image" = "none" ] || [ -z "$selected_image" ]; then
+    echo -e "$RED$BLD Error:$WHITE Kernel is not built, aborting..."
+    return 1
+  else
+    cp $KOUT/$selected_image $AKFOLDER/
+  fi
+  echo -e "$WHITE$BLD   Kernel Updated. $selected_image Automatically selected"
+  if [ -f $DTOUT/$VARIANT ]; then
+    cp $DTOUT/$VARIANT $AKFOLDER/dtb
+    echo -e "$WHITE$BLD   DTB Updated"
+    echo -e "   Done"
+  fi
+  # -----------------------
 else
-  cp $KOUT/$selected_image $AKFOLDER/
+  echo -e "$WHITE   Automatic Kernel update disabled"
 fi
-echo -e "$WHITE$BLD   Kernel Updated. $selected_image Automatically selected"
-if [ -f $DTOUT/$VARIANT ]; then
-  cp $DTOUT/$VARIANT $AKFOLDER/dtb
-  echo -e "$WHITE$BLD   DTB Updated"
-  echo -e "   Done"
-else
-  echo -e "$RED$BLD   DTB not found for $VARIANT, skipping..."
-fi
-# -----------------------
 
 # Make the kernel installer zip
 export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
