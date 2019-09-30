@@ -15,9 +15,9 @@ function buildkernel() {
   echo -e "  |_-|_\___|_| |_||_\___|_| "
   echo " "
   echo " "
-  echo -e "$THEME$BLD - $KERNELNAME Kernel Building Script ($VARIANT) ($ARCH)$RATT"
-  echo -e "$WHITE   Version: $VERSION for $TARGETANDROID ROM's $RATT$WHITE"
-  echo " "
+  echo -e "$THEME$BLD   --------------------------$WHITE"
+  echo -e "$WHITE - Kernel Building Script for $THEME$BLD$VARIANT$WHITE ($ARCH)"
+  echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Version:$THEME$BLD $VERSION$WHITE"
   if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                              # were not found and we cannot compile the kernel
     echo -e "$RED - There was an error getting the CrossCompiler path, exiting...$RATT"
@@ -30,7 +30,7 @@ function buildkernel() {
                      # in the process or defaultsettings.sh
     cd $P
     echo -e "$THEME$BLD   Entered in $WHITE'$P' $THEME$BLDSucessfully"
-    echo " "; log -t "BuildKernel: Entered in '$P'" $KBELOG
+    log -t "BuildKernel: Entered in '$P'" $KBELOG
   else # If it doesnt exist it means that we don't have nothing to do
     echo -e "$RED   Path doesn't exist!"; log -t "BuildKernel: Source path '$P' doesnt exist, exiting..." $KBELOG
     echo -e "$RED - Build canceled$RATT"
@@ -77,17 +77,19 @@ function buildkernel() {
   fi
   . $P/.config
   echo -e " Done"
-  echo " "; log -t "BuildKernel: Loaded '$DEFCONFIG' defconfig" $KBELOG
+  log -t "BuildKernel: Loaded '$DEFCONFIG' defconfig" $KBELOG
   # -----------------------
 
   # Get the number of CPU Cores
   JOBS=$(grep -c ^processor /proc/cpuinfo); log -t "BuildKernel: Number of Cores=$JOBS" $KBELOG
   # Start compiling kernel
-  echo -e "$THEME$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
+  echo -e "$WHITE   Compiling Kernel using up to $JOBS cores...$RATT"
+  echo -e "$THEME$BLD   --------------------------$WHITE"
   echo " "
   log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
   source $CDF/resources/buildkernel-assistant.sh
   echo " "
+  echo -e "$THEME$BLD   --------------------------$WHITE"
 
   # Verify if the kernel were built
   if [ $ARCH = "arm" ]; then
@@ -130,8 +132,8 @@ function buildkernel() {
     fi
   done
   echo -e "$THEME$BLD   Kernel Images copied to$WHITE '$KOUT'"
-  echo " "
   echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
+  echo -e "$THEME$BLD   --------------------------$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
 }
 
