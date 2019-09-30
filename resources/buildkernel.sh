@@ -86,21 +86,7 @@ function buildkernel() {
   echo -e "$THEME$BLD   Compiling Kernel using up to $JOBS cores...  $WHITE(Don't panic if it takes some time)$RATT$WHITE"
   echo " "
   log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
-  if [ $ARCH = "arm" ]; then
-    if [ "$KDEBUG" != "1" ]; then
-      make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm &>> $LOGF/buildkernel_log.txt # Store logs
-    else
-      make CONFIG_NO_ERROR_ON_MISMATCH=y -j$JOBS ARCH=arm
-    fi
-  fi
-  if [ $ARCH = "arm64" ]; then
-    if [ "$KDEBUG" != "1" ]; then
-      make -j$JOBS ARCH=arm64 &>> $LOGF/buildkernel64_log.txt # Store logs
-    else
-      make -j$JOBS ARCH=arm64
-   fi
-  fi
-  echo "   Done"
+  source $CDF/resources/buildkernel-assistant.sh
   echo " "
 
   # Verify if the kernel were built
