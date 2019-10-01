@@ -87,7 +87,11 @@ function buildkernel() {
   echo -e "$THEME$BLD   --------------------------$WHITE"
   echo " "
   log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
-  source $CDF/resources/buildkernel-assistant.sh
+  if [ "$KDEBUG" = "1" ]; then
+    make -j$(nproc) ARCH=$ARCH 
+  else
+    source $CDF/resources/buildkernel-assistant.sh
+  fi
   echo " "
   echo -e "$THEME$BLD   --------------------------$WHITE"
 
