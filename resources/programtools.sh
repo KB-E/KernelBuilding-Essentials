@@ -171,6 +171,28 @@ function updatedevice() {
                        return 1;
                      fi ;;
 
+           "kdebug") # Update the Kernel debugging toggle
+                     if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for kdebug"; return 1; fi
+                     if [ "$2" = "enabled" ]; then
+                       readfromdevice kdebug
+                       if [ "$KDEBUG" = "1" ]; then
+                         echo "KB-E: Update: kdebug is already enabled"; return 1
+                       else
+                         sed -i "s/export KDEBUG=0/export KDEBUG=1/g" $KFPATH
+                         export KDEBUG=1
+                         echo "KB-E: Update: kdebug is now enabled"; return 1
+                       fi
+                     fi
+                     if [ "$2" = "disabled" ]; then
+                       readfromdevice kdebug
+                       if [ "$KDEBUG" = "0" ]; then
+                         echo "KB-E: Update: kdebug is already disabled"; return 1
+                       else
+                         sed -i "s/export KDEBUG=1/export KDEBUG=0/g" $KFPATH
+                         export KDEBUG=0
+                         echo "KB-E: Update: kdebug is now disabled"; return 1
+                       fi
+                     fi ;;
              "arch") # Update the arch type (this also includes the crosscompiler automatically)
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for arch"; return 1; fi
                      if [ "$2" = "arm" ] || [ "$2" = "arm64" ]; then

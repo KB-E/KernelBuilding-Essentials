@@ -298,6 +298,7 @@ function kbe() {
       echo "          - releasetype ( Beta | Stable )"
       echo "          - arch ( arm | arm64 )"
       echo "          - defconfig (Select from list if no newvalue)"
+      echo "          - kdebug ( enabled | disabled )"
       echo " "
     else
       # If user specified a valid or invalid setting,
