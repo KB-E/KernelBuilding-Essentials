@@ -53,15 +53,19 @@ function buildkernel() {
   if [ ! -d $KOUT ]; then
     mkdir $KOUT
   fi
-
-  #Start Building Process
+  
+  # ----------------------
+  # Start Building Process
+  # ----------------------
   if [ "$CLR" = "1" ]; then make clean; log -t "BuildKernel: Source cleaned" $KBELOG; echo " "; fi # Clean Kernel source
+  # Declare array with all possible Kernel Images
+  kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
   # To avoid a false sucessfull build
-  rm $P/arch/arm/boot/zImage &> /dev/null
-  rm $P/arch/arm/boot/Image.gz-dtb &> /dev/null
-  rm $P/arch/arm/boot/Image &> /dev/null
-  rm $P/arch/arm/boot/Image.gz &> /dev/null
-  # ---------------------------------
+  for i in "${kernel_images[@]}"; do
+    if [ -f $P/arch/$ARCH/boot/$i ]; then
+      rm $P/arch/$ARCH/boot/$i
+    fi
+  done
 
   # Get config file
   if [ ! -f $P/.config ]; then
@@ -96,39 +100,26 @@ function buildkernel() {
   echo -e "$THEME$BLD   --------------------------$WHITE"
 
   # Verify if the kernel were built
-  if [ $ARCH = "arm" ]; then
-    if [ ! -f $P/arch/arm/boot/zImage ]; then # If theres no zImage built then there was
-      export KFAIL="1"                        # an error compiling the kernel
-      readlog # Asks the user to open the kernel log in KDEBUG is disabled
-      log -t "BuildKernel: Error: No kernel built found, compiling process failed" $KBELOG
-    fi
-  fi
-  if [ $ARCH = "arm64" ]; then
-    if [ -f $P/arch/arm64/boot/Image.gz-dtb ] || [ -f $P/arch/arm64/boot/Image.gz ] || [ -f $P/arch/arm64/boot/Image ]; then
-      echo -e "$WHITE   Kernel Found..."; log -t "BuildKernel: Kernel build process done successfully" $KBELOG
+  for i in "${kernel_images[@]}"; do
+    if [ -f $P/arch/$ARCH/boot/$i ]; then
+      kernel_found="true"
+      break
     else
-      export KFAIL="1"
-      readlog
-      log -t "BuildKernel: Error: No kernel built found, compiling process failed" $KBELOG
+      kernel_found="false"
     fi
-  fi
-
-  # If KFAIL=1 then exit the script
-  if [ "$KFAIL" = "1" ]; then
-    echo " "
-    echo -e "$RED   ## Kernel Building Failed ##$RATT"
+  done
+  
+  # If kernel_found=false then exit
+  if [ "$kernel_found" = "false" ]; then
+    echo " "; echo -e "$RED   ## Kernel Building Failed ##$RATT"
     # Report failed build to KB-E
-    export KBUILDFAILED=1
-    echo " "
-    unset KFAIL
+    export KBUILDFAILED=1; echo " "
     log -t "BuildKernel: Build failed, exiting..." $KBELOG
     return 1
   fi
-
+  
   # Clean device out folder
   rm -rf $KOUT/*
-  # Declare array with all possible Kernel Images
-  kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
   # Move the Kernel Images to the device out folder
   for i in "${kernel_images[@]}"; do
     if [ -f $P/arch/$ARCH/boot/$i ]; then
@@ -140,39 +131,7 @@ function buildkernel() {
   echo -e "$THEME$BLD   --------------------------$RATT"
   echo " "; log -t "BuildKernel: All done" $KBELOG
 }
-
-function readlog() {
-if [ "$ARCH" = "arm" ]; then
-    if [ "$KDEBUG" != "1" ]; then
-        echo " "
-        echo -e "$RED$BLD ## Build for $VARIANT Failed ## $WHITE"
-        echo " " &>> $LOGF/buildkernel_log.txt
-        echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel_log.txt
-        read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
-        if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
-          log -t "ReadLog: Opening kernel build log to user" $KBELOG
-          nano $LOGF/buildkernel_log.txt
-          unset READBL
-        fi
-    fi
-fi
-if [ "$ARCH" = "arm64" ]; then
-    if [ "$KDEBUG" != "1" ]; then
-        echo " "
-        echo -e "$RED$BLD ## Build for $VARIANT Failed ## $WHITE"
-        echo " " &>> $LOGF/buildkernel64_log.txt
-        echo "KERNEL BUILDING FAILED" &>> $LOGF/buildkernel64_log.txt
-        read -p "Read building log? [y/n]: " READBL  # Prompt the user to see the failed
-        if [ $READBL = y ] || [ $READBL = y ]; then  # kernel build log
-          log -t "ReadLog: Opening kernel build log to user" $KBELOG
-          nano $LOGF/buildkernel64_log.txt
-          unset READBL
-        fi
-    fi
-fi
-}
 export -f buildkernel; log -f buildkernel $KBELOG
-export -f readlog; log -f readlog $KBELOG
 # Define kernel out path
 KOUT=$KDPATH/out/kernel
 
