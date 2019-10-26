@@ -82,35 +82,40 @@ function getarch() {
 
 # Download CC Based on Arch
 function getcc() {
-  # This will export the correspondent CrossCompiler for the ARCH Type
-  if [ "$ARCH" = "arm" ]; then
-    CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi- # arm CrossCompiler
-    log -t "RunSettings: Exported CROSSCOMPILE to $CROSSCOMPILE" $KBELOG
-    # Check
-    if [ ! -f "$CROSSCOMPILE"gcc ]; then
-      log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-      echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
-      git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null
-      echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
-    fi
-  elif [ "$ARCH" = "arm64" ]; then
-    CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
-    log -t "RunSettings: Exported CROSSCOMPILE to $CROSSCOMPILE" $KBELOG
-    # Check 
-    if [ ! -f "$CROSSCOMPILE"gcc ]; then
-      log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-      echo -ne "$WHITE   Downloading the$THEME$BLD ARM64$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
-      git clone https://github.com/KB-E/aarch64-linux-android-4.9 $CDF/resources/crosscompiler/arm64/ &> /dev/null
-      echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
-    fi
-    # Also, some arm64 kernels needs arm crosscompiler too
-    if [ ! -f "$CROSSCOMPILE"gcc ]; then
-      log -t "RunSettings: CrossCompiler not found, downloading it..." $KBELOG
-      echo -ne "$WHITE   Downloading the$THEME$BLD ARM$WHITE CrossCompiler$THEME$BLD ('Ctrl + C' to Cancel)..."
-      git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null
-      echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " "
-    fi
-  fi
+  # Define arm & arm64 CC paths
+  cc=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi-
+  cc64=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
+  # Export the correspondent CrossCompiler for the ARCH Type
+  case $ARCH in
+       "arm") 
+              log -t "RunSettings: CC = $cc" $KBELOG;
+              # Check for arm CC
+              if [ ! -f "$cc"gcc ]; then
+                log -t "RunSettings: arm CC not found, downloading..." $KBELOG;
+                echo -ne "$WHITE   Downloading the$THEME$BLD arm$WHITE CrossCompiler$THEME$BLD...";
+                git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null;
+                echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " ";
+              fi;
+              export CROSSCOMPILE=$cc ;;
+              
+     "arm64") log -t "RunSettings: CC = $cc64" $KBELOG;
+              # Check for arm64 CC
+              if [ ! -f "$cc64"gcc ]; then
+                log -t "RunSettings: arm64 CC not found, downloading..." $KBELOG;
+                echo -ne "$WHITE   Downloading the$THEME$BLD arm64$WHITE CrossCompiler$THEME$BLD...";
+                git clone https://github.com/KB-E/aarch64-linux-android-4.9 $CDF/resources/crosscompiler/arm64/ &> /dev/null;
+                echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " ";
+              fi;
+              # Check for arm CC (Needed by some arm64 kernels)
+              if [ ! -f "$cc"gcc ]; then
+                log -t "RunSettings: arm CC not found, downloading..." $KBELOG;
+                echo -ne "$WHITE   Downloading the$THEME$BLD arm$WHITE CrossCompiler$THEME$BLD...";
+                git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $CDF/resources/crosscompiler/arm/ &> /dev/null;
+                echo -e "$WHITE Done"; log -t "RunSettings: Done" $KBELOG; echo " ";
+              fi;
+              export CROSSCOMPILE=$cc64;
+              export CROSS_COMPILE_ARM32=$cc
+  esac
 };
 
 # Kernel Config
@@ -250,7 +255,6 @@ storedata -v ARCH $ARCH
 storedata -t "# CrossCompiler"
 storedata -v CROSSCOMPILE $CROSSCOMPILE
 if [ "$ARCH" = arm64 ]; then
-  CROSS_COMPILE_ARM32=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi- # arm CrossCompiler
   storedata -v CROSS_COMPILE_ARM32 $CROSS_COMPILE_ARM32
 fi
 storedata -t "# Kernel Config"
