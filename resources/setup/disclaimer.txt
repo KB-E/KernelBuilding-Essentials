@@ -1,0 +1,5 @@
+ - Disclaimer: This Software will ask for sudo to download and install required
+programs and tools, also, to chmod and chown neccesary files for the
+correct functioning of all the code, I'm not responsable if this
+program breaks your PC (which it shouldn't be able). We'll now
+proceed to the first run of this program after your authorization...   

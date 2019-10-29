@@ -7,13 +7,13 @@ function cdsource() {
 BACK=$(pwd)
 cd $P
 }
-export -f cdsource; log -f cdsource $KBELOG
+export -f cdsource; kbelog -f cdsource
 # Back
 function back() {
 cd $BACK
 BACK=.
 }
-export -f back; log -f back $KBELOG
+export -f back; kbelog -f back
 
 # Copy the DTB Image to a specified path
 function cpdtb() {
@@ -32,7 +32,7 @@ else
   echo -e "   DTB for $VARIANT copied to ($1) named '$2'"
 fi
 }
-export -f cpdtb; log -f cpdtb $KBELOG
+export -f cpdtb; kbelog -f cpdtb
 
 # Copy the Kernel binary to a specified path
 function cpkernel() {
@@ -58,7 +58,7 @@ elif [ ! -f $KOUT/$2 ]; then
   echo "Error: That kernel image doesnt exist"
 fi
 }
-export -f cpkernel; log -f cpkernel $KBELOG
+export -f cpkernel; kbelog -f cpkernel
 
 # Clear the current working kernel source
 function clrsource() {
@@ -68,7 +68,7 @@ make clean
 cd $BACK
 unset BACK
 }
-export -f clrsource; log -f clrsource $KBELOG
+export -f clrsource; kbelog -f clrsource
 
 # Clear Logs
 function rmlogs() {
@@ -106,5 +106,5 @@ source $CDF/resources/other/colors.sh
 }
 
 function cdkbe () {
-cd $CDF
+cd $kbe_path
 }

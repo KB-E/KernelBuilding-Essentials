@@ -5,17 +5,17 @@
 
 # Install Building Tools
 function installtools() {
-  log -t "Installing dependencies..." $KBELOG
+  kbelog -t "Installing dependencies..."
   echo " "
   sudo apt-get update
   sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev device-tree-compiler ccache libc++-dev gcc
   echo " "
-  log -t "Dependencies installed" $KBELOG
+  kbelog -t "Dependencies installed"
 }
-export -f installtools; log -f installtools $KBELOG
+export -f installtools; kbelog -f installtools
 
 function checktools() {
-  log -t "CheckTools: Checking dependencies..." $KBELOG
+  kbelog -t "CheckTools: Checking dependencies..."
   if [ -f $CDF/resources/other/missingdeps ]; then
     rm $CDF/resources/other/missingdeps;
   fi
@@ -24,7 +24,7 @@ function checktools() {
   do
     PROGRAMINST=$(dpkg -s "$i" | grep Status | cut -d ":" -f 2)
     if [ "$PROGRAMINST" != " install ok installed" ]; then
-      echo -e "$RED$BLD   $i is Missing"; log -t "CheckTools: $1 is missing" $KBELOG
+      echo -e "$RED$BLD   $i is Missing"; kbelog -t "CheckTools: $1 is missing"
       touch $CDF/resources/other/missingdeps
       echo "$1" >> $CDF/resources/other/missingdeps
       MISSINGDEPS=1
@@ -32,34 +32,34 @@ function checktools() {
   done
   if [ ! -f $CDF/resources/other/missingdeps ]; then
     echo -e "$WHITE - All Dependencies checked$THEME$BLD (Pass)$RATT"
-    echo " "; log -t "CheckTools: All dependencies installed" $KBELOG
+    echo " "; kbelog -t "CheckTools: All dependencies installed"
   fi
   if [ "$MISSINGDEPS" = "1" ]; then
     echo " "
     echo -e "$RED$BLD - Some Dependecies are missing, KB-E cannot initialize without then, proceed to install? [Y/N]"
     read INSTDEP
     if [ "$INSTDEP" = "y" ] || [ "$INSTDEP" = "Y" ]; then
-      log -t "CheckTools: Installing missing dependencies..." $KBELOG
+      kbelog -t "CheckTools: Installing missing dependencies..."
       installtools
-      log -t "CheckTools: Done" $KBELOG
+      kbelog -t "CheckTools: Done"
     else
       echo -e "$WHITE Exiting KB-E..."
-      export CWK=N; log -t "CheckTools: User didn't wanted to install the missing dependencies, exiting KB-E..." $KBELOG
+      export CWK=N; kbelog -t "CheckTools: User didn't wanted to install the missing dependencies, exiting KB-E..."
     fi
   fi
 }
-export -f checktools; log -f checktools $KBELOG
+export -f checktools; kbelog -f checktools
 
 # Check if theres a kernel source
 function checksource() {
   unset CWK
   for folder in $CDF/source/*; do
     if [ -f $folder/Makefile ]; then
-      log -t "RunSettings: Kernel source found" $KBELOG
+      kbelog -t "RunSettings: Kernel source found"
       return 1
     else
       echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
-      log -t "RunSettings: Error, no kernel source found, exiting KB-E..." $KBELOG
+      kbelog -t "RunSettings: Error, no kernel source found, exiting KB-E..."
       export CWK=n
       echo " "
       return 1
@@ -69,64 +69,64 @@ function checksource() {
 
 # Help command
 function kbhelp() {
-  log -t "kbehelp: Displaying help file to user" $KBELOG
+  kbelog -t "kbehelp: Displaying help file to user"
   nano $HFP;
 }
-export -f kbhelp; log -f kbhelp $KBELOG
+export -f kbhelp; kbelog -f kbhelp
 
 # Check CrossCompiler
 function checkcc() {
-  log -t "CheckCC: Checking CrossCompiler..." $KBELOG
+  kbelog -t "CheckCC: Checking CrossCompiler..."
   # CROSS_COMPILER
-if [ ! -f "$CROSSCOMPILE"gcc ]; then
-  echo -e "$RED$BLD   Cross Compiler not found ($CROSSCOMPILE) "; log -t "CheckCC: CrossCompiler not found" $KBELOG
+if [ ! -f "$kernel_cc"gcc ]; then
+  echo -e "$RED$BLD   Cross Compiler not found ($CROSSCOMPILE) "; kbelog -t "CheckCC: CrossCompiler not found"
   export CERROR=1 # Tell to the program that the CrossCompiler isn't availible
 else
-  echo -e "$WHITE   Cross Compiler Found!"; log -t "CheckCC: CrossCompiler found" $KBELOG
+  echo -e "$WHITE   Cross Compiler Found!"; kbelog -t "CheckCC: CrossCompiler found"
   export CERROR=0 # Initialize CrossCompilerERROR Variable
 fi
 }
-export -f checkcc; log -f checkcc $KBELOG
+export -f checkcc; kbelog -f checkcc
 
 # Check DTB Tool
 function checkdtbtool() {
-  log -t "CheckDTBTool: Checking DTB Tool..." $KBELOG
+  kbelog -t "CheckDTBTool: Checking DTB Tool..."
   echo " "
   if [ ! -f $CDF/resources/dtbtool/dtbtool.c ]; then # Check local dtbTool
-  echo -e "$RED$BLD   DTB Tool source not found$RATT$WHITE"; log -t "CheckDTBTool: DTB Tool source not found" $KBELOG
-  echo -ne "$WHITE   Downloading from Github..."; log -t "CheckDTBTool: Downloading from Github..." $KBELOG
+  echo -e "$RED$BLD   DTB Tool source not found$RATT$WHITE"; kbelog -t "CheckDTBTool: DTB Tool source not found"
+  echo -ne "$WHITE   Downloading from Github..."; kbelog -t "CheckDTBTool: Downloading from Github..."
   git clone https://github.com/KB-E/dtbtool resources/dtbtool &> /dev/null
-  echo -e "$THEME$BLD Done$RATT"; log -t "CheckDTBTool: Done" $KBELOG
+  echo -e "$THEME$BLD Done$RATT"; kbelog -t "CheckDTBTool: Done"
 else
   # If you didn't removed it, dtb is fine
-  echo -e "$WHITE   DTB Tool source found"; log -t "CheckDTBTool: DTB Tool source found" $KBELOG
+  echo -e "$WHITE   DTB Tool source found"; kbelog -t "CheckDTBTool: DTB Tool source found"
 fi
 }
-export -f checkdtbtool; log -f checkdtbtool $KBELOG
+export -f checkdtbtool; kbelog -f checkdtbtool
 
 # Check Zip Tool
 function checkziptool() {
-  log -t "CheckZipTool: Checking Zip tool..." $KBELOG
+  kbelog -t "CheckZipTool: Checking Zip tool..."
   echo " "
 if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
                                       # sudo apt-get install zip
   echo -e "$RED$BLD   Zip is not installed, Kernel installer Zip will not be build!$WHITE"
-  echo " "; log -t "CheckZipTool: Zip tool is not installed, Kernel installer will not be built" $KBELOG
+  echo " "; kbelog -t "CheckZipTool: Zip tool is not installed, Kernel installer will not be built"
   read -p "   Install Zip Tool? [y/n]: " INSZIP
   if [ $INSZIP = Y ] || [ $INSZIP = y ]; then
-    log -t "CheckZipTool: Installing Zip tool..." $KBELOG
+    kbelog -t "CheckZipTool: Installing Zip tool..."
     sudo apt-get install zip
-    log -t "CheckZipTool: Done" $KBELOG
+    kbelog -t "CheckZipTool: Done"
   else
     export NOBZ=1 # Tell the Zip building function to cancel the opetarion
                   # because Zip tool is 100% necessary
   fi
 else
   export NOBZ=0 # Well, you had it, nice!
-  echo -e "$WHITE   Zip Tool Found! $RATT"; log -t "CheckZipTool: Zip tool found" $KBELOG
+  echo -e "$WHITE   Zip Tool Found! $RATT"; kbelog -t "CheckZipTool: Zip tool found"
 fi
 }
-export -f checkziptool; log -f checkziptool $KBELOG
+export -f checkziptool; kbelog -f checkziptool
 
 function readfromdevice() {
   # Read and export the desired value from the device file
@@ -255,12 +255,12 @@ function updatedevice() {
   fi
 }
 
-function bashrcpatch() {
+function bashrcPatch() {
   # Patch ~/.bashrc to load KB-E init file
   if grep -q "# Load KB-E init file" ~/.bashrc; then
     echo " "; echo -e "$THEME$BLD - ~/.bashrc is already patched..!$RATT"
   else
-    log -t "Install: Patching ~/.bashrc" $KBELOG; echo " "
+    kbelog -t "Install: Patching ~/.bashrc"; echo " "
     echo -ne "$THEME$BLD - Patching ~/.bashrc to load init file...$WHITE"
     echo "# Load KB-E init file" >> ~/.bashrc
     echo "source $CDF/resources/init/init.sh" >> ~/.bashrc
@@ -269,7 +269,7 @@ function bashrcpatch() {
 }
 export -f bashrcpatch
 
-function kbepatch() {
+function kbePatch() {
   # Create a init file for KB-E
   INITPATH=$CDF/resources/init/init.sh
   if [ ! -f $INITPATH ]; then

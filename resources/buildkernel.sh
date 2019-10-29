@@ -4,10 +4,9 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 function buildkernel() {
-  unset KBUILDFAILED
-  log -t "BuildKernel: Checking CrossCompiler" $KBELOG
+  unset kernel_build_failed
+  kbelog -t "BuildKernel: Checking CrossCompiler"
   checkcc &> /dev/null
-  log -t "BuildKernel: Done" $KBELOG
   echo -ne "$THEME$BLD"
   echo -e "   _  __                 _ "
   echo -e "  | |/ /___ _ _ _ _  ___| |  "
@@ -16,23 +15,22 @@ function buildkernel() {
   echo " "
   echo " "
   echo -e "$THEME$BLD   --------------------------$WHITE"
-  echo -e "$WHITE - Kernel Building Script for $THEME$BLD$VARIANT$WHITE ($ARCH)"
-  echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Version:$THEME$BLD $VERSION$WHITE"
+  echo -e "$WHITE - Kernel Building Script ($kernel_arch mode)"
+  echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE; Version:$THEME$BLD $kernel_version$WHITE"
   if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
                              # were not found and we cannot compile the kernel
     echo -e "$RED - There was an error getting the CrossCompiler path, exiting...$RATT"
-    echo " "; log -t "BuildKernel: There was an error getting the CrossCompiler, exiting..." $KBELOG
+    echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting..."
     return 1
   fi
 
   # Enter in the kernel source
-  if [ -d $P ]; then # P = Path for Kernel defined by the user
-                     # in the process or defaultsettings.sh
-    cd $P
-    echo -e "$THEME$BLD   Entered in $WHITE'$P' $THEME$BLDSucessfully"
-    log -t "BuildKernel: Entered in '$P'" $KBELOG
+  if [ -d $kernel_source ]; then
+    cd $kernel_source
+    echo -e "$THEME$BLD   Entered in $WHITE'$kernel_source' $THEME$BLDSucessfully"
+    kbelog -t "BuildKernel: Entered in '$kernel_source'"
   else # If it doesnt exist it means that we don't have nothing to do
-    echo -e "$RED   Path doesn't exist!"; log -t "BuildKernel: Source path '$P' doesnt exist, exiting..." $KBELOG
+    echo -e "$RED   Path doesn't exist!"; kbelog -t "BuildKernel: Source path '$kernel_source' doesnt exist, exiting..."
     echo -e "$RED - Build canceled$RATT"
     echo " "
     return 1
@@ -40,14 +38,13 @@ function buildkernel() {
 
   # Export necessary things
   export KCONFIG_NOTIMESTAMP=true
-  export ARCH=$ARCH
-  log -t "BuildKernel: Exported ARCH=$ARCH" $KBELOG
-  export SUB_ARCH=$ARCH;
-  #echo -e "$WHITE   Exported $ARCH"  # If the program succeed at this step, this means
-  export CROSS_COMPILE=$CROSSCOMPILE  # that we can start compiling the kernel!
+  export ARCH=$kernel_arch
+  kbelog -t "BuildKernel: Exported ARCH=$kernel_arch"
+  export SUB_ARCH=$kernel_arch;
+  #echo -e "$WHITE   Exported $kernel_arch"  # If the program succeed at this step, this means
+  export CROSS_COMPILE=$kernel_cc  # that we can start compiling the kernel!
   export CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
-  log -t "BuildKernel: Exported CROSS_COMPILE=$CROSSCOMPILE" $KBELOG
-  #echo -e "   Exported $CROSSCOMPILE"
+  kbelog -t "BuildKernel: Exported CROSS_COMPILE=$kernel_cc"
 
   # Create out folders for this device
   if [ ! -d $KOUT ]; then
@@ -57,51 +54,54 @@ function buildkernel() {
   # ----------------------
   # Start Building Process
   # ----------------------
-  if [ "$CLR" = "1" ]; then make clean; log -t "BuildKernel: Source cleaned" $KBELOG; echo " "; fi # Clean Kernel source
+  if [ "$CLR" = "1" ]; then make clean; kbelog -t "BuildKernel: Source cleaned"; echo " "; fi # Clean Kernel source
   # Declare array with all possible Kernel Images
   kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
   # To avoid a false sucessfull build
   for i in "${kernel_images[@]}"; do
-    if [ -f $P/arch/$ARCH/boot/$i ]; then
-      rm $P/arch/$ARCH/boot/$i
+    if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
+      rm $kernel_source/arch/$kernel_arch/boot/$i
     fi
   done
 
   # Get config file
-  if [ ! -f $P/.config ]; then
-    cp $P/arch/$ARCH/configs/$DEFCONFIG $P/.config; log -t "BuildKernel: Copied defcofig to '$P/.config'" $KBELOG
+  if [ ! -f $kernel_source/.config ]; then
+    cp $kernel_source/arch/$kernel_arch/configs/$kernel_defconfig $kernel_source/.config
+    kbelog -t "BuildKernel: Copied defcofig to '$kernel_source/.config'"
   fi
 
   # Load defconfig
-  echo -ne "$WHITE$BLD   Loading Defconfig for $VARIANT...$RATT$THEME$BLD"
-  if [ "$ARCH" = "arm" ]; then
-    make ARCH=arm $DEFCONFIG &> $LOGF/buildkernel_log.txt
-  elif [ "$ARCH" = "arm64" ]; then
-    make ARCH=arm64 $DEFCONFIG &> $LOGF/buildkernel64_log.txt
+  echo -ne "$WHITE$BLD   Loading Defconfig for $device_variant...$RATT$THEME$BLD"
+  # Log path
+  LOGF=$kbe_path/logs
+  if [ "$kernel_arch" = "arm" ]; then
+    make ARCH=arm $kernel_defconfig &> $LOGF/buildkernel_log.txt
+  elif [ "$kernel_arch" = "arm64" ]; then
+    make ARCH=arm64 $kernel_defconfig &> $LOGF/buildkernel64_log.txt
   fi
-  . $P/.config
+  . $kernel_source/.config
   echo -e " Done"
-  log -t "BuildKernel: Loaded '$DEFCONFIG' defconfig" $KBELOG
+  kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
   # -----------------------
 
   # Get the number of CPU Cores
-  JOBS=$(grep -c ^processor /proc/cpuinfo); log -t "BuildKernel: Number of Cores=$JOBS" $KBELOG
+  JOBS=$(grep -c ^processor /proc/cpuinfo); kbelog -t "BuildKernel: Number of Cores=$JOBS"
   # Start compiling kernel
   echo -e "$WHITE   Compiling Kernel using up to $JOBS cores...$RATT"
   echo -e "$THEME$BLD   --------------------------$WHITE"
   echo " "
-  log -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $DEFCONFIG | arch=$ARCH)" $KBELOG
-  if [ "$KDEBUG" = "1" ]; then
-    make -j$(nproc) ARCH=$ARCH 
+  kbelog -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $kernel_defconfig | arch=$kernel_arch)"
+  if [ "$show_cc_out" = "true" ]; then
+    make -j$(nproc) ARCH=$kernel_arch 
   else
-    source $CDF/resources/buildkernel-assistant.sh
+    source $kbe_path/resources/buildkernel-assistant.sh
   fi
   echo " "
   echo -e "$THEME$BLD   --------------------------$WHITE"
 
   # Verify if the kernel were built
   for i in "${kernel_images[@]}"; do
-    if [ -f $P/arch/$ARCH/boot/$i ]; then
+    if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
       kernel_found="true"
       break
     else
@@ -112,9 +112,9 @@ function buildkernel() {
   # If kernel_found=false then exit
   if [ "$kernel_found" = "false" ]; then
     echo " "; echo -e "$RED   ## Kernel Building Failed ##$RATT"
-    # Report failed build to KB-E
-    export KBUILDFAILED=1; echo " "
-    log -t "BuildKernel: Build failed, exiting..." $KBELOG
+    # Report failed build
+    export kernel_build_failed=true; echo " "
+    kbelog -t "BuildKernel: Build failed, exiting..."
     return 1
   fi
   
@@ -122,18 +122,18 @@ function buildkernel() {
   rm -rf $KOUT/*
   # Move the Kernel Images to the device out folder
   for i in "${kernel_images[@]}"; do
-    if [ -f $P/arch/$ARCH/boot/$i ]; then
-      cp $P/arch/$ARCH/boot/$i $KOUT/; log -t "BuildKernel: Kernel Image '$i' found" $KBELOG
+    if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
+      cp $kernel_source/arch/$kernel_arch/boot/$i $KOUT/; kbelog -t "BuildKernel: Kernel Image '$i' found"
     fi
   done
   echo -e "$THEME$BLD   Kernel Images copied to$WHITE '$KOUT'"
-  echo -e "$WHITE   Kernel for $VARIANT...$THEME$BLD Done$RATT"
+  echo -e "$WHITE   Kernel for $device_variant...$THEME$BLD Done$RATT"
   echo -e "$THEME$BLD   --------------------------$RATT"
-  echo " "; log -t "BuildKernel: All done" $KBELOG
+  echo " "; kbelog -t "BuildKernel: All done"
 }
-export -f buildkernel; log -f buildkernel $KBELOG
+export -f buildkernel; kbelog -f buildkernel
 # Define kernel out path
-KOUT=$KDPATH/out/kernel
+KOUT=$device_kernel_path/out/kernel
 
 # ------------------------------------------------
 # Automatically select the appropiate Kernel Image
@@ -187,7 +187,7 @@ function selectimage() {
 
   # Make the actual decision for arm (32bits)
   # Which kernel image will be the chosen one!!??
-  if [ "$ARCH" = "arm" ]; then
+  if [ "$kernel_arch" = "arm" ]; then
     # Pretty much what you will find in arm is zImage and zImage-dtb
     # Decide between both of them and leave the hardest part to arm64 bellow this
     # If user enabled dtb building then priorize zImage and Image over zImage-dtb

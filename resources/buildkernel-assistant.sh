@@ -4,12 +4,12 @@
 # By Artx/Stayn <artx4dev@gmail.com>
 
 # Remove log file if it exist
-if [ -f $P/log.txt ]; then
-  rm $P/log.txt
+if [ -f $kernel_source/log.txt ]; then
+  rm $kernel_source/log.txt
 fi
 
 # Create new log file
-touch $P/log.txt
+touch $kbe_path/logs/build-assistant_log.txt
 
 # Function to clear last line
 function clearlastline() {
@@ -20,15 +20,15 @@ function clearlastline() {
 function compile_kernel() {
   # Start compiling kernel, outdirected to log.txt
   # to analyse it while its building
-  make -j$(nproc) ARCH=$ARCH &>> $P/log.txt
+  make -j$(nproc) ARCH=$kernel_arch &>> $kbe_path/logs/build-assistant_log.txt
   # Done, tell klog_analysis we're done
-  echo "compiling done" >> $P/log.txt
+  echo "compiling done" >> $kbe_path/logs/build-assistant_log.txt
 }
 
 # Function to analyse the CrossCompiler output
 function klog_analysis() {
   # Keep track of Kernel building log.txt file
-  tail -f $P/log.txt | while read LOGLINE
+  tail -f $kbe_path/logs/build-assistant_log.txt | while read LOGLINE
   do
      # This code detects something beign compiled and outputs
      # information for the user without spamming

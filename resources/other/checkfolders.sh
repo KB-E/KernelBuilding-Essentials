@@ -11,12 +11,8 @@ function checkfolders() {
       mkdir $CDF/$FD;
     fi
   }
-  FD=out; folder
-  FD=out/Images; folder
-  FD=out/dt; folder
   FD=source; folder
-  FD=resources/logs; folder
-  FD=resources/devices; folder
+  FD=logs; folder
   FD=devices; folder
   unset FD
   if [ "$1" != "--silent" ]; then

@@ -15,7 +15,7 @@
 # MODULE_FUNCTION_NAME=megaupload
 # ---------------------------
 
-# MegaTools Log file
+# MegaTools kbelog file
 MEGALOG=$CDF/resources/logs/megalog.txt
 
 # Upload the Kernel
@@ -57,7 +57,7 @@ megacheck
   echo -e "$WHITE   Done"
   echo -e "$THEME$BLD   --------------------------$WHITE"
 }
-export -f megaupload; log -f megaupload $KBELOG
+export -f megaupload; kbelog -f megaupload
 
 function megacheck() {
 echo -e "$WHITE   Configuring MEGA...$RATT"
@@ -115,7 +115,7 @@ if [ "$1" = "--reconfigure" ]; then
   # ----------------------------------
 fi
 }
-export -f megacheck; log -f megacheck $KBELOG
+export -f megacheck; kbelog -f megacheck
 
 # Install MEGATools used by this program
 MTF="megatools-1.9.98.tar.gz"
@@ -148,7 +148,7 @@ function installmega() {
   megacheck
   unset NOUP
 }
-export -f installmega; log -f installmega $KBELOG
+export -f installmega; kbelog -f installmega
 
 # Download a template from MEGA
 function megadlt() {
@@ -196,4 +196,4 @@ rm $TN
 echo -e "$WHITE   Done"
 cd $CDF
 }
-export -f megadlt; log -f megadlt $KBELOG
+export -f megadlt; kbelog -f megadlt

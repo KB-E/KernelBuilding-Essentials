@@ -1,7 +1,6 @@
 #!/bin/bash
-
 # AnyKernel Installer Zips building solution (AnyKernel)
-# By Artx/Stayn <jesusgabriel.91@gmail.com>
+# By Artx <artx4dev@gmail.com>
 
 # ---------------------------
 # Identify the Module:
@@ -14,8 +13,8 @@
 # ---------------------------
 
 # Path variable
-AKFOLDER=$KDPATH/anykernelfiles
-AKOUT=$KDPATH/out/anykernel
+AKFOLDER=$device_kernel_path/anykernelfiles
+AKOUT=$device_kernel_path/out/anykernel
 
 # If the anykernelfiles folder is missing for the current
 # kernel, prompt for its configuration
@@ -47,13 +46,13 @@ if [ ! -d $AKFOLDER ]; then
 fi
 
 # Enable/Disable Kernel Update
-if [ ! -f $KDPATH/akconfig ]; then
+if [ ! -f $device_kernel_path/akconfig ]; then
   echo " "
-  touch $KDPATH/akconfig
+  touch $device_kernel_path/akconfig
   echo -ne "$WHITE   Automatically update the Kernel image while building the AnyKernel? [Y/N]: "
   read anykernel_kupdate
   if [ "$anykernel_kupdate" = "Y" ] || [ "$anykernel_kupdate" = "y" ]; then
-    echo "export enable_kupdate=y" >> $KDPATH/akconfig
+    echo "export enable_kupdate=y" >> $device_kernel_path/akconfig
   fi
   echo -e "$RATT"
 fi
@@ -143,4 +142,4 @@ mv $ZIPNAME $AKOUT/
 echo -e "$THEME$BLD Done!$RATT"
 echo -e "$THEME$BLD   --------------------------$WHITE"
 }
-export -f anykernel; log -f anykernel $KBELOG
+export -f anykernel; kbelog -f anykernel

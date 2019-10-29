@@ -3,19 +3,15 @@
 # KB-E Title :)
 function title() {
   echo -e "$WHITE"
-  echo -e "██$THEME$BLD╗$WHITE  ██$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE██████$THEME$BLD╗$WHITE ███$THEME$BLD╗$WHITE   ██$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE██$THEME$BLD╗$WHITE     ██████$THEME$BLD╗$WHITE ██$THEME$BLD╗$WHITE   ██$THEME$BLD╗$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD╗$WHITE     ██████$THEME$BLD╗$WHITE ██$THEME$BLD╗$WHITE███$THEME$BLD╗$WHITE   ██$THEME$BLD╗$WHITE ██████$THEME$BLD╗$WHITE"; sleep 0.05
-  echo -e "██$THEME$BLD║$WHITE ██$THEME$BLD╔╝$WHITE██$THEME$BLD╔════╝$WHITE██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE████$THEME$BLD╗$WHITE  ██$THEME$BLD║$WHITE██$THEME$BLD╔════╝$WHITE██$THEME$BLD║$WHITE     ██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE     ██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE████$THEME$BLD╗$WHITE  ██$THEME$BLD║$WHITE██$THEME$BLD╔════╝$WHITE"; sleep 0.05
-  echo -e "█████$THEME$BLD╔╝$WHITE █████$THEME$BLD╗$WHITE  ██████$THEME$BLD╔╝$WHITE██$THEME$BLD╔$WHITE██$THEME$BLD╗$WHITE ██$THEME$BLD║$WHITE█████$THEME$BLD╗$WHITE  ██$THEME$BLD║$WHITE     ██████$THEME$BLD╔╝$WHITE██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE     ██$THEME$BLD║$WHITE  ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE██$THEME$BLD╔$WHITE██$THEME$BLD╗$WHITE ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE  ███$THEME$BLD╗$WHITE"; sleep 0.05
-  echo -e "██$THEME$BLD╔═$WHITE██$THEME$BLD╗$WHITE ██$THEME$BLD╔══╝$WHITE  ██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║╚$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE██$THEME$BLD╔══╝$WHITE  ██$THEME$BLD║$WHITE     ██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE     ██$THEME$BLD║$WHITE  ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║╚$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE"; sleep 0.05
-  echo -e "██$THEME$BLD║$WHITE  ██$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE  ██$THEME$BLD║$WHITE██$THEME$BLD║ ╚$WHITE████$THEME$BLD║$WHITE███████$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE██████$THEME$BLD╔╝╚$WHITE██████$THEME$BLD╔╝$WHITE██$THEME$BLD║$WHITE███████$THEME$BLD╗$WHITE██████$THEME$BLD╔╝$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║ ╚$WHITE████$THEME$BLD║╚$WHITE██████$THEME$BLD╔╝$WHITE"; sleep 0.05
-  echo -e "$THEME$BLD╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ $WHITE"; sleep 0.05
-  echo -e "                                                                                                        "; sleep 0.05
-  echo -e "              ███████$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE███$THEME$BLD╗$WHITE   ██$THEME$BLD╗$WHITE████████$THEME$BLD╗$WHITE██$THEME$BLD╗$WHITE █████$THEME$BLD╗$WHITE ██$THEME$BLD╗$WHITE     ███████$THEME$BLD╗$WHITE         "; sleep 0.05
-  echo -e "              ██$THEME$BLD╔════╝$WHITE██$THEME$BLD╔════╝$WHITE██$THEME$BLD╔════╝$WHITE██$THEME$BLD╔════╝$WHITE████$THEME$BLD╗$WHITE  ██$THEME$BLD║╚══$WHITE██$THEME$BLD╔══╝$WHITE██$THEME$BLD║$WHITE██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE     ██$THEME$BLD╔════╝$WHITE        "; sleep 0.05
-  echo -e "              █████$THEME$BLD╗$WHITE  ███████$THEME$BLD╗$WHITE███████$THEME$BLD╗$WHITE█████$THEME$BLD╗$WHITE  ██$THEME$BLD╔$WHITE██$THEME$BLD╗$WHITE ██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE███████$THEME$BLD║$WHITE██$THEME$BLD║$WHITE     ███████$THEME$BLD╗$WHITE    KB$THEME$BLD-"$WHITE"E "$THEME$BLD"v$WHITE$KBV$WHITE"; sleep 0.05
-  echo -e "              ██$THEME$BLD╔══╝  ╚════$WHITE██$THEME$BLD║╚════$WHITE██$THEME$BLD║$WHITE██$THEME$BLD╔══╝$WHITE  ██$THEME$BLD║╚$WHITE██$THEME$BLD╗$WHITE██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE██$THEME$BLD╔══$WHITE██$THEME$BLD║$WHITE██$THEME$BLD║     ╚════$WHITE██$THEME$BLD║    $WHITE By Artx$WHITE"; sleep 0.05
-  echo -e "              ███████$THEME$BLD╗$WHITE███████$THEME$BLD║$WHITE███████$THEME$BLD║$WHITE███████$THEME$BLD╗$WHITE██$THEME$BLD║ ╚$WHITE████$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE   ██$THEME$BLD║$WHITE██$THEME$BLD║$WHITE  ██$THEME$BLD║$WHITE███████$THEME$BLD╗$WHITE███████$THEME$BLD║$WHITE   "; sleep 0.05
-  echo -e "             $THEME$BLD ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝ $WHITE   "
+  
+  echo -e " ██$THEME$BLD╗$WHITE  ██$THEME$BLD╗$WHITE██████$THEME$BLD╗$WHITE       ███████$THEME$BLD╗$WHITE"
+  echo -e " ██$THEME$BLD║$WHITE ██$THEME$BLD╔╝$WHITE██$THEME$BLD╔══$WHITE██$THEME$BLD╗$WHITE      ██$THEME$BLD╔════╝$WHITE"
+  echo -e " █████$THEME$BLD╔╝$WHITE ██████$THEME$BLD╔╝$WHITE█████$THEME$BLD╗$WHITE█████$THEME$BLD╗$WHITE  "
+  echo -e " ██$THEME$BLD╔═$WHITE██$THEME$BLD╗$WHITE ██$THEME$BLD╔══$WHITE██$THEME$BLD╗╚════╝$WHITE██$THEME$BLD╔══╝$WHITE  "
+  echo -e " ██$THEME$BLD║$WHITE  ██$THEME$BLD╗$WHITE██████$THEME$BLD╔╝$WHITE      ███████$THEME$BLD╗$WHITE"
+  echo -e " $THEME$BLD╚═╝  ╚═╝╚═════╝       ╚══════╝"
+  echo -e "   KernelBuilding Essentials   "
+  echo -e "       $THEME$BLD-$WHITE v$VERSION by: Artx $THEME$BLD-$WHITE       "
   echo " "
 }
-export -f title; log -f title $KBELOG
+export -f title; kbelog -f title
