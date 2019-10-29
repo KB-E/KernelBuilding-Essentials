@@ -4,8 +4,8 @@
 # By Artx/Stayn <artx4dev@gmail.com>
 
 # Remove log file if it exist
-if [ -f $kernel_source/log.txt ]; then
-  rm $kernel_source/log.txt
+if [ -f $kbe_path/logs/build-assistant_log.txt ]; then
+  rm $kbe_path/logs/build-assistant_log.txt
 fi
 
 # Create new log file
