@@ -17,10 +17,10 @@ function buildkernel() {
   echo -e "$THEME$BLD   --------------------------$WHITE"
   echo -e "$WHITE - Kernel Building Script ($kernel_arch mode)"
   echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE; Version:$THEME$BLD $kernel_version$WHITE"
-  if [ "$CERROR" = 1 ]; then # This exported variable means that the CrossCompiler
-                             # were not found and we cannot compile the kernel
-    echo -e "$RED - There was an error getting the CrossCompiler path, exiting...$RATT"
-    echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting..."
+  if [ "$cc_available" = "false" ]; then # This exported variable means that the CrossCompiler
+                               # were not found and we cannot compile the kernel
+    echo -e "$RED - There was an error getting the CrossCompiler, exiting...$RATT"
+    echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting..."; unset cc_available
     return 1
   fi
 

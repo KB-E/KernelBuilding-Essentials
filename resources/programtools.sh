@@ -77,14 +77,14 @@ export -f kbhelp; kbelog -f kbhelp
 # Check CrossCompiler
 function checkcc() {
   kbelog -t "CheckCC: Checking CrossCompiler..."
-  # CROSS_COMPILER
-if [ ! -f "$kernel_cc"gcc ]; then
-  echo -e "$RED$BLD   Cross Compiler not found ($CROSSCOMPILE) "; kbelog -t "CheckCC: CrossCompiler not found"
-  export CERROR=1 # Tell to the program that the CrossCompiler isn't availible
-else
-  echo -e "$WHITE   Cross Compiler Found!"; kbelog -t "CheckCC: CrossCompiler found"
-  export CERROR=0 # Initialize CrossCompilerERROR Variable
-fi
+  # CrossCompiler checker
+  if [ ! -f "$kernel_cc"gcc ]; then
+    echo -e "$RED$BLD   Cross Compiler not found ($kernel_cc) "; kbelog -t "CheckCC: CrossCompiler not found"
+    export cc_available=false # Export CC not ready
+  else
+    echo -e "$WHITE   Cross Compiler Found!"; kbelog -t "CheckCC: CrossCompiler found"
+    export cc_available=true  # Export CC is ready
+  fi
 }
 export -f checkcc; kbelog -f checkcc
 
