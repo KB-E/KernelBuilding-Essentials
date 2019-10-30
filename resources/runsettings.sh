@@ -11,9 +11,9 @@ unset kernel_build_dtb; unset release_type; unset AKBO; unset show_cc_out; unset
 # checksource # Check if theres a Kernel source to work with
 if [ "$CWK" = "n" ]; then return 1; fi
 
-#-------------------------
+#--------------------------------------
 # Script Functions
-#-------------------------
+#--------------------------------------
 
 # Save data
 function storedata () {
@@ -37,9 +37,9 @@ function storedata () {
 function promptdata() {
   unset ERR
   # Prompt for data
-  echo -e "$WHITE -------------------------"
-  echo -e "$THEME$BLD - Setup Basics:"
-  echo -e "$WHITE -------------------------"
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD              Setup Basics             "
+  echo -e "$WHITE  ------------------------------------"
   echo " "
   echo -ne "   Kernel Name$THEME$BLD:$WHITE "; read kernel_name; export kernel_name
   if [ "$kernel_name" = "" ]; then ERR=1; return 1; fi; kbelog -t "RunSettings: Kernel name: $kernel_name"
@@ -55,11 +55,11 @@ function promptdata() {
 # Arch selection
 function getarch() {
   # Get the ARCH Type
-  echo -e "$WHITE -------------------------"
-  echo -e "$THEME$BLD - Arch Type Selection:"
-  echo -e "$WHITE -------------------------"
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD            CPU Architecture           "
+  echo -e "$WHITE  ------------------------------------"
   echo " "
-  echo -e "$THEME$BLD   Select your CPU Architecture ($WHITE Option 1 = 32Bits"
+  echo -e "$THEME$BLD   CPU Architecture ($WHITE Option 1 = 32Bits"
   echo -e "   devices and Option 2 =  64Bits devices $THEME$BLD) $WHITE"
   until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
     echo -ne "   Your option$THEME$BLD [1/2]:$WHITE "; read ARMT
@@ -114,9 +114,9 @@ function getcc() {
 # Kernel Config
 function getkconfig() {
   unset ERR
-  echo -e "$WHITE -------------------------"
-  echo -e "$THEME$BLD - Setup your Kernel:"
-  echo -e "$WHITE -------------------------"
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD          Kernel Configuration         "
+  echo -e "$WHITE  ------------------------------------"
   echo " "
   cd $kbe_path/source; kbelog -t "RunSettings: Entered in $kbe_path/source" 
   select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
@@ -181,9 +181,9 @@ function getkconfig() {
 # Modules function
 function getmodules() {
   kbelog -t "RunSettings: Entering modules selection" 
-  echo -e "$WHITE --------------------------"
-  echo -e "$THEME$BLD - Modules selection:"
-  echo -e "$WHITE --------------------------"
+  echo -e "$WHITE ------------------------------------"
+  echo -e "$THEME$BLD            Module selection"
+  echo -e "$WHITE ------------------------------------"
   MLIST=$kbe_path/resources/other/modules.txt
   if [ -f $MLIST ]; then
     kbelog -t "RunSettings: Removing $MLIST file" 
@@ -283,7 +283,7 @@ echo -e "              --all $THEME$BLD(Does everything mentioned above)      $W
 echo " "
 echo -e "   For more information use $THEME$BLD'kbhelp'$WHITE command"
 echo " "
-echo -e "$WHITE  --------------------------$THEME$BLD"
+echo -e "$WHITE  ---------------------------------------$THEME$BLD"
 echo " "
 read -p "   Press enter to continue..."
 kbelog -t "RunSettings: All done" 
