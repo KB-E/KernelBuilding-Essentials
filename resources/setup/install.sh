@@ -3,7 +3,7 @@
 # By Artx <artx4dev@gmail.com>
 
 # Create a first run file, KB-E will check for it 
-touch $CDF/resources/other/firstrun; echo " "
+touch resources/other/firstrun; echo " "
 kbelog -t "Install: Setting up KB-E..." 
 echo -e "$THEME$BLD - Install: Starting new first run config process... $WHITE"
 
