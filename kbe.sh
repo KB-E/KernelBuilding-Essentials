@@ -102,7 +102,7 @@ function kbe() {
   # Get latest updates from KB-E repo
   # ---------------------------------
   if [ "$1" = "upgrade" ]; then
-    if [ -f core.sh ]; then
+    if [ -f kbe.sh ]; then
       # git pull KB-E repo
       echo " "; echo "KB-E: Getting latest changes from the repository"
       git pull https://github.com/KB-E/KernelBuilding-Essentials
