@@ -154,7 +154,7 @@ function selectimage() {
   # For this function to work, the variable BDTB must be set with the value "1" or "0"
   # If that variable is not set, exit this function and tell the user to load a device or
   # initialize a new one and set selected_image=none
-  if [ -z "$BDTB" ]; then
+  if [ -z "$kernel_build_dtb" ]; then
     echo -e "$RED$BLD   Error:$WHITE a setting is missing, reload your device or initialize a new one$RATT"
     export selected_image=none
     return 1
@@ -191,7 +191,7 @@ function selectimage() {
     # Pretty much what you will find in arm is zImage and zImage-dtb
     # Decide between both of them and leave the hardest part to arm64 bellow this
     # If user enabled dtb building then priorize zImage and Image over zImage-dtb
-    if [ "$BDTB" = "1" ]; then
+    if [ "$kernel_build_dtb" = "true" ]; then
       if [ "$kernel_zimage" = "true" ]; then
         selected_image=zImage
       elif [ "$kernel_image" = "true" ]; then
@@ -200,7 +200,7 @@ function selectimage() {
         selected_image=zImage-dtb
       fi
     # If user disabled dtb building then priorize zImage-dtb over zImage and Image
-    elif [ "$BDTB" = "0" ]; then
+    elif [ "$kernel_build_dtb" = "false" ]; then
       if [ "$kernel_zimage_dtb" = "true" ]; then
        export selected_image=zImage-dtb
       elif [ "$kernel_zimage" = "true" ]; then
@@ -238,9 +238,9 @@ function selectimage() {
   # select Image.lz4 by default and warn the user
   if [ "$compression_gz" = "true" ] && [ "$compression_lz4" = "true" ]; then
     echo -e "$WHITE   Your kernel source has$THEME$BLD two methods$WHITE of compression enabled..!$RATT"
-    if [ "$BDTB" = "1" ]; then
+    if [ "$kernel_build_dtb" = "true" ]; then
       export selected_image=Image.lz4
-    elif [ "$BDTB" = "0" ]; then
+    elif [ "$kernel_build_dtb" = "false" ]; then
       if [ "$kernel_image_lz4_dtb" = "true" ]; then
         export selected_image=Image.lz4-dtb
       elif [ "$kernel_image_gz_dtb" = "true" ]; then
@@ -269,7 +269,7 @@ function selectimage() {
   if [ "$compression_gz" = "false" ] && [ "$compression_lz4" = "false" ]; then
 
     echo -e "$WHITE   Your kernel source has$THEME$BLD no$WHITE compression methods enabled..!$RATT"$RATT
-    if [ "$BDTB" = "1" ]; then
+    if [ "$kernel_build_dtb" = "true" ]; then
       if [ "$kernel_zimage" = "true" ]; then
         export selected_image=zImage
       elif [ "$kernel_image" = "true" ]; then
@@ -278,7 +278,7 @@ function selectimage() {
         export selected_image=none
         echo -e "$RED$BLD   Error:$WHITE could not select a kernel image, kernel is not built$RATT"
       fi
-    elif [ "$BDTB" = "0" ]; then
+    elif [ "$kernel_build_dtb" = "false" ]; then
       if [ "$kernel_zimage_dtb" = "true" ]; then
         export selected_image=zImage-dtb
       elif [ "$kernel_image_dtb" = "true" ]; then
@@ -302,9 +302,9 @@ function selectimage() {
   # doesnt exist, then just select Image.lz4 by default and warn the user
   if [ "$compression_gz" = "false" ] && [ "$compression_lz4" = "true" ]; then
     echo -e "$WHITE   Your kernel source has$THEME$BLD lz4$WHITE compression method enabled..!$RATT"
-    if [ "$BDTB" = "1" ]; then
+    if [ "$kernel_build_dtb" = "true" ]; then
       export selected_image=Image.lz4
-    elif [ "$BDTB" = "0" ]; then
+    elif [ "$kernel_build_dtb" = "false" ]; then
       if [ "$kernel_image_lz4_dtb" = "true" ]; then
         export selected_image=Image.lz4-dtb
       elif [ "$kernel_image_dtb" = "true" ]; then
@@ -324,9 +324,9 @@ function selectimage() {
   # doesnt exist, then just select Image.gz by default and warn the user
   if [ "$compression_gz" = "true" ] && [ "$compression_lz4" = "false" ]; then
     echo -e "$WHITE   Your kernel source has$THEME$BLD gz$WHITE compression method enabled..!$RATT"
-    if [ "$BDTB" = "1" ]; then
+    if [ "$kernel_build_dtb" = "true" ]; then
       export selected_image=Image.gz
-    elif [ "$BDTB" = "0" ]; then
+    elif [ "$kernel_build_dtb" = "false" ]; then
       if [ "$kernel_image_gz_dtb" = "true" ]; then
         export selected_image=Image.gz-dtb
       elif [ "$kernel_image_dtb" = "true" ]; then
