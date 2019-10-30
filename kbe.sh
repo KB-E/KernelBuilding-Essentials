@@ -24,14 +24,15 @@ fi
 if [ ! -f resources/other/firstrun ] && [ "$1" != --init ]; then
   # Initialize the Pre-Installation Script
   unset agreed_disclaimer
-  source resources/setup/preinstallation.sh
+  if [ ! -f logs/install_log.txt ]; then touch logs/install_log.txt; fi
+  source resources/setup/preinstallation.sh |& tee logs/install_log.txt
   # If user didn't agreed to it, exit KB-E
   if [ "$agreed_disclaimer" = "false" ]; then
     return 1
   fi
   kbelog -t "KB-E: Pre-Installation is done"
   # Initialize the Installation Script
-  source resources/setup/install.sh
+  source resources/setup/install.sh |& tee -a logs/install_log.txt
   kbelog -t "KB-E: Installation is done"
 fi
 
