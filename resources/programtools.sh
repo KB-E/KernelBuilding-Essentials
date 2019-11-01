@@ -16,56 +16,35 @@ export -f installtools; kbelog -f installtools
 
 function checktools() {
   kbelog -t "CheckTools: Checking dependencies..."
-  if [ -f $CDF/resources/other/missingdeps ]; then
-    rm $CDF/resources/other/missingdeps;
-  fi
   declare -a progtools=("git" "build-essential" "kernel-package" "fakeroot" "libncurses5-dev" "libssl-dev" "device-tree-compiler" "ccache" "libc++-dev")
   for i in "${progtools[@]}"
   do
     PROGRAMINST=$(dpkg -s "$i" | grep Status | cut -d ":" -f 2)
-    if [ "$PROGRAMINST" != " install ok installed" ]; then
-      echo -e "$RED$BLD   $i is Missing"; kbelog -t "CheckTools: $1 is missing"
-      touch $CDF/resources/other/missingdeps
-      echo "$1" >> $CDF/resources/other/missingdeps
-      MISSINGDEPS=1
+    if [ "$kernel_sourceROGRAMINST" != " install ok installed" ]; then
+      echo -e "$RED$BLD   $i is Missing"; kbelog -t "CheckTools: $i is missing"
+      export missing_dependencies=true
+      break
     fi
   done
-  if [ ! -f $CDF/resources/other/missingdeps ]; then
-    echo -e "$WHITE - All Dependencies checked$THEME$BLD (Pass)$RATT"
-    echo " "; kbelog -t "CheckTools: All dependencies installed"
-  fi
-  if [ "$MISSINGDEPS" = "1" ]; then
-    echo " "
-    echo -e "$RED$BLD - Some Dependecies are missing, KB-E cannot initialize without then, proceed to install? [Y/N]"
-    read INSTDEP
-    if [ "$INSTDEP" = "y" ] || [ "$INSTDEP" = "Y" ]; then
-      kbelog -t "CheckTools: Installing missing dependencies..."
-      installtools
-      kbelog -t "CheckTools: Done"
-    else
-      echo -e "$WHITE Exiting KB-E..."
-      export CWK=N; kbelog -t "CheckTools: User didn't wanted to install the missing dependencies, exiting KB-E..."
-    fi
-  fi
 }
 export -f checktools; kbelog -f checktools
 
 # Check if theres a kernel source
 function checksource() {
-  unset CWK
-  for folder in $CDF/source/*; do
+  unset available_kernel_source
+  for folder in $kbe_path/source/*; do
     if [ -f $folder/Makefile ]; then
-      kbelog -t "RunSettings: Kernel source found"
-      return 1
+      kbelog -t "RunSettings: Kernel source foudn"
+      break
     else
       echo -e "$RED - No Kernel Source Found...$BLD (Kernel source goes into 'source' folder)$RATT"
-      kbelog -t "RunSettings: Error, no kernel source found, exiting KB-E..."
-      export CWK=n
-      echo " "
-      return 1
+      kbelog -t "RunSettings: Error, no kernel source found"
+      export available_kernel_source=false
+      echo " "; break
     fi
   done
 }
+export -f checksource; kbelog -f checksource
 
 # Help command
 function kbhelp() {
@@ -92,7 +71,7 @@ export -f checkcc; kbelog -f checkcc
 function checkdtbtool() {
   kbelog -t "CheckDTBTool: Checking DTB Tool..."
   echo " "
-  if [ ! -f $CDF/resources/dtbtool/dtbtool.c ]; then # Check local dtbTool
+  if [ ! -f $kbe_path/resources/dtbtool/dtbtool.c ]; then # Check local dtbTool
   echo -e "$RED$BLD   DTB Tool source not found$RATT$WHITE"; kbelog -t "CheckDTBTool: DTB Tool source not found"
   echo -ne "$WHITE   Downloading from Github..."; kbelog -t "CheckDTBTool: Downloading from Github..."
   git clone https://github.com/KB-E/dtbtool resources/dtbtool &> /dev/null
@@ -104,42 +83,18 @@ fi
 }
 export -f checkdtbtool; kbelog -f checkdtbtool
 
-# Check Zip Tool
-function checkziptool() {
-  kbelog -t "CheckZipTool: Checking Zip tool..."
-  echo " "
-if ! [ -x "$(command -v zip)" ]; then # C'mon, just install it with:
-                                      # sudo apt-get install zip
-  echo -e "$RED$BLD   Zip is not installed, Kernel installer Zip will not be build!$WHITE"
-  echo " "; kbelog -t "CheckZipTool: Zip tool is not installed, Kernel installer will not be built"
-  read -p "   Install Zip Tool? [y/n]: " INSZIP
-  if [ $INSZIP = Y ] || [ $INSZIP = y ]; then
-    kbelog -t "CheckZipTool: Installing Zip tool..."
-    sudo apt-get install zip
-    kbelog -t "CheckZipTool: Done"
-  else
-    export NOBZ=1 # Tell the Zip building function to cancel the opetarion
-                  # because Zip tool is 100% necessary
-  fi
-else
-  export NOBZ=0 # Well, you had it, nice!
-  echo -e "$WHITE   Zip Tool Found! $RATT"; kbelog -t "CheckZipTool: Zip tool found"
-fi
-}
-export -f checkziptool; kbelog -f checkziptool
-
 function readfromdevice() {
-  # Read and export the desired value from the device file
+  # Read and export the desired value from the device_kernel_file
   case $1 in
-    "targetandroid") export TARGETANDROID=$(grep TARGETANDROID $KFPATH | cut -d '=' -f2) ;;
-          "version") export VERSION=$(grep VERSION $KFPATH | cut -d '=' -f2) ;;
-      "releasetype") export RELEASETYPE=$(grep RELEASETYPE $KFPATH | cut -d '=' -f2) ;;
-             "arch") export ARCH=$(grep ARCH $KFPATH | cut -d '=' -f2) ;;
-     "crosscompile") export CROSSCOMPILE=$(grep CROSSCOMPILE $KFPATH | cut -d '=' -f2) ;;
-            "kpath") export P=$(grep P $KFPATH | cut -d '=' -f2) ;;
-           "kdebug") export KDEBUG=$(grep KDEBUG $KFPATH | cut -d '=' -f2) ;;
-          "variant") export VARIANT=$(grep VARIANT $KFPATH | cut -d '=' -f2) ;;
-        "defconfig") export DEFCONFIG=$(grep DEFCONFIG $KFPATH | cut -d '=' -f2) ;;
+    "targetandroid") export target_android=$(grep target_android $device_kernel_file | cut -d '=' -f2) ;;
+          "version") export kernel_version=$(grep kernel_version $device_kernel_file | cut -d '=' -f2) ;;
+      "releasetype") export release_type=$(grep release_type $device_kernel_file | cut -d '=' -f2) ;;
+             "arch") export kernel_arch=$(grep kernel_arch $device_kernel_file | cut -d '=' -f2) ;;
+     "crosscompile") export kernel_cc=$(grep kernel_cc $device_kernel_file | cut -d '=' -f2) ;;
+            "kpath") export kernel_source=$(grep kernel_source $device_kernel_file | cut -d '=' -f2) ;;
+           "kdebug") export show_cc_out=$(grep show_cc_out $device_kernel_file | cut -d '=' -f2) ;;
+          "variant") export device_variant=$(grep device_variant $device_kernel_file | cut -d '=' -f2) ;;
+        "defconfig") export kernel_defconfig=$(grep kernel_defconfig $device_kernel_file | cut -d '=' -f2) ;;
   esac
 }
 function updatedevice() {
@@ -148,23 +103,23 @@ function updatedevice() {
                      # Update targetandroid in devicefile
     "targetandroid") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for targetandroid"; return 1; fi
                      readfromdevice targetandroid;
-                     sed -i "s/export TARGETANDROID=$TARGETANDROID/export TARGETANDROID=$2/g" $KFPATH;
-                     export TARGETANDROID=$2;
+                     sed -i "s/export target_android=$target_android/export target_android=$2/g" $device_kernel_file;
+                     export target_android=$2;
                      echo "KB-E: Update: targetandroid updated to '$2'"; return 1 ;;
                      # Update version in devicefile
 
           "version") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for version"; return 1; fi
                      readfromdevice version;
-                     sed -i "s/export VERSION=$VERSION/export VERSION=$2/g" $KFPATH;
-                     export VERSION=$2;
+                     sed -i "s/export kernel_version=$kernel_version/export kernel_version=$2/g" $device_kernel_file;
+                     export kernel_version=$2;
                      echo "KB-E: Update: version updated to '$2'"; return 1 ;;
 
       "releasetype") # Update the release type
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for releasetype"; return 1; fi
                      if [ "$2" = "Stable" ] || [ "$2" = "Beta" ]; then
                        readfromdevice releasetype
-                       sed -i "s/export RELEASETYPE=$RELEASETYPE/export RELEASETYPE=$2/g" $KFPATH;
-                       export RELEASETYPE=$2;
+                       sed -i "s/export release_type=$release_type/export release_type=$2/g" $device_kernel_file;
+                       export release_type=$2;
                        echo "KB-E: Update: releasetype updated to '$2'"; return 1;
                      else
                        echo "KB-E: Update: error, releasetype only accept 'Stable' or 'Beta' values";
@@ -175,21 +130,21 @@ function updatedevice() {
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for kdebug"; return 1; fi
                      if [ "$2" = "enabled" ]; then
                        readfromdevice kdebug
-                       if [ "$KDEBUG" = "1" ]; then
+                       if [ "$show_cc_out" = "true" ]; then
                          echo "KB-E: Update: kdebug is already enabled"; return 1
                        else
-                         sed -i "s/export KDEBUG=0/export KDEBUG=1/g" $KFPATH
-                         export KDEBUG=1
+                         sed -i "s/export show_cc_out=false/export show_cc_out=true/g" $device_kernel_file
+                         export show_cc_out=true
                          echo "KB-E: Update: kdebug is now enabled"; return 1
                        fi
                      fi
                      if [ "$2" = "disabled" ]; then
                        readfromdevice kdebug
-                       if [ "$KDEBUG" = "0" ]; then
+                       if [ "$show_cc_out" = "false" ]; then
                          echo "KB-E: Update: kdebug is already disabled"; return 1
                        else
-                         sed -i "s/export KDEBUG=1/export KDEBUG=0/g" $KFPATH
-                         export KDEBUG=0
+                         sed -i "s/export show_cc_out=true/export show_cc_out=false/g" $device_kernel_file
+                         export show_cc_out=false
                          echo "KB-E: Update: kdebug is now disabled"; return 1
                        fi
                      fi ;;
@@ -198,26 +153,26 @@ function updatedevice() {
                      if [ "$2" = "arm" ] || [ "$2" = "arm64" ]; then
                        readfromdevice arch
                        readfromdevice kpath
-                       if [ "$2" = "arm" ] && [ ! -d $P/arch/$ARCH ]; then
+                       if [ "$2" = "arm" ] && [ ! -d $kernel_source/arch/$kernel_arch ]; then
                          echo "KB-E: Update: error, you are trying to switch to 'arm' but your source doesnt support it";
                          return 1
-                       elif [ "$2" = "arm64" ] && [ ! -d $P/arch/$ARCH ]; then
+                       elif [ "$2" = "arm64" ] && [ ! -d $kernel_source/arch/$kernel_arch ]; then
                          echo "KB-E: Update: error, you are trying to switch to 'arm64' but your source doesnt support it";
                          return 1
                        fi
-                       sed -i "s/export ARCH=$ARCH/export ARCH=$2/" $KFPATH;
-                       export ARCH=$2;
+                       sed -i "s/export kernel_arch=$kernel_arch/export kernel_arch=$2/" $device_kernel_file;
+                       export kernel_arch=$2;
                        echo "KB-E: Update: arch type updated to '$2'";
                        if [ "$2" = "arm" ]; then
                          readfromdevice crosscompile;
-                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi-+g" $KFPATH;
+                         sed -i "s+export kernel_cc=$kernel_cc+export kernel_cc=$kbe_path/resources/crosscompiler/arm/bin/arm-linux-androideabi-+g" $device_kernel_file;
                          echo "KB-E: Update: crosscompile updated to arm to match arch type";
-                         export CROSSCOMPILE=$CDF/resources/crosscompiler/arm/bin/arm-linux-androideabi-
+                         export kernel_cc=$kbe_path/resources/crosscompiler/arm/bin/arm-linux-androideabi-
                        elif [ "$2" = "arm64" ]; then
                          readfromdevice crosscompile;
-                         sed -i "s+export CROSSCOMPILE=$CROSSCOMPILE+export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $KFPATH;
+                         sed -i "s+export kernel_cc=$kernel_cc+export kernel_cc=$kbe_path/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $device_kernel_file;
                          echo "KB-E: Update: crosscompile updated to arm64 to match arch type";
-                         export CROSSCOMPILE=$CDF/resources/crosscompiler/arm64/bin/aarch64-linux-android-
+                         export kernel_cc=$kbe_path/resources/crosscompiler/arm64/bin/aarch64-linux-android-
                        fi
                        return 1;
                      else
@@ -230,16 +185,16 @@ function updatedevice() {
                      readfromdevice arch; readfromdevice defconfig; #readfromdevice kpath;
                      if [ -z "$2" ]; then
                        echo "KB-E: Update: Select a defconfig:";
-                       cd $P/arch/$ARCH/configs/;
+                       cd $kernel_source/arch/$kernel_arch/configs/;
                        select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$DEF/g" $KFPATH;
-                       export DEFCONFIG=$DEF; unset DEF;
-                       cd $CURF; unset CURF; echo "KB-E: Update: defconfig updated to '$DEFCONFIG'";
+                       sed -i "s/export kernel_defconfig=$kernel_defconfig/export kernel_defconfig=$DEF/g" $device_kernel_file;
+                       export kernel_defconfig=$DEF; unset DEF;
+                       cd $CURF; unset CURF; echo "KB-E: Update: defconfig updated to '$kernel_defconfig'";
                        return 1;
                      fi
-                     if [ -f $P/arch/$ARCH/configs/"$2" ]; then
-                       sed -i "s/export DEFCONFIG=$DEFCONFIG/export DEFCONFIG=$2/g" $KFPATH;
-                       export DEFCONFIG=$2;
+                     if [ -f $kernel_source/arch/$kernel_arch/configs/"$2" ]; then
+                       sed -i "s/export kernel_defconfig=$kernel_defconfig/export kernel_defconfig=$2/g" $device_kernel_file;
+                       export kernel_defconfig=$2;
                        echo "KB-E: Update: defconfig updated to '$2'"; return 1;
                      else
                        echo "KB-E: Update: supplied defconfig file name doesn't exist in kernel source";
@@ -254,6 +209,7 @@ function updatedevice() {
     return 1
   fi
 }
+export -f updatedevice; kbelog -f updatedevice
 
 function bashrcPatch() {
   # Patch ~/.bashrc to load KB-E init file
@@ -263,15 +219,15 @@ function bashrcPatch() {
     kbelog -t "Install: Patching ~/.bashrc"; echo " "
     echo -ne "$THEME$BLD - Patching ~/.bashrc to load init file...$WHITE"
     echo "# Load KB-E init file" >> ~/.bashrc
-    echo "source $CDF/resources/init/init.sh" >> ~/.bashrc
+    echo "source $kbe_path/resources/init/init.sh" >> ~/.bashrc
     echo -e " Done$RATT"
   fi
 }
-export -f bashrcpatch
+export -f bashrcPatch; kbelog -f bashrcPatch
 
 function kbePatch() {
   # Create a init file for KB-E
-  INITPATH=$CDF/resources/init/init.sh
+  INITPATH=$kbe_path/resources/init/init.sh
   if [ ! -f $INITPATH ]; then
     touch $INITPATH
   fi
@@ -281,18 +237,18 @@ function kbePatch() {
   echo "# This is automatically generated, do not edit" >> $INITPATH
   echo "" >> $INITPATH
   echo "# Load KB-E Function and Path" >> $INITPATH
-  echo "CDF=$CDF" >> $INITPATH
-  echo "source $CDF/resources/other/colors.sh" >> $INITPATH
-  echo "source $CDF/resources/log.sh" >> $INITPATH
-  echo "source $CDF/core.sh --kbe" >> $INITPATH
+  echo "CDF=$kbe_path" >> $INITPATH
+  echo "source $kbe_path/resources/other/colors.sh" >> $INITPATH
+  echo "source $kbe_path/resources/log.sh" >> $INITPATH
+  echo "source $kbe_path/core.sh --kbe" >> $INITPATH
   echo "complete -W 'start upgrade' kbe" >> $INITPATH
   echo "" >> $INITPATH
   echo "# Load configurable init script" >> $INITPATH
-  echo "if [ -f $CDF/resources/init/kbeinit.sh ]; then" >> $INITPATH
-  echo "  source $CDF/resources/init/kbeinit.sh" >> $INITPATH
+  echo "if [ -f $kbe_path/resources/init/kbeinit.sh ]; then" >> $INITPATH
+  echo "  source $kbe_path/resources/init/kbeinit.sh" >> $INITPATH
   echo "fi" >> $INITPATH
 }
-export -f kbepatch
+export -f kbePatch; kbelog -f kbePatch
 
 function updatecompletion() {
   # Update the completion for kbe command
@@ -310,3 +266,4 @@ function updatecompletion() {
   done
   complete -W "start clean update upgrade status help --kernel --dtb $moduleargs" kbe
 }
+export -f updatecompletion; kbelog -f updatecompletion

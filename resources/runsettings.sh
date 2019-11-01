@@ -8,9 +8,6 @@ unset kernel_name; unset target_android; unset kernel_version; unset device_vari
 unset BLDTYPE; unset kernel_source; unset; unset clear_source_onbuild; unset ARMT; unset kernel_arch
 unset kernel_build_dtb; unset release_type; unset AKBO; unset show_cc_out; unset RD; unset release_type;
 
-# checksource # Check if theres a Kernel source to work with
-if [ "$CWK" = "n" ]; then return 1; fi
-
 #--------------------------------------
 # Script Functions
 #--------------------------------------

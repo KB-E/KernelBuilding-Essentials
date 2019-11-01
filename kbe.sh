@@ -141,11 +141,15 @@ function kbe() {
     # Clean things
     kbelog -t "KB-E Version: $VERSION"
     clear # Clear user UI for KB-E Summoning
-    unset CWK; unset CLRS
+    unset CLRS
     # DisplayTitle >:D
     kbelog -t "KB-E: Displaying title"; title 
     # Check KB-E dependencies
     kbelog -t "KB-E: Checking tools"; #checktools
+    #if [ "$missing_dependencies" = "true" ]; then installtools; fi; checktools
+    #if [ "$missing_dependencies" = "true" ]; then unset missing_dependencies; return 1; fi
+    checksource # Check if theres a Kernel source to work with
+    if [ "$available_kernel_source" = "false" ]; then return 1; fi
     # Initialize KB-E environment
     # Check for a stored device file specified by the user
     for c in $kbe_path/devices/*; do
@@ -200,13 +204,7 @@ function kbe() {
     source $kbe_path/resources/buildkernel.sh
     kbelog -t "LoadResources: Loading makedtb script" 
     # Load KB-E script with DTB Image building instructions
-    source $kbe_path/resources/makedtb.sh
-
-    # Oh no! Something went wrong, mission failed
-    if [ "$CWK" = "n" ] || [ "$CWK" = "N" ]; then
-      return 1
-    fi
-    echo " "
+    source $kbe_path/resources/makedtb.sh; echo " "
 
     # --------------------
     # Done, KB-E is ready!
@@ -224,7 +222,7 @@ function kbe() {
       if [ -f $kbe_path/devices/$KERNELNAME/$KERNELNAME.data ]; then
         rm $kbe_path/devices/$KERNELNAME/$KERNELNAME.data
       fi
-      echo -e "$RED$BLD - Session cancelled$RATT"
+      echo -e "$RED$BLD - KB-E couldn't initialize$RATT"
       kbelog -t "KB-E Session cancelled" 
       echo " "
       unset RD
@@ -237,7 +235,7 @@ function kbe() {
   # ------------------------------
   if [ "$1" = "update" ]; then
     # Only run if KB-E is ready
-    if [ -z "$KERNELNAME" ]; then
+    if [ -z "$kernel_name" ]; then
       return 1
     fi
     # If user didn't specified a setting, show usage
