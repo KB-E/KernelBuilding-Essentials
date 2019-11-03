@@ -24,11 +24,11 @@ fi
 if [ ! -d $1 ]; then echo -e "$RED$BLD   Invalid path$RATT"; return 1; fi
 if [ -z "$2" ]; then
   # Use default name
-  cp $DTOUT/$VARIANT $1/dt.img
+  cp $DTOUT/$device_variant $1/dt.img
   echo -e "   DTB for $VARIANT copied to ($1) named 'dt.img'"
 else
   # Use name provided by user
-  cp $DTOUT/$VARIANT $1/$2
+  cp $DTOUT/$device_variant $1/$2
   echo -e "   DTB for $VARIANT copied to ($1) named '$2'"
 fi
 }
@@ -63,7 +63,7 @@ export -f cpkernel; kbelog -f cpkernel
 # Clear the current working kernel source
 function clrsource() {
 BACK=$(pwd)
-cd $P
+cd $kernel_source
 make clean
 cd $BACK
 unset BACK
@@ -90,7 +90,7 @@ echo "             8 = Green"
 return 1
 fi
 
-COLORF=$CDF/resources/other/colors.sh
+COLORF=$kbe_path/resources/other/colors.sh
 CURTHEME="$(grep THEME $COLORF | cut -d '=' -f2)"
 case $1 in
      "1") sed -i "s/THEME=$CURTHEME/THEME=\$BLUE/g" $COLORF; echo "KB-E Theme set to Blue" ;;
@@ -102,7 +102,7 @@ case $1 in
      "7") sed -i "s/THEME=$CURTHEME/THEME=\$WHITE/g" $COLORF; echo "KB-E Theme set to White" ;;
      "8") sed -i "s/THEME=$CURTHEME/THEME=\$GREEN/g" $COLORF; echo "KB-E Theme set to Green" ;;
 esac
-source $CDF/resources/other/colors.sh
+source $kbe_path/resources/other/colors.sh
 }
 
 function cdkbe () {
