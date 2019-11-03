@@ -130,6 +130,14 @@ function kbe() {
     kbe_themer "$2"
   fi
 
+  # ------------
+  # CD into KB-E
+  # ------------
+  if [ "$1" = "root" ]; then
+    # Get inside KB-E root
+    cd $kbe_path
+  fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------
