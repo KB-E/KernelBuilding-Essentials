@@ -76,33 +76,35 @@ rm $LOGF/*
 echo -e "$WHITE   Logs files removed$RATT"
 }
 
-function theme() {
+function kbe_themer() {
 if [ "$1" = "" ]; then
-echo "Usage: theme <number>"
-echo "             1 = Blue"
-echo "             2 = Red"
-echo "             3 = Yellow"
-echo "             4 = Magenta"
-echo "             5 = Black"
-echo "             6 = Cyan"
-echo "             7 = White"
-echo "             8 = Green" 
+echo " "; echo -e "$THEME$BLD   Usage:$WHITE theme <number>"
+echo -e "$BLUE$BLD                1 =$WHITE Blue"
+echo -e "$RED$BLD                2 =$WHITE Red"
+echo -e "$YELLOW$BLD                3 =$WHITE Yellow"
+echo -e "$MAGENTA$BLD                4 =$WHITE Magenta"
+echo -e "$BLACK$BLD                5 =$WHITE Black"
+echo -e "$CYAN$BLD                6 =$WHITE Cyan"
+echo -e "$WHITE$BLD                7 =$WHITE White"
+echo -e "$GREEN$BLD                8 =$WHITE Green$RATT"; echo " "
 return 1
 fi
 
 COLORF=$kbe_path/resources/other/colors.sh
 CURTHEME="$(grep THEME $COLORF | cut -d '=' -f2)"
+echo " "
 case $1 in
-     "1") sed -i "s/THEME=$CURTHEME/THEME=\$BLUE/g" $COLORF; echo "KB-E Theme set to Blue" ;;
-     "2") sed -i "s/THEME=$CURTHEME/THEME=\$RED/g" $COLORF; echo "KB-E Theme set to Red" ;;
-     "3") sed -i "s/THEME=$CURTHEME/THEME=\$YELLOW/g" $COLORF; echo "KB-E Theme set to Yellow" ;;
-     "4") sed -i "s/THEME=$CURTHEME/THEME=\$MAGENTA/g" $COLORF; echo "KB-E Theme set to Magenta" ;;
-     "5") sed -i "s/THEME=$CURTHEME/THEME=\$BLACK/g" $COLORF; echo "KB-E Theme set to Black" ;;
-     "6") sed -i "s/THEME=$CURTHEME/THEME=\$CYAN/g" $COLORF; echo "KB-E Theme set to Cyan" ;;
-     "7") sed -i "s/THEME=$CURTHEME/THEME=\$WHITE/g" $COLORF; echo "KB-E Theme set to White" ;;
-     "8") sed -i "s/THEME=$CURTHEME/THEME=\$GREEN/g" $COLORF; echo "KB-E Theme set to Green" ;;
+     "1") sed -i "s/THEME=$CURTHEME/THEME=\$BLUE/g" $COLORF; echo -e "   KB-E Theme set to$BLUE$BLD Blue" ;;
+     "2") sed -i "s/THEME=$CURTHEME/THEME=\$RED/g" $COLORF; echo -e "   KB-E Theme set to$RED$BLD Red" ;;
+     "3") sed -i "s/THEME=$CURTHEME/THEME=\$YELLOW/g" $COLORF; echo -e "   KB-E Theme set to$YELLOW$BLD Yellow" ;;
+     "4") sed -i "s/THEME=$CURTHEME/THEME=\$MAGENTA/g" $COLORF; echo -e "   KB-E Theme set to$MAGENTA$BLD Magenta" ;;
+     "5") sed -i "s/THEME=$CURTHEME/THEME=\$BLACK/g" $COLORF; echo -e "   KB-E Theme set to$BLACK$BLD Black" ;; 
+     "6") sed -i "s/THEME=$CURTHEME/THEME=\$CYAN/g" $COLORF; echo -e "   KB-E Theme set to$CYAN$BLD Cyan" ;;
+     "7") sed -i "s/THEME=$CURTHEME/THEME=\$WHITE/g" $COLORF; echo -e "   KB-E Theme set to$WHITE$BLD White" ;; 
+     "8") sed -i "s/THEME=$CURTHEME/THEME=\$GREEN/g" $COLORF; echo -e "   KB-E Theme set to$GREEN$BLD Green" ;;
+       *) echo -e "$RED$BLD   KB-E Warning:$WHITE invalid theme$RATT"
 esac
-source $kbe_path/resources/other/colors.sh
+source $kbe_path/resources/other/colors.sh; echo " "
 }
 
 function cdkbe () {

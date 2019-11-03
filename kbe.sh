@@ -122,6 +122,14 @@ function kbe() {
     fi
   fi
 
+  # ----------
+  # KB-E Theme
+  # ----------
+  if [ "$1" = "theme" ]; then
+    # Start the themer
+    kbe_themer "$2"
+  fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------
