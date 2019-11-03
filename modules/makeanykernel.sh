@@ -61,7 +61,7 @@ function anykernel() {
 # Read version
 readfromdevice version
 # Load AK Config file
-source $KDPATH/akconfig
+source $device_kernel_path/akconfig
 # Tittle
 echo -ne "$THEME$BLD"
 echo -e "     _            _  __                 _ "
@@ -73,10 +73,8 @@ echo " "
 echo -e "$THEME$BLD   --------------------------$WHITE"
 echo -e "$WHITE - AnyKernel Installer Building Script  $RATT$WHITE"
 export DATE=`date +%Y-%m-%d`
-echo -e "   Kernel:$THEME$BLD $KERNELNAME$WHITE; Variant:$THEME$BLD $VARIANT$WHITE; Date:$THEME$BLD $DATE$WHITE"
+echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE; Date:$THEME$BLD $DATE$WHITE"
 
-# Setup MakeAnykernel
-checkfolders --silent
 # Check MakeAnykerel out folder
 if [ ! -d $AKOUT ]; then
   mkdir $AKOUT
@@ -85,7 +83,7 @@ fi
 # Check Zip Tool
 checkziptool &> /dev/null
 # Check buildkernel.sh KBUILDFAILED variable
-if [ "$KBUILDFAILED" = "1" ]; then
+if [ "$kernel_build_failed" = "true" ]; then
   echo -e "$RED$BLD   Warning:$WHITE the previous kernel were not built successfully"
   read -p "Ignore this warning and continue? [Y/N]: " CAB           # KBUILDFAILED tell us if the lastest kernel
   if [ "$CAB" = "y" ] || [ "$CAB" = "Y" ]; then                     # building failed, but, we still have the
@@ -93,7 +91,7 @@ if [ "$KBUILDFAILED" = "1" ]; then
   else                                                              # ask the user if he wants to continue building
     echo -e "$WHITE   Aborting..."                                  # the anykernel installer, if not, exit the
     echo -e "$THEME$BLD   --------------------------$WHITE"         # module.
-    cd $CDF
+    cd $kbe_path
     return 1
   fi
 fi
@@ -110,8 +108,8 @@ if [ "$enable_kupdate" = "y" ]; then
     cp $KOUT/$selected_image $AKFOLDER/
   fi
   echo -e "$WHITE$BLD   Kernel Updated. $selected_image Automatically selected"
-  if [ -f $DTOUT/$VARIANT ]; then
-    cp $DTOUT/$VARIANT $AKFOLDER/dtb
+  if [ -f $DTOUT/$device_variant ]; then
+    cp $DTOUT/$device_variant $AKFOLDER/dtb
     echo -e "$WHITE$BLD   DTB Updated"
     echo -e "   Done"
   fi
@@ -121,9 +119,9 @@ else
 fi
 
 # Make the kernel installer zip
-export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-"$TARGETANDROID"_"$VARIANT".zip
-KREVF=$KDPATH/$KERNELNAME.rev
-if [ $RELEASETYPE = "Beta" ]; then
+export ZIPNAME="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-"$target_android"_"$device_variant".zip
+KREVF=$device_kernel_path/$kernel_name.rev
+if [ $release_type = "Beta" ]; then
   if [ ! -f $KREVF ]; then
     touch $KREVF
     echo 0 > $KREVF
@@ -132,10 +130,10 @@ if [ $RELEASETYPE = "Beta" ]; then
   REVSUM=$((1+REVN))
   export REV=$REVSUM
   echo $REV > $KREVF
-  export ZIPNAME="$KERNELNAME"-v"$VERSION"-"$ARCH"-"$RELEASETYPE"-Rev"$REV"-"$TARGETANDROID"_"$VARIANT".zip
+  export ZIPNAME="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-Rev"$REV"-"$target_android"_"$device_variant".zip
 fi
 echo -e "$THEME$BLD   Zip Name: $WHITE$ZIPNAME"
-echo -ne "$WHITE$BLD   Building Flasheable zip for $VARIANT...$RATT$WHITE"
+echo -ne "$WHITE$BLD   Building Flasheable zip for $device_variant...$RATT$WHITE"
 cd $AKFOLDER
 zip -r9 $ZIPNAME * &> /dev/null
 mv $ZIPNAME $AKOUT/

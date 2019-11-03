@@ -5,7 +5,7 @@
 # Enter the current working kernel source
 function cdsource() {
 BACK=$(pwd)
-cd $P
+cd $kernel_source
 }
 export -f cdsource; kbelog -f cdsource
 # Back
