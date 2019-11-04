@@ -2,19 +2,6 @@
 # Simple utility commands
 # By Artx/Stayn <artx4dev@gmail.com>
 
-# Enter the current working kernel source
-function cdsource() {
-BACK=$(pwd)
-cd $kernel_source
-}
-export -f cdsource; kbelog -f cdsource
-# Back
-function back() {
-cd $BACK
-BACK=.
-}
-export -f back; kbelog -f back
-
 # Copy the DTB Image to a specified path
 function cpdtb() {
 if [ "$1" = "" ]; then
@@ -105,8 +92,4 @@ case $1 in
        *) echo -e "$RED$BLD   KB-E Warning:$WHITE invalid theme$RATT"
 esac
 source $kbe_path/resources/other/colors.sh; echo " "
-}
-
-function cdkbe () {
-cd $kbe_path
 }

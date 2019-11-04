@@ -46,13 +46,6 @@ function checksource() {
 }
 export -f checksource; kbelog -f checksource
 
-# Help command
-function kbhelp() {
-  kbelog -t "kbehelp: Displaying help file to user"
-  nano $HFP;
-}
-export -f kbhelp; kbelog -f kbhelp
-
 # Check CrossCompiler
 function checkcc() {
   kbelog -t "CheckCC: Checking CrossCompiler..."
