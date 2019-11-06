@@ -207,12 +207,14 @@ function getmodules() {
     read  EM
     if [ "$EM" = y ] || [ "$EM" = Y ]; then
       kbelog -t "RunSettings: Module '$(grep MODULE_NAME $i | cut -d '=' -f2)' enabled" 
-      echo "export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
-      echo "export MPATH$((x++))=$i" >> $MLIST
+      echo "if [ -f $i ]; then" >> $MLIST
+      echo "  export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
+      echo "  export MPATH$((x++))=$i" >> $MLIST
       kbelog -t "RunSettings: Running '$(grep MODULE_NAME $i | cut -d '=' -f2)' module" 
       source $i
       # Save the path to execute the module, needed by device kernel_name file
-      echo "source $i" >> $MLIST
+      echo "  source $i" >> $MLIST
+      echo "fi" >> $MLIST
     fi
   done
   kbelog -t "RunSettings: Exporting modules configuration" 

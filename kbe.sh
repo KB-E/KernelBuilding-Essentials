@@ -62,7 +62,9 @@ function kbe() {
       do
         path=MPATH$(($i - 1))
         [[ ${!path} ]]
-        echo -e "              --${!var} $THEME$BLD($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))$WHITE"
+        if [ -f ${!path} ]; then
+          echo -e "              --${!var} $THEME$BLD($(grep MODULE_DESCRIPTION ${!path} | cut -d '=' -f2))$WHITE"
+        fi
       done
       echo " "
       echo -e "              --all $THEME$BLD(Does everything mentioned above)      $WHITE  | Work alone "
@@ -308,14 +310,16 @@ function kbe() {
     do
       path=MPATH$(($i - 1))
       [[ ${!path} ]]
-      if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$a" ] && [ "$RD" = "1" ]; then
-        EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
-        kbelog -t "Executing '$(grep MODULE_NAME ${!path} | cut -d '=' -f2)' Module..." 
-        # Before executing a module, save the current path
-        CURF=$(pwd)
-        $EXEC
-        # Head back to the saved path
-        cd $CURF; unset CURF
+      if [ -f ${!path} ]; then
+        if [ "--$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)" = "$a" ] && [ "$RD" = "1" ]; then
+          EXEC=$(grep MODULE_FUNCTION_NAME ${!path} | cut -d '=' -f2)
+          kbelog -t "Executing '$(grep MODULE_NAME ${!path} | cut -d '=' -f2)' Module..." 
+          # Before executing a module, save the current path
+          CURF=$(pwd)
+          $EXEC
+          # Head back to the saved path
+          cd $CURF; unset CURF
+        fi
       fi
     done
   done
