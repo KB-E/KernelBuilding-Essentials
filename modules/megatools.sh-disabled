@@ -10,7 +10,7 @@
 # ---------------------------
 # MODULE_NAME=MegaTools
 # MODULE_VERSION=1.0
-# MODULE_DESCRIPTION="MegaTools, this module handles the config of megatools, download and uploading of files"
+# MODULE_DESCRIPTION="Configure and upload files to MEGA"
 # MODULE_PRIORITY=1
 # MODULE_FUNCTION_NAME=megaupload
 # ---------------------------
