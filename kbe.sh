@@ -3,7 +3,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # KB-E Version and Revision
-VERSION=1.0; REVISION=1
+VERSION=1.0
 # Make sure this scripts only runs with bash,
 # for example: . core.sh or source core.sh
 if readlink /proc/$$/exe | grep -q "dash"; then
