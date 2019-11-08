@@ -65,7 +65,7 @@ function buildkernel() {
   done
 
   # Check if the defconfig doesn't exist
-  if [ ! -f $kernel_defconfig ]; then
+  if [ ! -f $kernel_source/arch/$kernel_arch/configs/$kernel_defconfig ]; then
     echo -e "$RED$BLD   Error:$WHITE Defconfig: '$kernel_defconfig' is missing$RATT"
     export kernel_build_failed=true; echo " "; return 1
   fi
