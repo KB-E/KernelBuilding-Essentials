@@ -187,22 +187,27 @@ function kbe() {
     for c in $kbe_path/devices/*; do
       if [ "$2" = "$(basename $c)" ]; then
         DEVICE=$(basename $c)
-        echo -e "   $THEME$BLD$DEVICE$WHITE device found...!$RATT"
+        echo -e "$WHITE  ------------------------------------"
+  	echo -e "$THEME$BLD              Device Found            "
+  	echo -e "$WHITE  ------------------------------------"
+        echo -e " "
+        echo -e "$THEME$BLD   Name:$WHITE $device_variant"
         # Count directories in that device folder
         DNUMBER=$(find $kbe_path/devices/"$DEVICE"/* -maxdepth 0 -type d -print| wc -l)
         if [ "$DNUMBER" = "1" ]; then
           DATAFOLDER=$(basename $kbe_path/devices/$DEVICE/*)
-          echo -e "$THEME$BLD   Info:$WHITE This device only contains one Kernel configured"
-          echo -e "   $THEME$BLD$DATAFOLDER$WHITE found and sourced$RATT"
+          echo -e "$THEME$BLD   Kernel: $WHITE$DATAFOLDER found and sourced$RATT"
+          echo " "; echo -e "$WHITE  ------------------------------------"
           # The name of the data folder is the "kernelname"
           # and inside that folder theres another "kernelname.data"
           device_kernel_path=$kbe_path/devices/$DEVICE/$DATAFOLDER/                 # Build Kernel Directory path
           device_kernel_file=$kbe_path/devices/$DEVICE/$DATAFOLDER/$DATAFOLDER.data # Build Kernel File path
         else
-          echo -e "$THEME$BLD   Info:$WHITE This device has more than one Kernel configured"
+          echo -e "$THEME$BLD   Info:$WHITE This device has more than"
+          echo -e "         one Kernel configured"
           # If the user didn't specified the <kernelname> or is invalid, pick from list
           if [ -z "$3" ] || [ ! -d $kbe_path/devices/$DEVICE/$3 ]; then
-            echo -e "   Please select one from the list"
+            echo -e "$THEME$BLD   Info:$WHITE Please select one from the list"
             # Remember last path position
             CURF=$(pwd); cd $c
             # Make the list
@@ -214,7 +219,8 @@ function kbe() {
           elif [ -d $kbe_path/devices/$DEVICE/$3 ]; then
             DATAFOLDER=$3
           fi
-          echo -e "   $THEME$BLD$DATAFOLDER$WHITE sourced$RATT"
+          echo -e "$THEME$BLD   Kernel: $WHITE$DATAFOLDER found and sourced$RATT"
+          echo " "; echo -e "$WHITE  ------------------------------------"
           device_kernel_path=$kbe_path/devices/$DEVICE/$DATAFOLDER                  # Build Kernel Directory Path
           device_kernel_file=$kbe_path/devices/$DEVICE/$DATAFOLDER/$DATAFOLDER.data # Build Kernel File path
         fi
