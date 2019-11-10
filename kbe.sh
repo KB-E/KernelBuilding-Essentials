@@ -143,6 +143,17 @@ function kbe() {
     cd $kbe_path
   fi
 
+  # ---------------------
+  # CD into Kernel Source
+  # ---------------------
+  if [ "$1" = "cdsource" ]; then
+    if [ -z "$kernel_source" ]; then
+      echo "KB-E: Start a device first"
+    else
+      cd $kernel_source
+    fi
+  fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------

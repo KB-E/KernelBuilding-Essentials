@@ -257,6 +257,6 @@ function updatecompletion() {
       module=MODULE$X
     fi
   done
-  complete -W "start clean update upgrade status help --kernel --dtb theme root $moduleargs" kbe
+  complete -W "start clean update upgrade status help --kernel --dtb theme root cdsource $moduleargs" kbe
 }
 export -f updatecompletion; kbelog -f updatecompletion
