@@ -300,6 +300,8 @@ function kbe() {
   # it is specified
   # ------------------------
   unset n; unset build_threads
+  # Set by default all available threads
+  export build_threads=$(nproc)
   for n in $@; do
     [[ "$n" == "-j"* ]] &&
     export build_threads=$(echo $n | grep -o -E '[0-9]+' | head -1 | sed -e 's/^0\+//')
