@@ -90,15 +90,14 @@ function buildkernel() {
   kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
   # -----------------------
 
-  # Get the number of CPU Cores
-  JOBS=$(grep -c ^processor /proc/cpuinfo); kbelog -t "BuildKernel: Number of Cores=$JOBS"
   # Start compiling kernel
-  echo -e "$WHITE   Compiling Kernel using up to $JOBS cores...$RATT"
+  kbelog -t "BuildKernel: Number of Cores=$build_threads"
+  echo -e "$WHITE   Compiling Kernel using up to $build_threads cores...$RATT"
   echo -e "$THEME$BLD   --------------------------$WHITE"
   echo " "
   kbelog -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $kernel_defconfig | arch=$kernel_arch)"
   if [ "$show_cc_out" = "true" ]; then
-    make -j$(nproc) ARCH=$kernel_arch 
+    make -j$build_threads ARCH=$kernel_arch
   else
     source $kbe_path/resources/buildkernel-assistant.sh
   fi

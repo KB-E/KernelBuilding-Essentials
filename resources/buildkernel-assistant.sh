@@ -20,7 +20,7 @@ function clearlastline() {
 function compile_kernel() {
   # Start compiling kernel, outdirected to log.txt
   # to analyse it while its building
-  make -j$(nproc) ARCH=$kernel_arch &>> $kbe_path/logs/build-assistant_log.txt
+  make -j$build_threads ARCH=$kernel_arch &>> $kbe_path/logs/build-assistant_log.txt
   # Done, tell klog_analysis we're done
   echo "compiling done" >> $kbe_path/logs/build-assistant_log.txt
 }
