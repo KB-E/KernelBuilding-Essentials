@@ -191,7 +191,7 @@ function kbe() {
   	echo -e "$THEME$BLD              Device Found            "
   	echo -e "$WHITE  ------------------------------------"
         echo -e " "
-        echo -e "$THEME$BLD   Name:$WHITE $device_variant"
+        echo -e "$THEME$BLD   Name:$WHITE $DEVICE"
         # Count directories in that device folder
         DNUMBER=$(find $kbe_path/devices/"$DEVICE"/* -maxdepth 0 -type d -print| wc -l)
         if [ "$DNUMBER" = "1" ]; then
@@ -295,6 +295,22 @@ function kbe() {
     fi
   fi
 
+  # ------------------------
+  # Get number of threads if
+  # it is specified
+  # ------------------------
+  unset n; unset build_threads
+  for n in $@; do
+    [[ "$n" == "-j"* ]] &&
+    export build_threads=$(echo $n | grep -o -E '[0-9]+' | head -1 | sed -e 's/^0\+//')
+    if [ "$build_threads" = "" ]; then
+      export build_threads=$(nproc)
+    elif (( $build_threads > $(nproc) )); then echo " ";
+      echo -e "$RED$BLD Warning:$WHITE Number of threads specified   $THEME$BLD($build_threads)"
+      echo -e "$WHITE          is higher than existing ones  $RED$BLD($(nproc))$RATT"; echo " "
+    fi
+  done
+
   # -----------------------
   # Kernel, DTB and Modules
   # -----------------------
@@ -302,6 +318,14 @@ function kbe() {
   # ones are top priority
   for g in $@; do
     if [ "$g" = "--kernel" ] || [ "$g" = "-k" ] && [ "$RD" = "1" ]; then
+      # Get number of threads if it's specified
+      for n in $@; do
+        if [ "$n" = "-j"* ]; then
+          build_threads=$(grep "-j" $n | cut -d 'j' -f2)
+          echo $build_threads
+          echo "detected"
+        fi
+      done
       # User wants his kernel... If it builds...
       kbelog -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" 
       # Before start building, save the current folder path
