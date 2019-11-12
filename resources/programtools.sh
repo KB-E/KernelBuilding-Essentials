@@ -76,7 +76,7 @@ fi
 }
 export -f checkdtbtool; kbelog -f checkdtbtool
 
-function readfromdevice() {
+function device_read() {
   # Read and export the desired value from the device_kernel_file
   case $1 in
     "targetandroid") export target_android=$(grep target_android $device_kernel_file | cut -d '=' -f2) ;;
@@ -84,33 +84,33 @@ function readfromdevice() {
       "releasetype") export release_type=$(grep release_type $device_kernel_file | cut -d '=' -f2) ;;
              "arch") export kernel_arch=$(grep kernel_arch $device_kernel_file | cut -d '=' -f2) ;;
      "crosscompile") export kernel_cc=$(grep kernel_cc $device_kernel_file | cut -d '=' -f2) ;;
-            "kpath") export kernel_source=$(grep kernel_source $device_kernel_file | cut -d '=' -f2) ;;
-           "kdebug") export show_cc_out=$(grep show_cc_out $device_kernel_file | cut -d '=' -f2) ;;
+     "kernelsource") export kernel_source=$(grep kernel_source $device_kernel_file | cut -d '=' -f2) ;;
+           "showcc") export show_cc_out=$(grep show_cc_out $device_kernel_file | cut -d '=' -f2) ;;
           "variant") export device_variant=$(grep device_variant $device_kernel_file | cut -d '=' -f2) ;;
         "defconfig") export kernel_defconfig=$(grep kernel_defconfig $device_kernel_file | cut -d '=' -f2) ;;
   esac
 }
-function updatedevice() {
+function device_write() {
   # Check if the user supplied a available setting and process it
   case $1 in
                      # Update targetandroid in devicefile
     "targetandroid") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for targetandroid"; return 1; fi
-                     readfromdevice targetandroid;
+                     device_read targetandroid;
                      sed -i "s/export target_android=$target_android/export target_android=$2/g" $device_kernel_file;
                      export target_android=$2;
                      echo "KB-E: Update: targetandroid updated to '$2'"; return 1 ;;
                      # Update version in devicefile
 
           "version") if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for version"; return 1; fi
-                     readfromdevice version;
+                     device_read version;
                      sed -i "s/export kernel_version=$kernel_version/export kernel_version=$2/g" $device_kernel_file;
                      export kernel_version=$2;
                      echo "KB-E: Update: version updated to '$2'"; return 1 ;;
 
       "releasetype") # Update the release type
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for releasetype"; return 1; fi
-                     if [ "$2" = "Stable" ] || [ "$2" = "Beta" ]; then
-                       readfromdevice releasetype
+                     if [ "$2" = "stable" ] || [ "$2" = "beta" ]; then
+                       device_read releasetype
                        sed -i "s/export release_type=$release_type/export release_type=$2/g" $device_kernel_file;
                        export release_type=$2;
                        echo "KB-E: Update: releasetype updated to '$2'"; return 1;
@@ -119,10 +119,10 @@ function updatedevice() {
                        return 1;
                      fi ;;
 
-           "kdebug") # Update the Kernel debugging toggle
-                     if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for kdebug"; return 1; fi
-                     if [ "$2" = "enabled" ]; then
-                       readfromdevice kdebug
+           "showcc") # Update the Kernel debugging toggle
+                    if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for kdebug"; return 1; fi
+                     if [ "$2" = "yes" ]; then
+                       device_read showcc
                        if [ "$show_cc_out" = "true" ]; then
                          echo "KB-E: Update: kdebug is already enabled"; return 1
                        else
@@ -131,8 +131,8 @@ function updatedevice() {
                          echo "KB-E: Update: kdebug is now enabled"; return 1
                        fi
                      fi
-                     if [ "$2" = "disabled" ]; then
-                       readfromdevice kdebug
+                     if [ "$2" = "no" ]; then
+                       device_read showcc
                        if [ "$show_cc_out" = "false" ]; then
                          echo "KB-E: Update: kdebug is already disabled"; return 1
                        else
@@ -141,11 +141,26 @@ function updatedevice() {
                          echo "KB-E: Update: kdebug is now disabled"; return 1
                        fi
                      fi ;;
+
+     "kernelsource") # Update the Kernel source
+                     cd $kbe_path/source; device_read arch; device_read kernelsource;
+                     echo " "; echo -e "$WHITE   Select a$THEME$BLD Kernel Source:$WHITE"
+  		     select NEWPATH in */; do test -n "$NEWPATH" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
+  		     if [ $kernel_arch = arm64 ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+   		       echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"; echo " "
+    		       cd $kbe_path; return 1
+ 		     elif [ $kernel_arch = arm ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+   		       echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"; echo " "
+ 		       cd $kbe_path; return 1
+ 		     fi
+		     cd $kbe_path; sed -i "s+export kernel_source=$kernel_source+export kernel_source=$kbe_path/source/$NEWPATH+g" $device_kernel_file
+  		     device_read kernelsource; echo " "; echo -e "$THEME$BLD   Done$RATT"; echo " "; return 1 ;;
+
              "arch") # Update the arch type (this also includes the crosscompiler automatically)
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for arch"; return 1; fi
                      if [ "$2" = "arm" ] || [ "$2" = "arm64" ]; then
-                       readfromdevice arch
-                       readfromdevice kpath
+                       device_read arch
+                       device_read kpath
                        if [ "$2" = "arm" ] && [ ! -d $kernel_source/arch/$kernel_arch ]; then
                          echo "KB-E: Update: error, you are trying to switch to 'arm' but your source doesnt support it";
                          return 1
@@ -157,12 +172,12 @@ function updatedevice() {
                        export kernel_arch=$2;
                        echo "KB-E: Update: arch type updated to '$2'";
                        if [ "$2" = "arm" ]; then
-                         readfromdevice crosscompile;
+                         device_read crosscompile;
                          sed -i "s+export kernel_cc=$kernel_cc+export kernel_cc=$kbe_path/resources/crosscompiler/arm/bin/arm-linux-androideabi-+g" $device_kernel_file;
                          echo "KB-E: Update: crosscompile updated to arm to match arch type";
                          export kernel_cc=$kbe_path/resources/crosscompiler/arm/bin/arm-linux-androideabi-
                        elif [ "$2" = "arm64" ]; then
-                         readfromdevice crosscompile;
+                         device_read crosscompile;
                          sed -i "s+export kernel_cc=$kernel_cc+export kernel_cc=$kbe_path/resources/crosscompiler/arm64/bin/aarch64-linux-android-+g" $device_kernel_file;
                          echo "KB-E: Update: crosscompile updated to arm64 to match arch type";
                          export kernel_cc=$kbe_path/resources/crosscompiler/arm64/bin/aarch64-linux-android-
@@ -175,7 +190,7 @@ function updatedevice() {
 
         "defconfig") # Update the defconfig file
                      CURF=$(pwd)
-                     readfromdevice arch; readfromdevice defconfig; #readfromdevice kpath;
+                     device_read arch; device_read defconfig; #device_read kpath;
                      if [ -z "$2" ]; then
                        echo "KB-E: Update: Select a defconfig:";
                        cd $kernel_source/arch/$kernel_arch/configs/;
@@ -202,7 +217,7 @@ function updatedevice() {
     return 1
   fi
 }
-export -f updatedevice; kbelog -f updatedevice
+export -f device_write; kbelog -f device_write
 
 function bashrcPatch() {
   # Patch ~/.bashrc to load KB-E init file

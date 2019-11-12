@@ -281,17 +281,18 @@ function kbe() {
       echo " "
       echo "KB-E Update usage: kbe update <setting> <newvalue>"
       echo " "
-      echo "Settings: - targetandroid (whatever)"
-      echo "          - version (only numbers preferred)"
-      echo "          - releasetype ( Beta | Stable )"
-      echo "          - arch ( arm | arm64 )"
-      echo "          - defconfig (Select from list if no newvalue)"
-      echo "          - kdebug ( enabled | disabled )"
+      echo "Settings: - targetandroid | Whatever"
+      echo "          - version       | Numbers preferred"
+      echo "          - releasetype   | stable | beta"
+      echo "          - arch          | arm | arm64"
+      echo "          - kernelsource  | Select from list"
+      echo "          - defconfig     | Select from list if not specified"
+      echo "          - showcc        | yes | no"
       echo " "
     else
       # If user specified a valid or invalid setting,
       # function "updatedevice" is now reponsible
-      updatedevice $2 $3
+      device_write $2 $3
     fi
   fi
 
