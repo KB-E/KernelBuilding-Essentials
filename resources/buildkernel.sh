@@ -97,7 +97,10 @@ function buildkernel() {
   echo " "
   kbelog -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $kernel_defconfig | arch=$kernel_arch)"
   if [ "$show_cc_out" = "true" ]; then
-    make -j$build_threads ARCH=$kernel_arch
+    { { make -j$build_threads \
+             ARCH=$kernel_arch \
+             2>&1 1>&3;
+    } | tee $kbe_path/logs/$kernel_name-gcc-warnings.txt; } 3>&1;
   else
     source $kbe_path/resources/buildkernel-assistant.sh
   fi
