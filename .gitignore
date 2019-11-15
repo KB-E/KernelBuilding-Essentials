@@ -10,6 +10,7 @@ source/
 backup/
 out/
 anykernelfiles/
+linaro/
 
 #--------------
 # Files
