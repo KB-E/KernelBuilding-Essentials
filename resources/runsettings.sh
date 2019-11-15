@@ -73,39 +73,14 @@ function getarch() {
 # Download CC Based on Arch
 function getcc() {
   # Define arm & arm64 CC paths
-  CC=$kbe_path/resources/crosscompiler/arm/bin/arm-linux-androideabi-
-  CC64=$kbe_path/resources/crosscompiler/arm64/bin/aarch64-linux-android-
-  # Export the correspondent CrossCompiler for the ARCH Type
-  case $kernel_arch in
-       "arm") 
-              kbelog -t "RunSettings: CC = $CC" ;
-              # Check for arm CC
-              if [ ! -f "$CC"gcc ]; then
-                kbelog -t "RunSettings: arm CC not found, downloading...";
-                echo -ne "$WHITE   Downloading the$THEME$BLD arm$WHITE CrossCompiler$THEME$BLD...";
-                git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $kbe_path/resources/crosscompiler/arm/ &> /dev/null;
-                echo -e "$WHITE Done"; kbelog -t "RunSettings: Done"; echo " ";
-              fi;
-              export kernel_cc=$CC ;;
-              
-     "arm64") kbelog -t "RunSettings: CC = $cc64" ;
-              # Check for arm64 CC
-              if [ ! -f "$CC64"gcc ]; then
-                kbelog -t "RunSettings: arm64 CC not found, downloading...";
-                echo -ne "$WHITE   Downloading the$THEME$BLD arm64$WHITE CrossCompiler$THEME$BLD...";
-                git clone https://github.com/KB-E/aarch64-linux-android-4.9 $kbe_path/resources/crosscompiler/arm64/ &> /dev/null;
-                echo -e "$WHITE Done"; kbelog -t "RunSettings: Done"; echo " ";
-              fi;
-              # Check for arm CC (Needed by some arm64 kernels)
-              if [ ! -f "$CC"gcc ]; then
-                kbelog -t "RunSettings: arm CC not found, downloading...";
-                echo -ne "$WHITE   Downloading the$THEME$BLD arm$WHITE CrossCompiler$THEME$BLD...";
-                git clone https://github.com/KB-E/arm-linux-androideabi-4.9 $kbe_path/resources/crosscompiler/arm/ &> /dev/null;
-                echo -e "$WHITE Done"; kbelog -t "RunSettings: Done" ; echo " ";
-              fi;
-              export kernel_cc=$CC64;
-              export CROSS_COMPILE_ARM32=$CC
-  esac
+  check_toolchain
+  if [ "$kernel_arch" = "arm" ]; then
+    export kernel_cc=$linaro_path/$linaro_package_arm/bin/arm-eabi-
+  fi
+  if [ "$kernel_arch" = "arm64" ]; then
+    export kernel_cc=$linaro_path/$linaro_package_arm64/bin/aarch64-elf-
+    export CROSS_COMPILE_ARM32=$linaro_path/$linaro_package_arm/bin/arm-eabi-
+  fi
 };
 
 # Kernel Config
