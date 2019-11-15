@@ -6,9 +6,11 @@
 VERSION=1.0
 # Make sure this scripts only runs with bash,
 # for example: . core.sh or source core.sh
-if readlink /proc/$$/exe | grep -q "dash"; then
-  echo "This script needs to be run with source or '.', not sh"
-  exit
+if [ "$1" != --init ]; then
+  if readlink /proc/$$/exe | grep -q "sh"; then
+    echo "This script needs to be run with source or '.', not sh"
+    exit
+  fi
 fi
 # Don't run if core.sh is not found in the current path
 # (To avoid path errors)
