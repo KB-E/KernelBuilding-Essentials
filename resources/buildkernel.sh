@@ -8,53 +8,53 @@ function buildkernel() {
   kbelog -t "BuildKernel: Checking CrossCompiler"
   checkcc &> /dev/null
   echo -ne "$THEME$BLD"
-  echo -e "   _  __                 _ "
-  echo -e "  | |/ /___ _ _ _ _  ___| |  "
-  echo -e "  | ' </ -_) '_| ' \/ -_) |     "
-  echo -e "  |_-|_\___|_| |_||_\___|_| "
-  echo " "
+  echo -e "    _  __                 _ "
+  echo -e "   | |/ /___ _ _ _ _  ___| |  "
+  echo -e "   | ' </ -_) '_| ' \/ -_) |     "
+  echo -e "   |_-|_\___|_| |_||_\___|_| "
   echo " "
   echo -e "$THEME$BLD   --------------------------$WHITE"
   echo -e "$WHITE - Kernel Building Script ($kernel_arch mode)"
-  echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE; Version:$THEME$BLD $kernel_version$WHITE"
+  echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE"
   if [ "$cc_available" = "false" ]; then # This exported variable means that the CrossCompiler
                                # were not found and we cannot compile the kernel
     echo -e "$RED - There was an error getting the CrossCompiler, exiting...$RATT"
-    echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting..."; unset cc_available
-    return 1
+    echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting...";
+    unset cc_available; return 1
   fi
 
-  # Enter in the kernel source
-  if [ -d $kernel_source ]; then
-    cd $kernel_source
+  # Enter in the kernel source if exist
+  if [ -d $kernel_source ]; then cd $kernel_source
     echo -e "$THEME$BLD   Entered in $WHITE'$kernel_source' $THEME$BLDSucessfully"
     kbelog -t "BuildKernel: Entered in '$kernel_source'"
-  else # If it doesnt exist it means that we don't have nothing to do
-    echo -e "$RED   Path doesn't exist!"; kbelog -t "BuildKernel: Source path '$kernel_source' doesnt exist, exiting..."
-    echo -e "$RED - Build canceled$RATT"
-    echo " "
-    return 1
+  else # If it doesnt exist it means that we have nothing to do
+    echo -e "$RED   Path doesn't exist!"; echo -e "$RED - Build canceled$RATT"
+    kbelog -t "BuildKernel: Source path '$kernel_source' doesnt exist, exiting..."
+    echo " "; return 1
   fi
 
   # Export necessary things
-  export KCONFIG_NOTIMESTAMP=true
-  export ARCH=$kernel_arch
-  kbelog -t "BuildKernel: Exported ARCH=$kernel_arch"
-  export SUB_ARCH=$kernel_arch;
-  #echo -e "$WHITE   Exported $kernel_arch"  # If the program succeed at this step, this means
-  export CROSS_COMPILE=$kernel_cc  # that we can start compiling the kernel!
-  export CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
-  kbelog -t "BuildKernel: Exported CROSS_COMPILE=$kernel_cc"
-
-  # Create out folders for this device
-  if [ ! -d $KOUT ]; then
-    mkdir $KOUT
+  export ARCH=$kernel_arch; kbelog -t "BuildKernel: Exported ARCH=$kernel_arch"
+  export SUB_ARCH=$kernel_arch; kbelog -t "BuildKernel: Exported SUB_ARCH=$kernel_arch"
+  export CROSS_COMPILE=$kernel_cc; kbelog -t "BuildKernel: Exported CROSS_COMPILE=$kernel_cc"
+  # Export this only if kernel is arm64
+  if [ "$kernel_arch" = "arm64" ]; then
+    export CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
   fi
+  # Check out folder
+  if [ ! -d $KOUT ]; then mkdir $KOUT; fi
   
   # ----------------------
   # Start Building Process
   # ----------------------
-  if [ "$CLR" = "1" ]; then make clean; kbelog -t "BuildKernel: Source cleaned"; echo " "; fi # Clean Kernel source
+  
+  # Clean kernel source
+  if [ "$CLR" = "1" ]; then
+    make clean
+    echo " "; kbelog -t "BuildKernel: Source cleaned"
+  fi
+  # -----------------------
+
   # Declare array with all possible Kernel Images
   kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
   # To avoid a false sucessfull build
@@ -63,49 +63,35 @@ function buildkernel() {
       rm $kernel_source/arch/$kernel_arch/boot/$i
     fi
   done
+  # -----------------------
 
   # Check if the defconfig doesn't exist
   if [ ! -f $kernel_source/arch/$kernel_arch/configs/$kernel_defconfig ]; then
     echo -e "$RED$BLD   Error:$WHITE Defconfig: '$kernel_defconfig' is missing$RATT"
     export kernel_build_failed=true; echo " "; return 1
   fi
-
-  # Get config file
-  if [ ! -f $kernel_source/.config ]; then
-    cp $kernel_source/arch/$kernel_arch/configs/$kernel_defconfig $kernel_source/.config
-    kbelog -t "BuildKernel: Copied defcofig to '$kernel_source/.config'"
-  fi
+  # -----------------------
 
   # Load defconfig
   echo -ne "$WHITE$BLD   Loading Defconfig for $device_variant...$RATT$THEME$BLD"
-  # Log path
-  LOGF=$kbe_path/logs
+  LOGF=$kbe_path/logs/buildkernel.txt
   if [ "$kernel_arch" = "arm" ]; then
-    make ARCH=arm $kernel_defconfig &> $LOGF/buildkernel_log.txt
+    make ARCH=arm $kernel_defconfig &> $LOGF
   elif [ "$kernel_arch" = "arm64" ]; then
-    make ARCH=arm64 $kernel_defconfig &> $LOGF/buildkernel64_log.txt
-  fi
-  . $kernel_source/.config
-  echo -e " Done"
-  kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
+    make ARCH=arm64 $kernel_defconfig &> $LOGF
+  fi; echo -e " Done"; kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
   # -----------------------
 
   # Start compiling kernel
-  kbelog -t "BuildKernel: Number of Cores=$build_threads"
-  echo -e "$WHITE   Compiling Kernel using up to $build_threads cores...$RATT"
-  echo -e "$THEME$BLD   --------------------------$WHITE"
-  echo " "
-  kbelog -t "BuildKernel: Starting '$KERNELNAME' kernel build (def: $kernel_defconfig | arch=$kernel_arch)"
-  if [ "$show_cc_out" = "true" ]; then
-    { { make -j$build_threads \
-             ARCH=$kernel_arch \
-             2>&1 1>&3;
-    } | tee $kbe_path/logs/$kernel_name-gcc-warnings.txt; } 3>&1;
-  else
-    source $kbe_path/resources/buildkernel-assistant.sh
-  fi
-  echo " "
-  echo -e "$THEME$BLD   --------------------------$WHITE"
+  kbelog -t "BuildKernel: Compiling kernel with $build_threads threads"
+  echo -e "$WHITE   Compiling Kernel using up to $build_threads threads...$RATT"
+  echo -e "$THEME$BLD   --------------------------$WHITE"; echo " "
+  kbelog -t "BuildKernel: Starting $kernel_name kernel build"
+  { { make -j$build_threads \
+           ARCH=$kernel_arch \
+  2>&1 1>&3; } | tee $kbe_path/logs/gcc-warnings.txt; } 3>&1;
+  echo " "; echo -e "$THEME$BLD   --------------------------$WHITE"
+  # -----------------------
 
   # Verify if the kernel were built
   for i in "${kernel_images[@]}"; do
@@ -116,32 +102,41 @@ function buildkernel() {
       kernel_found="false"
     fi
   done
-  
+  # -----------------------
+
   # If kernel_found=false then exit
   if [ "$kernel_found" = "false" ]; then
-    echo " "; echo -e "$RED   ## Kernel Building Failed ##$RATT"
+    echo -e "$RED$BLD   Kernel Building Failed"
+    echo -e "$THEME$BLD   --------------------------$RATT"
     # Report failed build
     export kernel_build_failed=true; echo " "
-    kbelog -t "BuildKernel: Build failed, exiting..."
+    kbelog -t "BuildKernel: Build failed for $device_variant, exiting..."
     return 1
   fi
-  
-  # Clean device out folder
-  rm -rf $KOUT/*
+  # -----------------------
+
+  # Clean kernel out folder
+  for i in "${kernel_images[@]}"; do
+    if [ -f $KOUT/$i ]; then
+      rm $KOUT/$i
+    fi
+  done
+  # -----------------------
+
   # Move the Kernel Images to the device out folder
+  echo -e "$WHITE   Kernel for $device_variant...$THEME$BLD Done$RATT"
   for i in "${kernel_images[@]}"; do
     if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
       cp $kernel_source/arch/$kernel_arch/boot/$i $KOUT/; kbelog -t "BuildKernel: Kernel Image '$i' found"
     fi
   done
   echo -e "$THEME$BLD   Kernel Images copied to$WHITE '$KOUT'"
-  echo -e "$WHITE   Kernel for $device_variant...$THEME$BLD Done$RATT"
   echo -e "$THEME$BLD   --------------------------$RATT"
   echo " "; kbelog -t "BuildKernel: All done"
-}
-export -f buildkernel; kbelog -f buildkernel
-# Define kernel out path
-KOUT=$device_kernel_path/out/kernel
+  # -----------------------
+
+}; export -f buildkernel; kbelog -f buildkernel
+KOUT=$device_kernel_path/out/kernel # Define kernel out path
 
 # ------------------------------------------------
 # Automatically select the appropiate Kernel Image
@@ -159,9 +154,9 @@ function selectimage() {
   # Unset some variables
   unset kernel_image; unset kernel_zimage; unset kernel_image_dtb; unset kernel_zimage_dtb
   unset kernel_image_gz; unset kernel_image_lz4; unset kernel_image_gz_dtb; unset kernel_image_lz4_dtb
-  # For this function to work, the variable BDTB must be set with the value "1" or "0"
-  # If that variable is not set, exit this function and tell the user to load a device or
-  # initialize a new one and set selected_image=none
+  # For this function to work, the variable kernel_build_dtb must be set with the value
+  # "1" or "0". If that variable is not set, exit this function and tell the user to load
+  # a device or initialize a new one and set selected_image=none
   if [ -z "$kernel_build_dtb" ]; then
     echo -e "$RED$BLD   Error:$WHITE a setting is missing, reload your device or initialize a new one$RATT"
     export selected_image=none
@@ -217,8 +212,8 @@ function selectimage() {
         export selected_image=Image
       fi
     fi
-  # We're done here
-  return 1
+    # We're done here
+    return 1
   fi
 
   # Get compression method(s), this is based on the existing compressed images
