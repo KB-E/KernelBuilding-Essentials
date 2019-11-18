@@ -6,27 +6,23 @@
 function buildkernel() {
   unset kernel_build_failed
   kbelog -t "BuildKernel: Checking CrossCompiler"
-  checkcc &> /dev/null
-  echo -ne "$THEME$BLD"
-  echo -e "    _  __                 _ "
-  echo -e "   | |/ /___ _ _ _ _  ___| |  "
-  echo -e "   | ' </ -_) '_| ' \/ -_) |     "
-  echo -e "   |_-|_\___|_| |_||_\___|_| "
+  checkcc &> /dev/null; echo " "
+  echo -e "$WHITE$BLD  ------------------------------------"
+  echo -e "$THEME$BLD              Build Kernel            "
+  echo -e "$WHITE$BLD  ------------------------------------"
   echo " "
-  echo -e "$THEME$BLD   --------------------------$WHITE"
-  echo -e "$WHITE - Kernel Building Script ($kernel_arch mode)"
-  echo -e "   Kernel:$THEME$BLD $kernel_name$WHITE; Variant:$THEME$BLD $device_variant$WHITE"
+  echo -e "$THEME$BLD   Kernel    |$WHITE $kernel_name$THEME$BLD"
+  echo -e "$THEME$BLD   Variant   |$WHITE $device_variant"
   if [ "$cc_available" = "false" ]; then # This exported variable means that the CrossCompiler
                                # were not found and we cannot compile the kernel
-    echo -e "$RED - There was an error getting the CrossCompiler, exiting...$RATT"
+    echo -e "$RED   There was an error getting the CrossCompiler, exiting...$RATT"
     echo " "; kbelog -t "BuildKernel: There was an error getting the CrossCompiler, exiting...";
     unset cc_available; return 1
   fi
 
-  # Enter in the kernel source if exist
-  if [ -d $kernel_source ]; then cd $kernel_source
-    echo -e "$THEME$BLD   Entered in $WHITE'$kernel_source' $THEME$BLDSucessfully"
-    kbelog -t "BuildKernel: Entered in '$kernel_source'"
+  # Enter in the kernel source if it exist
+  if [ -d $kernel_source ]; then
+    cd $kernel_source; kbelog -t "BuildKernel: Entered in '$kernel_source'"
   else # If it doesnt exist it means that we have nothing to do
     echo -e "$RED   Path doesn't exist!"; echo -e "$RED - Build canceled$RATT"
     kbelog -t "BuildKernel: Source path '$kernel_source' doesnt exist, exiting..."
@@ -57,6 +53,8 @@ function buildkernel() {
 
   # Declare array with all possible Kernel Images
   kernel_images=(zImage zImage-dtb Image.gz Image.lz4 Image.gz-dtb Image.lz4-dtb Image Image-dtb)
+  # Log file
+  LOGF=$kbe_path/logs/buildkernel.txt
   # To avoid a false sucessfull build
   for i in "${kernel_images[@]}"; do
     if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
@@ -72,25 +70,21 @@ function buildkernel() {
   fi
   # -----------------------
 
-  # Load defconfig
-  echo -ne "$WHITE$BLD   Loading Defconfig for $device_variant...$RATT$THEME$BLD"
-  LOGF=$kbe_path/logs/buildkernel.txt
-  if [ "$kernel_arch" = "arm" ]; then
-    make ARCH=arm $kernel_defconfig &> $LOGF
-  elif [ "$kernel_arch" = "arm64" ]; then
-    make ARCH=arm64 $kernel_defconfig &> $LOGF
-  fi; echo -e " Done"; kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
+  # Make defconfig
+  echo -ne "$THEME$BLD   Defconfig |$WHITE"
+  make ARCH=$kernel_arch $kernel_defconfig &> $LOGF; echo -e " Loaded"
+  kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
   # -----------------------
 
   # Start compiling kernel
   kbelog -t "BuildKernel: Compiling kernel with $build_threads threads"
-  echo -e "$WHITE   Compiling Kernel using up to $build_threads threads...$RATT"
-  echo -e "$THEME$BLD   --------------------------$WHITE"; echo " "
+  echo -e "$THEME$BLD   Build     |$WHITE Using $THEME$BLD$build_threads$WHITE threads$RATT"
+  echo " "; echo -e "$WHITE$BLD  ------------------------------------"; echo " "
   kbelog -t "BuildKernel: Starting $kernel_name kernel build"
   { { make -j$build_threads \
            ARCH=$kernel_arch \
   2>&1 1>&3; } | tee $kbe_path/logs/gcc-warnings.txt; } 3>&1;
-  echo " "; echo -e "$THEME$BLD   --------------------------$WHITE"
+  echo " ";
   # -----------------------
 
   # Verify if the kernel were built
@@ -106,8 +100,9 @@ function buildkernel() {
 
   # If kernel_found=false then exit
   if [ "$kernel_found" = "false" ]; then
-    echo -e "$RED$BLD   Kernel Building Failed"
-    echo -e "$THEME$BLD   --------------------------$RATT"
+    echo -e "$WHITE$BLD  -----------------------------------"
+    echo -e "$RED$BLD        Kernel Building Failed"
+    echo -e "$WHITE$BLD  -----------------------------------"
     # Report failed build
     export kernel_build_failed=true; echo " "
     kbelog -t "BuildKernel: Build failed for $device_variant, exiting..."
@@ -124,14 +119,14 @@ function buildkernel() {
   # -----------------------
 
   # Move the Kernel Images to the device out folder
-  echo -e "$WHITE   Kernel for $device_variant...$THEME$BLD Done$RATT"
   for i in "${kernel_images[@]}"; do
     if [ -f $kernel_source/arch/$kernel_arch/boot/$i ]; then
       cp $kernel_source/arch/$kernel_arch/boot/$i $KOUT/; kbelog -t "BuildKernel: Kernel Image '$i' found"
     fi
   done
-  echo -e "$THEME$BLD   Kernel Images copied to$WHITE '$KOUT'"
-  echo -e "$THEME$BLD   --------------------------$RATT"
+  echo -e "$WHITE$BLD  -----------------------------------"
+  echo -e "$THEME$BLD       Kernel built successfully$RATT"
+  echo -e "$WHITE$BLD  -----------------------------------"
   echo " "; kbelog -t "BuildKernel: All done"
   # -----------------------
 
