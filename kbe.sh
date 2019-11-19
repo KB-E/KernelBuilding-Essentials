@@ -44,14 +44,13 @@ function kbe() {
   # -----------------------------------------------------
   if [ "$1" = "" ]; then
     kbelog -t "Displaying 'kbe' usage information"
-    # Here shows full usage information if KB-E is ready
+    # Here shows full usage information if KB-E is initialized
     if [ "$RD" = "1" ]; then
       echo " "
-      echo -e "$THEME$BLD - Usage:$WHITE kbe start $THEME$BLD(Starts KB-E Config process)$WHITE"
-      echo -e "              start <device> $THEME$BLD(Starts KB-E Config from a saved device)$WHITE"
-      echo -e "              clean $THEME$BLD(Wipes KB-E environment, except kernel sources)$WHITE"
-      echo -e "              update <setting> <newvalue> $THEME$BLD(Update a specific setting of the current kernel)$WHITE"
-      echo -e "              upgrade $THEME$BLD(Upgrade KB-E to the latest version/changes)"
+      echo -e "$THEME$BLD - Usage:$WHITE kbe start <device> <kernel>$THEME$BLD (Configure or load a device)$WHITE"
+      echo -e "              clean $THEME$BLD(Wipes KB-E generated files, except devices)$WHITE"
+      echo -e "              update <setting> <newvalue> $THEME$BLD(Update current device settings)$WHITE"
+      echo -e "              upgrade $THEME$BLD(Upgrade KB-E to the latest version/changes)$WHITE"
       echo " "
       echo -e "              --kernel or -k $THEME$BLD(Builds the kernel)$WHITE"
       i=1
@@ -66,16 +65,14 @@ function kbe() {
         fi
       done
       echo " "
-      echo -e "              --all $THEME$BLD(Does everything mentioned above)      $WHITE  | Work alone "
-      echo " "
       echo -e "   For more information use $THEME$BLD'kbhelp'$WHITE command$RATT"
       echo " "
     else
-      # Here shows basic usage information if KB-E is not ready
+      # Here shows basic usage information if KB-E is not initialized
       echo " "
-      echo " - Usage: kbe start (Starts KB-E Config process)"
-      echo "              start <kernelname> (Starts KB-E Config from a saved device file)"
-      echo "              clean (Wipes KB-E environment, except kernel sources)"
+      echo " - Usage: kbe start <device> <kernel> (Configure or load a device)"
+      echo "              clean (Wipes KB-E generated files, except devices)"
+      echo "              root (teleport into KB-E root folder)"
       echo "              upgrade (Upgrade KB-E to the latest version/changes)"
       echo " "
     fi
