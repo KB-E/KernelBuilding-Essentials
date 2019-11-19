@@ -35,7 +35,7 @@ echo "kbe_path=$kbe_path" >> $INITPATH
 echo "source $kbe_path/resources/other/colors.sh" >> $INITPATH
 echo "source $kbe_path/resources/log.sh" >> $INITPATH
 echo "source $kbe_path/kbe.sh --init" >> $INITPATH
-echo "complete -W 'start upgrade' kbe" >> $INITPATH
+echo "complete -W 'start upgrade clean root' kbe" >> $INITPATH
 echo "" >> $INITPATH
 echo "# Load configurable init script" >> $INITPATH
 echo "if [ -f $kbe_path/resources/init/kbeinit.sh ]; then" >> $INITPATH
