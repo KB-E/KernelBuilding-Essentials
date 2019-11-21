@@ -150,6 +150,24 @@ function kbe() {
     fi
   fi
 
+  # ----------
+  # Clean KB-E
+  # ----------
+  if [ "$1" = "clean" ]; then
+    # Logs
+    if [ -d $kbe_path/logs ]; then
+      rm $kbe_path/logs/*
+    fi
+    # First run indicator
+    rm $kbe_path/resources/other/firstrun
+    # Extracted ToolChains
+    for dir in $kbe_path/resources/linaro/*; do
+      if [ "$dir" != "downloads" ]; then
+        rm -rf $dir
+      fi
+    done
+  fi
+
   # ----------------------------
   # Start a new KB-E Session...!
   # ----------------------------
