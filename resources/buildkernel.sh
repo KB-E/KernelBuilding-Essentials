@@ -6,13 +6,14 @@
 function buildkernel() {
   unset kernel_build_failed
   kbelog -t "BuildKernel: Checking CrossCompiler"
+  check_toolchain
   checkcc &> /dev/null; echo " "
   echo -e "$WHITE$BLD  ------------------------------------"
   echo -e "$THEME$BLD              Build Kernel            "
   echo -e "$WHITE$BLD  ------------------------------------"
   echo " "
-  echo -e "$THEME$BLD   Kernel    |$WHITE $kernel_name$THEME$BLD"
-  echo -e "$THEME$BLD   Variant   |$WHITE $device_variant"
+  echo -e "$THEME$BLD   Kernel    =$WHITE $kernel_name$THEME$BLD"
+  echo -e "$THEME$BLD   Device    =$WHITE $device_variant"
   if [ "$cc_available" = "false" ]; then # This exported variable means that the CrossCompiler
                                # were not found and we cannot compile the kernel
     echo -e "$RED   There was an error getting the CrossCompiler, exiting...$RATT"
@@ -71,14 +72,14 @@ function buildkernel() {
   # -----------------------
 
   # Make defconfig
-  echo -ne "$THEME$BLD   Defconfig |$WHITE"
+  echo -ne "$THEME$BLD   Defconfig =$WHITE"
   make ARCH=$kernel_arch $kernel_defconfig &> $LOGF; echo -e " Loaded"
   kbelog -t "BuildKernel: Loaded '$kernel_defconfig' defconfig"
   # -----------------------
 
   # Start compiling kernel
   kbelog -t "BuildKernel: Compiling kernel with $build_threads threads"
-  echo -e "$THEME$BLD   Build     |$WHITE Using $THEME$BLD$build_threads$WHITE threads$RATT"
+  echo -e "$THEME$BLD   Compiler  =$WHITE Using $THEME$BLD$build_threads$WHITE threads$RATT"
   echo " "; echo -e "$WHITE$BLD  ------------------------------------"; echo " "
   kbelog -t "BuildKernel: Starting $kernel_name kernel build"
   { { make -j$build_threads \
