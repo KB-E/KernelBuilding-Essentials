@@ -350,7 +350,7 @@ function kbe() {
       buildkernel
       # buildkernel process is done, head back to the previous path
       cd $CURF; unset CURF
-      if [ "$BDTB" = "1" ]; then
+      if [ "$kernel_build_dtb" = "true" ]; then
         # User wants dtb
         kbelog -t "Building DTB for $VARIANT" 
         makedtb
