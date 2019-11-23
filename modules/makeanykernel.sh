@@ -137,12 +137,17 @@ echo -ne "$WHITE$BLD   Building Flasheable zip for $device_variant...$RATT$WHITE
 cd $AKFOLDER
 zip -r9 $zip_name * &> /dev/null
 mv $zip_name $AKOUT/
+# Build zip path
+export zip_path=$AKOUT/$zip_name
 echo -e "$THEME$BLD Done!$RATT"
 echo -e "$THEME$BLD   --------------------------$WHITE"
 if [ ! -d $kbe_path/modules/post-ak.d ]; then
   mkdir $kbe_path/modules/post-ak.d
   touch $kbe_path/modules/post-ak.d/help.txt
-  echo "VARIABLES: zip_name - Anykernel installer zip name" > $kbe_path/modules/post-ak.d/help.txt
+  echo "VARIABLES:
+  
+  zip_name - Anykernel installer zip name
+  zip_path - Anykernel installer zip name with full path" > $kbe_path/modules/post-ak.d/help.txt
 fi
 unset s
 for s in $kbe_path/modules/post-ak.d/*.sh; do
