@@ -119,7 +119,7 @@ else
 fi
 
 # Make the kernel installer zip
-export ZIPNAME="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-"$target_android"_"$device_variant".zip
+export zip_name="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-"$target_android"_"$device_variant".zip
 KREVF=$device_kernel_path/$kernel_name.rev
 if [ $release_type = "Beta" ]; then
   if [ ! -f $KREVF ]; then
@@ -130,14 +130,26 @@ if [ $release_type = "Beta" ]; then
   REVSUM=$((1+REVN))
   export REV=$REVSUM
   echo $REV > $KREVF
-  export ZIPNAME="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-Rev"$REV"-"$target_android"_"$device_variant".zip
+  export zip_name="$kernel_name"-v"$kernel_version"-"$kernel_arch"-"$release_type"-Rev"$REV"-"$target_android"_"$device_variant".zip
 fi
-echo -e "$THEME$BLD   Zip Name: $WHITE$ZIPNAME"
+echo -e "$THEME$BLD   Zip Name: $WHITE$zip_name"
 echo -ne "$WHITE$BLD   Building Flasheable zip for $device_variant...$RATT$WHITE"
 cd $AKFOLDER
-zip -r9 $ZIPNAME * &> /dev/null
-mv $ZIPNAME $AKOUT/
+zip -r9 $zip_name * &> /dev/null
+mv $zip_name $AKOUT/
 echo -e "$THEME$BLD Done!$RATT"
 echo -e "$THEME$BLD   --------------------------$WHITE"
+if [ ! -d $kbe_path/modules/post-ak.d ]; then
+  mkdir $kbe_path/modules/post-ak.d
+  touch $kbe_path/modules/post-ak.d/help.txt
+  echo "VARIABLES: zip_name - Anykernel installer zip name" > $kbe_path/modules/post-ak.d/help.txt
+fi
+unset s
+for s in $kbe_path/modules/post-ak.d/*.sh; do
+  if [ -f $s ]; then
+    sh $s
+  fi
+done
+
 }
 export -f anykernel; kbelog -f anykernel
