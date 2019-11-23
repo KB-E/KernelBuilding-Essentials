@@ -134,6 +134,49 @@ function buildkernel() {
 }; export -f buildkernel; kbelog -f buildkernel
 KOUT=$device_kernel_path/out/kernel # Define kernel out path
 
+# -------------------------
+# Setup post-build.d folder
+# -------------------------
+function setup_postbuild() {
+  # Create a folder post-build.d in KB-E root folder to allow users
+  # to create custom scripts to be executed after a successfull build
+  if [ ! -d $kbe_path/post-build.d ]; then mkdir $kbe_path/post-build.d; fi
+  # Generate a file help.txt with buildkernel variables related and its information
+  if [ ! -f $kbe_path/post-build.d/help.txt ]; then
+    echo "VARIABLES:
+    
+    kernel_name      - Your Kernel name
+    kernel_version   - Your Kernel version
+    target_android   - Your target android name
+    release_type     - Release Type, this variable can have one of two values: Stable or Beta
+    kernel_arch      - CPU Architecture, this variable can only have one of two values: arm or arm64
+    kernel_cc        - CrossCompiler path designed for the current device
+    kernel_source    - Path to your kernel source
+    show_cc_out      - true or false, if true, original CrossCompiler output will be shown
+    device_variant   - Your device variant name (ex: bacon)
+    kernel_defconfig - Your kernel defconfig name
+    kernel_build_dtb - true or false, if true, dtb will be built automatically
+    CROSS_COMPILER_ARM32 - Only when the kernel is arm64, this contains the path to the arm CC
+    " > $kbe_path/post-build.d/help.txt
+    fi
+}
+
+# ---------------------------
+# Execute post-build.d folder
+# ---------------------------
+function execute_postbuild() {
+  # Check if the post-build.d folder exist
+  if [ ! -d "$kbe_path/post-build.d" ]; then return 1; fi
+  # Get and execute all scripts inside post-build.sh folder
+  unset s
+  for s in $kbe_path/post-build.d/*.sh
+  do
+    if [ -f $s ]; then
+      sh $s
+    fi
+  done
+}
+
 # ------------------------------------------------
 # Automatically select the appropiate Kernel Image
 # ------------------------------------------------

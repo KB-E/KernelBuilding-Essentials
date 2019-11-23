@@ -343,6 +343,10 @@ function kbe() {
           echo "detected"
         fi
       done
+      # Setup post-build.d folder
+      if [ ! -d $kbe_path/post-build.d ]; then
+        setup_postbuild
+      fi
       # User wants his kernel... If it builds...
       kbelog -t "Building Kernel for $VARIANT (def: $DEFCONFIG)" 
       # Before start building, save the current folder path
@@ -354,6 +358,12 @@ function kbe() {
         # User wants dtb
         kbelog -t "Building DTB for $VARIANT" 
         makedtb
+      fi
+      # Execute post-build.d scripts if kernel were built
+      if [ "$kernel_build_failed" = "true" ]; then
+        kbelog -t "KB-E: no post-build.d scripts to run"
+      else
+        execute_postbuild
       fi
     fi
   done
