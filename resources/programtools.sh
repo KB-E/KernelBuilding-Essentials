@@ -222,7 +222,9 @@ export -f device_write; kbelog -f device_write
 function bashrcPatch() {
   # Patch ~/.bashrc to load KB-E init file
   if grep -q "# Load KB-E init file" ~/.bashrc; then
-    echo " "; echo -e "$THEME$BLD - ~/.bashrc is already patched..!$RATT"
+    if [ "$1" != "--silent" ]; then
+      echo " "; echo -e "$THEME$BLD - ~/.bashrc is already patched..!$RATT"
+    fi
   else
     kbelog -t "Install: Patching ~/.bashrc"; echo " "
     echo -ne "$THEME$BLD - Patching ~/.bashrc to load init file...$WHITE"
@@ -248,7 +250,7 @@ function kbePatch() {
   echo "CDF=$kbe_path" >> $INITPATH
   echo "source $kbe_path/resources/other/colors.sh" >> $INITPATH
   echo "source $kbe_path/resources/log.sh" >> $INITPATH
-  echo "source $kbe_path/core.sh --kbe" >> $INITPATH
+  echo "source $kbe_path/kbe.sh --kbe" >> $INITPATH
   echo "complete -W 'start upgrade' kbe" >> $INITPATH
   echo "" >> $INITPATH
   echo "# Load configurable init script" >> $INITPATH

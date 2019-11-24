@@ -106,16 +106,15 @@ function kbe() {
   if [ "$1" = "upgrade" ]; then
     if [ -f kbe.sh ]; then
       # git pull KB-E repo
-      echo " "; echo "KB-E: Getting latest changes from the repository"
-      git pull https://github.com/KB-E/KernelBuilding-Essentials
-      source resources/other/colors.sh
-      source resources/log.sh
-      echo -n "KB-E: Loading Updater Script..."; source resources/updates.sh; echo " Done"
-      echo -n "KB-E: Loading programtool.sh..."; source resources/programtools.sh; echo " Done"
-      echo -n "KB-E: Generating new init file..."; kbepatch; echo " Done"
-      echo -n "KB-E: Patching ~/.bashrc ..."; bashrcpatch; echo " Done"
-      echo -n "KB-E: Reloading ~/.bashrc ..."; source ~/.bashrc; echo " Done"
-      echo -n "KB-E: Checking Dependencies..."; checktools; echo " Done"
+      echo " "; echo "KB-E: Getting latest changes from repository"; echo " "
+      git pull https://github.com/KB-E/KernelBuilding-Essentials; echo " "
+      echo -n "KB-E: Loading log.sh script...    "; source resources/log.sh; echo " [ Done ]"
+      echo -n "      Loading Updater Script...   "; source resources/updates.sh; echo " [ Done ]"
+      echo -n "      Loading programtool.sh...   "; source resources/programtools.sh; echo " [ Done ]"
+      echo -n "      Generating new init file... "; kbePatch; echo " [ Done ]"
+      echo -n "      Checking ~/.bashrc...       "; bashrcPatch --silent; echo " [ Done ]"
+      echo -n "      Reloading ~/.bashrc...      "; source ~/.bashrc; echo " [ Done ]"
+      echo -n "      Checking Dependencies...    "; checktools; echo " [ Done ]"
       echo " "
     else
       echo " "; echo "KB-E: Error, you must run this command inside kb-e folder"
