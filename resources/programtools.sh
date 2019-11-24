@@ -250,7 +250,7 @@ function kbePatch() {
   echo "CDF=$kbe_path" >> $INITPATH
   echo "source $kbe_path/resources/other/colors.sh" >> $INITPATH
   echo "source $kbe_path/resources/log.sh" >> $INITPATH
-  echo "source $kbe_path/kbe.sh --kbe" >> $INITPATH
+  echo "source $kbe_path/kbe.sh --init" >> $INITPATH
   echo "complete -W 'start upgrade' kbe" >> $INITPATH
   echo "" >> $INITPATH
   echo "# Load configurable init script" >> $INITPATH
