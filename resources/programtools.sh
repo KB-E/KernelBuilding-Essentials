@@ -247,7 +247,7 @@ function kbePatch() {
   echo "# This is automatically generated, do not edit" >> $INITPATH
   echo "" >> $INITPATH
   echo "# Load KB-E Function and Path" >> $INITPATH
-  echo "CDF=$kbe_path" >> $INITPATH
+  echo "kbe_path=$kbe_path" >> $INITPATH
   echo "source $kbe_path/resources/other/colors.sh" >> $INITPATH
   echo "source $kbe_path/resources/log.sh" >> $INITPATH
   echo "source $kbe_path/kbe.sh --init" >> $INITPATH
