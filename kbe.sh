@@ -273,7 +273,8 @@ function kbe() {
       if [ -f $kbe_path/devices/$KERNELNAME/$KERNELNAME.data ]; then
         rm $kbe_path/devices/$KERNELNAME/$KERNELNAME.data
       fi
-      echo -e "$RED$BLD - KB-E couldn't initialize$RATT"
+      echo -e "$RED$BLD - KB-E failed to initialize$RATT"
+      echo -e "$RED$BLD   Reason: $WHITE$ERR"
       kbelog -t "KB-E Session cancelled" 
       echo " "
       unset RD

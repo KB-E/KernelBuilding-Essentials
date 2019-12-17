@@ -145,16 +145,16 @@ function device_write() {
      "kernelsource") # Update the Kernel source
                      cd $kbe_path/source; device_read arch; device_read kernelsource;
                      echo " "; echo -e "$WHITE   Select a$THEME$BLD Kernel Source:$WHITE"
-  		     select NEWPATH in */; do test -n "$NEWPATH" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-  		     if [ $kernel_arch = arm64 ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
-   		       echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"; echo " "
-    		       cd $kbe_path; return 1
- 		     elif [ $kernel_arch = arm ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
-   		       echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"; echo " "
- 		       cd $kbe_path; return 1
- 		     fi
-		     cd $kbe_path; sed -i "s+export kernel_source=$kernel_source+export kernel_source=$kbe_path/source/$NEWPATH+g" $device_kernel_file
-  		     device_read kernelsource; echo " "; echo -e "$THEME$BLD   Done$RATT"; echo " "; return 1 ;;
+  		               select NEWPATH in */; do test -n "$NEWPATH" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
+  		               if [ $kernel_arch = arm64 ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+   		                 echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"; echo " "
+    		               cd $kbe_path; return 1
+ 		                 elif [ $kernel_arch = arm ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+   		                 echo " "; echo -e "$RED$BLD   This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"; echo " "
+ 		                   cd $kbe_path; return 1
+ 		                 fi
+		                 cd $kbe_path; sed -i "s+export kernel_source=$kernel_source+export kernel_source=$kbe_path/source/$NEWPATH+g" $device_kernel_file
+  		               device_read kernelsource; echo " "; echo -e "$THEME$BLD   Done$RATT"; echo " "; return 1 ;;
 
              "arch") # Update the arch type (this also includes the crosscompiler automatically)
                      if [ -z "$2" ]; then echo "KB-E: Update: error, no newvalue for arch"; return 1; fi
@@ -277,65 +277,3 @@ function updatecompletion() {
   complete -W "start clean update upgrade status help --kernel --dtb theme root cdsource $moduleargs" kbe
 }
 export -f updatecompletion; kbelog -f updatecompletion
-
-# Some info needed by setup_toolchain and check_toolchain
-linaro_version="7.4.1"
-linaro_date="2019.02"
-linaro_package_arm="gcc-linaro-$linaro_version-$linaro_date-x86_64_arm-eabi"
-linaro_package_arm64="gcc-linaro-$linaro_version-$linaro_date-x86_64_aarch64-elf"
-linaro_path=$kbe_path/resources/linaro
-
-function setup_toolchain() {
-  # Setup Linaro ToolChain
-  if [ "$1" = "arm64" ]; then
-    echo -ne "   Extracting$THEME$BLD Linaro$WHITE ToolChain$THEME$BLD (arm64)..."
-    tar xf $linaro_path/downloads/$linaro_package_arm64.tar.xz -C $linaro_path
-    echo -e "$WHITE Done"
-  fi
-  if [ "$1" = "arm" ]; then
-    echo -ne "   Extracting$THEME$BLD Linaro$WHITE ToolChain$THEME$BLD (arm)..."
-    tar xf $linaro_path/downloads/$linaro_package_arm.tar.xz -C $linaro_path
-    echo -e "$WHITE Done"
-  fi
-}
-
-function check_toolchain() {
-  # Check working folders
-  if [ ! -d $linaro_path ]; then
-    mkdir $linaro_path
-    mkdir $linaro_path/downloads
-  fi
-
-  # Download arm Linaro ToolChain if it doesn't exist
-  # (anyways, it's needed by arm or arm64)
-  if [ ! -d $linaro_path/$linaro_package_arm ]; then
-    if [ ! -f $linaro_path/downloads/$linaro_package_arm.tar.xz ]; then
-      # Download and setup Linaro for arm
-      echo -ne "   Downloading$THEME$BLD Linaro$WHITE ToolChain$THEME$BLD (arm)..."; CURR=$(pwd); cd $linaro_path/downloads
-      wget -c https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-eabi/$linaro_package_arm.tar.xz \
-              --no-check-certificate \
-              --quiet --show-progress
-      echo -e "$WHITE Done"; cd $CURR; unset CURR
-      setup_toolchain arm
-    else
-      setup_toolchain arm
-    fi
-  fi
-  
-  # Download arm64 Linaro ToolChain if it doesnt exist
-  # (Only if kernel_arch=arm64)
-  if [ "$kernel_arch" = "arm64" ]; then
-    if [ ! -d $linaro_path/$linaro_package_arm64 ]; then
-      if [ ! -f $linaro_path/downloads/$linaro_package_arm64.tar.xz ]; then
-        echo -ne "   Downloading$THEME$BLD Linaro$WHITE ToolChain$THEME$BLD (arm64)..."; CURR=$(pwd); cd $linaro_path/downloads
-        wget -c https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-elf/$linaro_package_arm64.tar.xz \
-                --no-check-certificate \
-                --quiet --show-progress
-        echo -e "$WHITE Done"; cd $CURR; unset CURR
-        setup_toolchain arm64
-      else
-        setup_toolchain arm64
-      fi
-    fi
-  fi
-}

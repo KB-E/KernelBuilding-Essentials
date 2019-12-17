@@ -6,7 +6,6 @@
 function buildkernel() {
   unset kernel_build_failed
   kbelog -t "BuildKernel: Checking CrossCompiler"
-  check_toolchain
   checkcc &> /dev/null; echo " "
   echo -e "$WHITE$BLD  ------------------------------------"
   echo -e "$THEME$BLD              Build Kernel            "

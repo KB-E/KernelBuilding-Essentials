@@ -30,10 +30,11 @@ function storedata () {
   esac
 }
 
-# Essencial Data
-function promptdata() {
+# -----------------
+# Basic information
+# -----------------
+function getusrbasics() {
   unset ERR
-  # Prompt for data
   echo -e "$WHITE  ------------------------------------"
   echo -e "$THEME$BLD              Setup Basics             "
   echo -e "$WHITE  ------------------------------------"
@@ -43,19 +44,42 @@ function promptdata() {
   echo -ne "   Target Android OS$THEME$BLD:$WHITE "; read target_android; export target_android
   if [ "$target_android" = "" ]; then ERR=1; return 1; fi; kbelog -t "RunSettings: Target OS: $target_android"
   echo -ne "   Version$THEME$BLD:$WHITE "; read kernel_version; export kernel_version
-  if [ "$kernel_version" = "" ]; then ERR=1; return 1; fi; kbelog -t "RunSettings: kernel_version: $kernel_version"
-  echo -ne "   Release Type $THEME$BLD($WHITE 1 = Stable; 2 = Beta $THEME$BLD)$WHITE: "; read release_type; if [ "$release_type" = "" ]; then ERR=1; return 1; fi
-  if [ "$release_type" = "1" ]; then release_type="Stable"; elif [ "$release_type" = "2" ]; then release_type="Beta"; fi; export release_type
-  kbelog -t "Runsettings: Release Type: $release_type" 
+  if [ "$kernel_version" = "" ]; then ERR=1; return 1; fi; kbelog -t "RunSettings: kernel_version: $kernel_version" 
 };
 
-# Arch selection
-function getarch() {
-  # Get the ARCH Type
+# -------------
+# Kernel Config
+# -------------
+function getkconfig() {
+  unset ERR
   echo -e "$WHITE  ------------------------------------"
-  echo -e "$THEME$BLD            CPU Architecture           "
+  echo -e "$THEME$BLD              Kernel Source         "
   echo -e "$WHITE  ------------------------------------"
   echo " "
+  echo -e "   Kernel source(s) available$THEME$BLD:";
+  k=1
+  for i in $kbe_path/source/*/; do
+    echo -e "$THEME$BLD   $((k++)))$WHITE $(basename $i)"
+    export "kfolder$((k-1))=$i";
+  done
+  unset nro; unset source_folder; echo " "
+  while [ "$source_folder" = "" ]; do
+    read -p "   Select: " nro
+    if [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
+      echo -e "$RED$BLD   Please enter a valid number$WHITE"
+    else
+      source_folder=kfolder$nro
+      export kernel_source=${!source_folder}
+      break
+    fi
+  done
+  kbelog -t "RunSettings: Exported kernel source to $kernel_source" 
+  echo " "
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD          Kernel Configuration         "
+  echo -e "$WHITE  ------------------------------------"
+  echo " "
+  # Get the CPU Architecture
   echo -e "$THEME$BLD   CPU Architecture ($WHITE Option 1 = 32Bits"
   echo -e "   devices and Option 2 =  64Bits devices $THEME$BLD) $WHITE"
   until [ "$ARMT" = "1" ] || [ "$ARMT" = "2" ]; do
@@ -64,56 +88,22 @@ function getarch() {
       echo -e "$RED$BLD   Error, invalid option, try again...$WHITE"
     fi
   done
+  if [ "$kernel_arch" = "arm64" ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+    echo " "
+    echo -e "$RED$BLD   This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"
+    echo " "; kbelog -t "RunSettings: This kernel source doesnt contains 64bits defconfig, exiting KB-E..." 
+    export CWK=n; ERR=1; return 1
+  fi
+  if [ "$kernel_arch" = "arm" ] && [ ! -d $kernel_source/arch/$kernel_arch/ ]; then
+    echo " "
+    echo -e "$RED$BLD   This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"
+    echo " "; kbelog -t "RunSettings: This kernel source doesnt contains 32bits defconfig, exiting KB-E..." 
+    export CWK=n; ERR=1; return 1
+  fi
   case $ARMT in
        "1") export kernel_arch=arm; kbelog -t "RunSettings: kernel_arch=arm" ;;
        "2") export kernel_arch=arm64; kbelog -t "RunSettings: kernel_arch=arm64" ;;
   esac
-};
-
-# Download CC Based on Arch
-function getcc() {
-  # Define arm & arm64 CC paths
-  check_toolchain
-  if [ "$kernel_arch" = "arm" ]; then
-    export kernel_cc=$linaro_path/$linaro_package_arm/bin/arm-eabi-
-  fi
-  if [ "$kernel_arch" = "arm64" ]; then
-    export kernel_cc=$linaro_path/$linaro_package_arm64/bin/aarch64-elf-
-    export CROSS_COMPILE_ARM32=$linaro_path/$linaro_package_arm/bin/arm-eabi-
-  fi
-};
-
-# Kernel Config
-function getkconfig() {
-  unset ERR
-  echo -e "$WHITE  ------------------------------------"
-  echo -e "$THEME$BLD          Kernel Configuration         "
-  echo -e "$WHITE  ------------------------------------"
-  echo " "
-  cd $kbe_path/source; kbelog -t "RunSettings: Entered in $kbe_path/source" 
-  select d in */; do test -n "$d" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-  if [ $kernel_arch = arm64 ] && [ ! -d $kbe_path/source/$d/arch/$kernel_arch/ ]; then
-    echo " "
-    echo -e "$RED$BLD   This Kernel Source doesn't contains 64bits defconfigs... Exiting...$RATT"
-    echo " "; kbelog -t "RunSettings: This kernel source doesnt contains 64bits defconfig, exiting KB-E..." 
-    cd $kbe_path; export CWK=n; ERR=1; return 1
-  elif [ $kernel_arch = arm ] && [ ! -d $kbe_path/source/$d/arch/$kernel_arch/ ]; then
-    echo " "
-    echo -e "$RED$BLD   This Kernel Source doesn't contains 32bits defconfigs... Exiting...$RATT"
-    echo " "; kbelog -t "RunSettings: This kernel source doesnt contains 32bits defconfig, exiting KB-E..." 
-    cd $kbe_path; export CWK=n; ERR=1; return 1
-  fi
-  cd $kbe_path
-  export kernel_source=$kbe_path/source/$d; kbelog -t "RunSettings: Exported kernel source to $kernel_source" 
-  echo " "
-  # Ask the user if he wants the original CrossCompiler output
-  # or KB-E simplified output while building the kernel
-  echo -e "   Show original CrossCompiler output?"
-  echo -ne "   (While building Kernel)$THEME$BLD [Y/N]:$WHITE "
-  read CCSHOW
-  if [ $CCSHOW = y ] || [ $CCSHOW = Y ]; then
-    export show_cc_out=true; kbelog -t "RunSettings: Showing original CrossCompiler output" 
-  fi
 
   # Variant and Defconfig
   until [ "$device_variant" != "" ]; do
@@ -125,37 +115,146 @@ function getkconfig() {
   done
   echo -e "   Select a Defconfig $THEME$BLD($WHITE e.g., 'bacon_defconfig'$THEME$BLD ):$WHITE "
   echo " "
-  cd $kernel_source/arch/$kernel_arch/configs/; kbelog -t "RunSettings: Entered in $kernel_source/arch/$kernel_arch/configs" 
-  select DEF in *; do test -n "$DEF" && break; echo " "; echo -e "$RED$BLD>>> Invalid Selection$WHITE"; echo " "; done
-  cd $kbe_path
-  export kernel_defconfig=$DEF; kbelog -t "RunSettings: Defconfig: $kernel_defconfig" 
-  echo " "
+  k=1
+  for i in $kernel_source/arch/$kernel_arch/configs/*; do
+    echo -e "$THEME$BLD   $((k++)))$WHITE $(basename $i)"
+    export "DEFCONFIG$((k-1))=$(basename $i)";
+  done
+  unset nro; unset DEF; echo " "
+  while [ "$DEF" = "" ]; do
+    read -p "   Select: " nro
+    if [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
+      echo -e "$RED$BLD   Please enter a valid number$WHITE"
+    else
+      DEF=DEFCONFIG$nro
+      export kernel_defconfig=${!DEF}
+      break
+    fi
+  done
+  kbelog -t "RunSettings: Defconfig: $kernel_defconfig" 
+};
 
-  # Clear source on each build?
-  echo -ne "   Clear Source on every Build?$THEME$BLD [Y/N]:$WHITE "
-  read CLRS
-  if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
-    kbelog -t "RunSettings: Cleaning source on every build" 
-    export clear_source_onbuild=true
+# -------------------
+# Setup CrossCompiler
+# -------------------
+function getcc() {
+  unset ERR
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD             CrossCompiler           "
+  echo -e "$WHITE  ------------------------------------"
+  echo " "
+  echo -e "   Select a CrossCompiler:"
+  echo -e " "
+  echo -e "$THEME$BLD     1)$WHITE Google GCC $THEME$BLD(default)"
+  echo -e "$THEME$BLD     2)$WHITE Linaro ToolChain"
+  echo -e "$THEME$BLD     3)$WHITE UberTC"
+  echo -e "$THEME$BLD     4)$WHITE Set Custom"
+  echo -e " "
+  # CrossCompiler options available
+  AOPTS=4
+  re='^[0-9]+$'
+  # Load CrossCompilers manager script
+  source $kbe_path/resources/cc.sh
+  # Use has to select a valid option
+  while true; do
+    read -e -p "   Select: " -i "1" cc_selected
+    if ! [[ $cc_selected =~ $re ]]; then
+      echo -e "$REDBLD   Incorrect input, try a gain$WHITE"
+    else
+      if [ "$cc_selected" -gt "$AOPTS" ]; then
+        echo -e "$RED$BLD   Error:$WHITE theres only 3 valid options, try again"
+      else
+        break
+      fi
+    fi
+  done
+
+  # Option 1: Google GCC
+  if [ "$cc_selected" = "1" ]; then
+    cc_setup_gcc
+    if [ "$kernel_arch" = "arm" ]; then
+      export kernel_cc=$gcc_path32
+    fi
+    if [ "$kernel_arch" = "arm64" ]; then
+      export kernel_cc=$gcc_path64
+      export CROSS_COMPILE_ARM32=$gcc_path32
+    fi
+    if [ -z "$kernel_cc" ]; then
+      echo -e "$RED$BLD   Error:$WHITE there was an issue setting up Google GCC$RATT"
+      ERR=1
+    fi
   fi
 
-  # Build DTB Manually?
-  echo -ne "   Build DTB automatically? [Y/N]:$WHITE "
-  read BDTB
+  # Option 2: Linaro
+  if [ "$cc_selected" = "2" ]; then
+    cc_setup_linaro
+    if [ "$kernel_arch" = "arm" ]; then
+      export kernel_cc=$linaro_path32
+    fi
+    if [ "$kernel_arch" = "arm64" ]; then
+      export kernel_cc=$linaro_path32
+      export CROSS_COMPILE_ARM32=$linaro_path64
+    fi
+  fi
+
+  # Option 4: Custom CC
+  if [ "$cc_selected" = "4" ]; then
+    cc_setup_custom
+    if [ -z "$custom_path" ]; then
+      echo -e "$RED$BLD   Error:$WHITE there was an issue setting up your Custom CC"
+      ERR=1
+    else
+      export kernel_cc=$custom_path
+    fi
+  fi
+};
+
+# ------------------------
+# Other misc configuration
+# ------------------------
+function otherkconfig() {
+  unset ERR
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD              Other Config           "
+  echo -e "$WHITE  ------------------------------------"
+  echo " "
+  
+  # Ask the user if he wants to release stable or beta builds
+  echo -e "   Release Type $THEME$BLD("$WHITE"1 = Stable; 2 = Beta$THEME$BLD)$WHITE";
+  read -e -p "   Select: " -i "1" release_type; if [ "$release_type" = "" ]; then ERR=1; return 1; fi
+  if [ "$release_type" = "1" ]; then release_type="Stable"; elif [ "$release_type" = "2" ]; then release_type="Beta"; fi; export release_type
+  kbelog -t "Runsettings: Release Type: $release_type"
+
+  # Ask the user if he wants the original CrossCompiler output 
+  # or KB-E simplified output while building the kernel
+  read -e -p "   Show original CC output? [y/n]: " -i "y" CCSHOW
+  if [ $CCSHOW = y ] || [ $CCSHOW = Y ]; then
+    export show_cc_out=true; kbelog -t "RunSettings: Showing original CrossCompiler output" 
+  fi
+
+  # Ask the user if he wants to build DTB automatically
+  read -e -p "   Build DTB automatically? [y/n]: " -i "y" BDTB
   if [ "$BDTB" = "y" ] || [ "$BDTB" = "Y" ]; then
     kbelog -t "RunSettings: Building DTB Manually" 
     export kernel_build_dtb=true
   else
     export kernel_build_dtb=false
   fi
+
+  # Ask the user if he wants to clear the kernel source each build
+  read -e -p "   Clear Source each build? [y/n]: " -i "n" CLRS
+  if [ "$CLRS" = "y" ] || [ "$CLRS" = "Y" ]; then
+    kbelog -t "RunSettings: Cleaning source on every build" 
+    export clear_source_onbuild=true
+  fi
 };
 
 # Modules function
 function getmodules() {
   kbelog -t "RunSettings: Entering modules selection" 
-  echo -e "$WHITE ------------------------------------"
-  echo -e "$THEME$BLD            Module selection"
-  echo -e "$WHITE ------------------------------------"
+  echo -e "$WHITE  ------------------------------------"
+  echo -e "$THEME$BLD             Module selection"
+  echo -e "$WHITE  ------------------------------------"
   MLIST=$kbe_path/resources/other/modules.txt
   if [ -f $MLIST ]; then
     kbelog -t "RunSettings: Removing $MLIST file" 
@@ -197,12 +296,11 @@ function getmodules() {
   kbelog -t "RunSettings: Done" 
 };
 
-# Lets start the config process here
-
-promptdata; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
-getarch; echo " "
-getcc;
-getkconfig; if [ "$ERR" = "1" ]; then unset ERR; return 1; fi; echo " "
+# Let's initialize a new device calling the above functions
+getusrbasics; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Basic info"; return 1; fi; echo " "
+getkconfig; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Kernel config"; return 1; fi; echo " "
+getcc; if [ "$ERR" = "1" ]; then export ERR="Couldn't get CC config"; return 1; fi; echo " "
+otherkconfig; echo " "
 
 # After all its done, store all the data collected
 storedata -d; storedata -n
