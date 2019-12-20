@@ -65,7 +65,9 @@ function getkconfig() {
   unset nro; unset source_folder; echo " "
   while [ "$source_folder" = "" ]; do
     read -p "   Select: " nro
-    if [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
+    if [ "$nro" -eq "0" ]; then
+      echo -e "$RED$BLD   Plase enter a valid number$WHITE"
+    elif [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
       echo -e "$RED$BLD   Please enter a valid number$WHITE"
     else
       source_folder=kfolder$nro
@@ -123,7 +125,9 @@ function getkconfig() {
   unset nro; unset DEF; echo " "
   while [ "$DEF" = "" ]; do
     read -p "   Select: " nro
-    if [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
+    if [ "$nro" -eq "0" ]; then
+      echo -e "$RED$BLD   Plase enter a valid number$WHITE"
+    elif [ "$nro" = "" ] || [ "$nro" -gt "$k" ]; then
       echo -e "$RED$BLD   Please enter a valid number$WHITE"
     else
       DEF=DEFCONFIG$nro
@@ -159,7 +163,9 @@ function getcc() {
   while true; do
     read -e -p "   Select: " -i "1" cc_selected
     if ! [[ $cc_selected =~ $re ]]; then
-      echo -e "$REDBLD   Incorrect input, try a gain$WHITE"
+      echo -e "$RED$BLD   Incorrect input, try a gain$WHITE"
+    elif [ "$cc_selected" -eq "0" ]; then
+      echo -e "$RED$BLD   Incorrect input, try again$WHITE"
     else
       if [ "$cc_selected" -gt "$AOPTS" ]; then
         echo -e "$RED$BLD   Error:$WHITE theres only 3 valid options, try again"
@@ -218,10 +224,13 @@ function otherkconfig() {
   echo -e "$THEME$BLD              Other Config           "
   echo -e "$WHITE  ------------------------------------"
   echo " "
-  
+
   # Ask the user if he wants to release stable or beta builds
   echo -e "   Release Type $THEME$BLD("$WHITE"1 = Stable; 2 = Beta$THEME$BLD)$WHITE";
-  read -e -p "   Select: " -i "1" release_type; if [ "$release_type" = "" ]; then ERR=1; return 1; fi
+  read -e -p "   Select: " -i "1" release_type
+  if [ "$release_type" -ne "1" ] || [ "$release_type" -ne "2" ]; then
+    ERR=1; return 1
+  fi
   if [ "$release_type" = "1" ]; then release_type="Stable"; elif [ "$release_type" = "2" ]; then release_type="Beta"; fi; export release_type
   kbelog -t "Runsettings: Release Type: $release_type"
 
@@ -300,7 +309,7 @@ function getmodules() {
 getusrbasics; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Basic info"; return 1; fi; echo " "
 getkconfig; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Kernel config"; return 1; fi; echo " "
 getcc; if [ "$ERR" = "1" ]; then export ERR="Couldn't get CC config"; return 1; fi; echo " "
-otherkconfig; echo " "
+otherkconfig; if [ "$ERR" = "1" ]; then export ERR="User failed to provide a valid input"; return 1; fi; echo " "
 
 # After all its done, store all the data collected
 storedata -d; storedata -n
