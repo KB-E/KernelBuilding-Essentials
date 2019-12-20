@@ -3,7 +3,7 @@
 # By Artx/Stayn <jesusgabriel.91@gmail.com>
 
 # KB-E Version and Revision
-VERSION=1.0
+VERSION=1.2
 # Don't run if core.sh is not found in the current path
 # (To avoid path errors)
 if [ ! -f kbe.sh ] && [ "$1" != --init ]; then
