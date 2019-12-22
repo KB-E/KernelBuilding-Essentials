@@ -228,7 +228,9 @@ function otherkconfig() {
   # Ask the user if he wants to release stable or beta builds
   echo -e "   Release Type $THEME$BLD("$WHITE"1 = Stable; 2 = Beta$THEME$BLD)$WHITE";
   read -e -p "   Select: " -i "1" release_type
-  if [ "$release_type" -ne "1" ] || [ "$release_type" -ne "2" ]; then
+  if [ "$release_type" -eq "1" ] || [ "$release_type" -eq "2" ]; then
+    :
+  else
     ERR=1; return 1
   fi
   if [ "$release_type" = "1" ]; then release_type="Stable"; elif [ "$release_type" = "2" ]; then release_type="Beta"; fi; export release_type
