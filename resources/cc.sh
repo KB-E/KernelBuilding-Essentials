@@ -105,11 +105,11 @@ function cc_setup_linaro() {
 
   # Export linaro_path32 if kernel is arm
   if [ "$kernel_arch" = "arm" ]; then
-    export linaro_path32=$linaro_path/$linaro_package_arm64/bin/arm-eabi-
+    export linaro_path32=$linaro_path/$linaro_package_arm/bin/arm-eabi-
   fi
   # Export linaro_path32 and linaro_path64 if kernel is arm64
   if [ "$kernel_arch" = "arm64" ]; then
-    export linaro_path32=$linaro_path/$linaro_package_arm64/bin/arm-eabi-
+    export linaro_path32=$linaro_path/$linaro_package_arm/bin/arm-eabi-
     export linaro_path64=$linaro_path/$linaro_package_arm64/bin/aarch64-elf-
   fi
 }
@@ -117,7 +117,7 @@ function cc_setup_linaro() {
 function cc_setup_custom() {
   # Set custom CrossCompiler
   echo " "; echo -e "$WHITE   Please, enter path to your custom CrossCompiler:"
-  read -p "Path: " custom_path
+  read -p "   Path: " custom_path
   if [ ! -f "$custom_path"gcc ]; then
     echo -e "$RED$BLD   Error:$WHITE gcc binary not found"
     unset custom_path
