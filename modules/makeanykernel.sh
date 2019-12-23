@@ -59,7 +59,7 @@ fi
 
 function anykernel() {
 # Read version
-readfromdevice version
+device_read version
 # Load AK Config file
 source $device_kernel_path/akconfig
 # Tittle
