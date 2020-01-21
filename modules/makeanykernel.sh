@@ -136,7 +136,12 @@ echo -e "$THEME$BLD   Zip Name: $WHITE$zip_name"
 echo -ne "$WHITE$BLD   Building Flasheable zip for $device_variant...$RATT$WHITE"
 cd $AKFOLDER
 zip -r9 $zip_name * &> /dev/null
-mv $zip_name $AKOUT/
+if [ ! -f $zip_name ]; then
+  echo -e "$RED$BLD Error:$WHITE Zip not found..."
+  return 1
+else
+  mv $zip_name $AKOUT/
+fi
 # Build zip path
 export zip_path=$AKOUT/$zip_name
 echo -e "$THEME$BLD Done!$RATT"
