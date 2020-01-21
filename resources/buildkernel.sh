@@ -45,7 +45,7 @@ function buildkernel() {
   # ----------------------
   
   # Clean kernel source
-  if [ "$CLR" = "1" ]; then
+  if [ "$clean_source_onbuild" = "true" ]; then
     make clean
     echo " "; kbelog -t "BuildKernel: Source cleaned"
   fi
