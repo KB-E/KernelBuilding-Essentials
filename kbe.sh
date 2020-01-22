@@ -107,8 +107,6 @@ function kbe() {
     kbelog -t "KB-E: Checking tools"; #checktools
     #if [ "$missing_dependencies" = "true" ]; then installtools; fi; checktools
     #if [ "$missing_dependencies" = "true" ]; then unset missing_dependencies; return 1; fi
-    checksource # Check if theres a Kernel source to work with
-    if [ "$available_kernel_source" = "false" ]; then return 1; fi
     # Initialize KB-E environment
     # Check for a stored device file specified by the user
     for c in $kbe_path/devices/*; do
@@ -152,8 +150,20 @@ function kbe() {
           device_kernel_file=$kbe_path/devices/$DEVICE/$DATAFOLDER/$DATAFOLDER.data # Build Kernel File path
         fi
         export device_kernel_path  # Export the path for the saved Kernel directory path
-        export device_kernel_file  # Export the path for the saved Kernel file path
+        export device_kernel_file  # Export the path for the saved Kernel file path        
         source $device_kernel_file # Source the device settings to KB-E environment
+        # Check if device has a kernel source and defconfig
+        if [ "$kernel_source" = "" ] && [ -d $kbe_path/source/*/ ]; then
+          echo -e "$RED$BLD   Warning:$WHITE no Kernel/Defconfig set"
+          echo -ne "   Set it up now? $THEME$BLD[y/n]:$WHITE "; read sett
+          if [ "$sett" = "y" ] || [ "$sett" = "Y" ]; then
+            device_write kernelsource; device_write defconfig
+            source $device_kernel_file
+          fi    
+        else
+          echo -e "$RED$BLD   Warning:$WHITE no Kernel source & Defconfig found"
+          echo -e "$WHITE  ------------------------------------"
+        fi
         RD=1; NORS=1 # Mark KB-E as ready and don't run RS (runsettings.sh)
         # Clear some variables
         unset DATAFOLDER; unset DEVICE; unset DNUMBER; unset kf; unset c

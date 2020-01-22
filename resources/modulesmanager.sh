@@ -124,5 +124,5 @@ function mm_ui() {
 
 # Enable or disable modules function
 function mm_enable_disable() {
-  
+  :
 }
