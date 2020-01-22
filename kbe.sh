@@ -87,7 +87,10 @@ function kbe() {
     kbelog -t " "; kbelog -t "Starting KB-E..."
     # Load ProgramTools
     source $kbe_path/resources/programtools.sh
-    kbelog -t "KB-E: ProgramTools loaded" 
+    kbelog -t "KB-E: ProgramTools loaded"
+    # Module Manager
+    source $kbe_path/resources/modulesmanager.sh
+    kbelog -t "KB-E: Modules Manager loaded"
     # Load SimpleTools
     source $kbe_path/resources/simpletools.sh
     kbelog -t "KB-E: SimpleTools loaded" 

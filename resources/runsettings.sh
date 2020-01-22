@@ -260,53 +260,6 @@ function otherkconfig() {
   fi
 };
 
-# Modules function
-function getmodules() {
-  kbelog -t "RunSettings: Entering modules selection" 
-  echo -e "$WHITE  ------------------------------------"
-  echo -e "$THEME$BLD             Module selection"
-  echo -e "$WHITE  ------------------------------------"
-  MLIST=$kbe_path/resources/other/modules.txt
-  if [ -f $MLIST ]; then
-    kbelog -t "RunSettings: Removing $MLIST file" 
-    rm $MLIST
-  fi
-  kbelog -t "RunSettings: Creating $MLIST file" 
-  touch $MLIST
-  echo "# Modules Functions" > $MLIST
-  k=1
-  x=1
-  for i in $kbe_path/modules/*.sh
-  do
-    echo " "
-    echo -e "$WHITE  --------$THEME$BLD MODULE$WHITE --------"
-    echo " "
-    echo -e "$THEME$BLD   Name:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)"
-    echo -e "$THEME$BLD   kernel_version:$WHITE $(grep MODULE_VERSION $i | cut -d '=' -f2)"
-    echo -e "$THEME$BLD   Description:$WHITE $(grep MODULE_DESCRIPTION $i | cut -d '=' -f2)"
-    #echo -e "$THEME$BLD   Priority:$WHITE $(grep MODULE_PRIORITY $i | cut -d '=' -f2)"
-    echo " "
-    echo -e "$WHITE  ------------------------"
-    echo " "
-    echo -ne "$THEME$BLD   Enable:$WHITE $(grep MODULE_NAME $i | cut -d '=' -f2)? [Y/N]: "
-    read  EM
-    if [ "$EM" = y ] || [ "$EM" = Y ]; then
-      kbelog -t "RunSettings: Module '$(grep MODULE_NAME $i | cut -d '=' -f2)' enabled" 
-      echo "if [ -f $i ]; then" >> $MLIST
-      echo "  export MODULE$((k++))=$(grep MODULE_FUNCTION_NAME $i | cut -d '=' -f2)" >> $MLIST
-      echo "  export MPATH$((x++))=$i" >> $MLIST
-      kbelog -t "RunSettings: Running '$(grep MODULE_NAME $i | cut -d '=' -f2)' module" 
-      source $i
-      # Save the path to execute the module, needed by device kernel_name file
-      echo "  source $i" >> $MLIST
-      echo "fi" >> $MLIST
-    fi
-  done
-  kbelog -t "RunSettings: Exporting modules configuration" 
-  source $MLIST
-  kbelog -t "RunSettings: Done" 
-};
-
 # Let's initialize a new device calling the above functions
 getusrbasics; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Basic info"; return 1; fi; echo " "
 getkconfig; if [ "$ERR" = "1" ]; then export ERR="Couldn't get Kernel config"; return 1; fi; echo " "
@@ -341,8 +294,9 @@ fi
 storedata -v kernel_build_dtb $kernel_build_dtb
 export device_kernel_path=$kbe_path/devices/$device_variant/$kernel_name/                 # Build Kernel Directory path
 export device_kernel_file=$kbe_path/devices/$device_variant/$kernel_name/$kernel_name.data # Build Kernel File path
-getmodules;
-cat $MLIST >> $device_kernel_file
+
+# Initialize new modules config on Module Manager
+mm_main newconfig
 
 # Create an out folder for this device kernel_name folder
 if [ ! -d $device_kernel_path/out ]; then
