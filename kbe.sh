@@ -160,7 +160,7 @@ function kbe() {
             device_write kernelsource; device_write defconfig
             source $device_kernel_file
           fi    
-        else
+        elif [ "$kernel_source" = "" ]; then
           echo -e "$RED$BLD   Warning:$WHITE no Kernel source & Defconfig found"
           echo -e "$WHITE  ------------------------------------"
         fi
