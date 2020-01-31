@@ -21,7 +21,7 @@ function buildkernel() {
   fi
 
   # Enter in the kernel source if it exist
-  if [ -d $kernel_source ]; then
+  if [ -f $kernel_source/Makefile ]; then
     cd $kernel_source; kbelog -t "BuildKernel: Entered in '$kernel_source'"
   else # If it doesnt exist it means that we have nothing to do
     echo -e "$RED   Path doesn't exist!"; echo -e "$RED - Build canceled$RATT"
